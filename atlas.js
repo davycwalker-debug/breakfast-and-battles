@@ -53,9 +53,9 @@ function initializeAtlas(settings) {
 
     // --- ENCOUNTERED DEFAULT SHOWCASE SETUP ---
     // Make sure all populated encountered folder groups display immediately on page render
-    Object.keys(layers.encountered).forEach(key => {
-        layers.encountered[key].addTo(map);
-    });
+    // Object.keys(layers.encountered).forEach(key => {
+    //     layers.encountered[key].addTo(map);
+    // });
 
     // 4. Mount the controller overlay to layout
     // Changed collapsed to true so it starts as a clean icon button
@@ -63,6 +63,9 @@ function initializeAtlas(settings) {
         collapsed: true,         // Panel starts closed as a clean hover/click icon
         groupCheckboxes: true
     }).addTo(map);
+
+    Object.values(layers.encountered).forEach(layer => layer.addTo(map));
+    layerControl._update();
 
     // 5. Connect basic structural click handlers for Coordinate HUD
     map.on('click', function(e) {
