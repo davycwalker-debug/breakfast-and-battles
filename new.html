@@ -171,7 +171,7 @@
             glow: "rgba(214,40,40,0.8)"
         },
     
-        water: {
+        body: {
             color: "#4cc9f0",
             icon: "🌊",
             size: 26,
@@ -185,7 +185,7 @@
             glow: "rgba(72,149,239,0.8)"
         },
     
-        geo: {
+        feature: {
             color: "#adb5bd",
             icon: "🪨",
             size: 24,
@@ -193,9 +193,29 @@
         }
     };
 
-    function addMarker(type, y, x, title, notionUrl) {
+    const layers = {
+
+        city: L.layerGroup().addTo(map),
+        town: L.layerGroup().addTo(map),
+        ruin: L.layerGroup().addTo(map),
+        forest: L.layerGroup().addTo(map),
+        swamp: L.layerGroup().addTo(map),
+        road: L.layerGroup().addTo(map),
+        mountain: L.layerGroup().addTo(map),
+        region: L.layerGroup().addTo(map),
+        dungeon: L.layerGroup().addTo(map),
+        body: L.layerGroup().addTo(map),
+        river: L.layerGroup().addTo(map),
+        feature: L.layerGroup().addTo(map),
+    
+    };
+
+    function addMarker(type, encountered, y, x, title, notionUrl) {
 
         const style = markerStyles[type];
+    
+        const opacity = encountered ? 1 : 0.35;
+        const grayscale = encountered ? 0 : 1;
     
         const icon = L.divIcon({
             className: '',
@@ -205,14 +225,22 @@
                     height:${style.size}px;
                     border-radius:50%;
                     background:${style.color};
+    
                     display:flex;
                     align-items:center;
                     justify-content:center;
+    
                     font-size:${style.size * 0.65}px;
+    
+                    border:2px solid white;
+    
+                    opacity:${opacity};
+    
+                    filter: grayscale(${grayscale});
+    
                     box-shadow:
                         0 0 12px ${style.glow},
                         0 0 30px ${style.glow};
-                    border:2px solid white;
                 ">
                     ${style.icon}
                 </div>
@@ -221,46 +249,43 @@
             iconAnchor: [style.size/2, style.size/2]
         });
     
-        const marker = L.marker([y, x], { icon }).addTo(map);
+        const marker = L.marker([y, x], { icon });
     
-        const popupContent = `
-            <div style="
-                font-family:sans-serif;
-                text-align:center;
-                padding:6px;
-                min-width:180px;
-            ">
+        marker.bindPopup(`
+            <div style="font-family:sans-serif;text-align:center;">
                 <div style="
-                    font-size:13px;
                     opacity:0.7;
-                    margin-bottom:6px;
                     text-transform:uppercase;
-                    letter-spacing:1px;
+                    font-size:12px;
+                    margin-bottom:5px;
                 ">
                     ${type}
                 </div>
     
-                <h3 style="margin:0 0 10px 0;">
-                    ${title}
-                </h3>
+                <h3>${title}</h3>
     
-                <a href="${notionUrl}"
-                   target="_blank"
-                   style="
-                        color:${style.color};
-                        text-decoration:none;
-                        font-weight:bold;
-                   ">
+                <div style="
+                    margin-bottom:10px;
+                    color:${encountered ? '#6ee7b7' : '#9ca3af'};
+                ">
+                    ${encountered ? 'Encountered' : 'Unknown'}
+                </div>
+    
+                <a href="${notionUrl}" target="_blank">
                     Open Entry ➔
                 </a>
             </div>
-        `;
+        `);
     
-        marker.bindPopup(popupContent);
+        // Add to proper category layer
+        marker.addTo(layers[type]);
+    
+        return marker;
     }
 
     addMarker(
         "city",
+        true,
         750,
         1000,
         "Capital City",
@@ -268,28 +293,41 @@
     );
     
     addMarker(
-        "forest",
+        "dungeon",
+        false,
         400,
         1300,
-        "Whisperwood",
+        "The Buried Crypt",
         "https://notion.so/page2"
     );
     
     addMarker(
-        "dungeon",
-        1100,
-        900,
-        "The Sunken Crypt",
-        "https://notion.so/page3"
-    );
-    
-    addMarker(
         "mountain",
+        true,
         250,
         700,
-        "The Iron Peaks",
-        "https://notion.so/page4"
+        "Iron Peaks",
+        "https://notion.so/page3"
     );
+
+    L.control.layers(null, {
+
+        "Cities": layers.city,
+        "Towns": layers.town,
+        "Ruins": layers.ruin,
+        "Forests": layers.forest,
+        "Swamps": layers.swamp,
+        "Roads": layers.road,
+        "Mountains": layers.mountain,
+        "Regions": layers.region,
+        "Dungeons": layers.dungeon,
+        "Bodies of Water": layers.body,
+        "Rivers": layers.river,
+        "Geographical Features": layers.feature
+
+    }, {
+        collapsed: false
+    }).addTo(map);
 
     // PRETTY CLICK INTERACTION
     map.on('click', function(e) {
