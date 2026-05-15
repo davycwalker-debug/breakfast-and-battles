@@ -266,27 +266,8 @@
     };
 
     // 3. Helper function to quickly add markers that link to Notion
-    function addNotionMarker(type, encountered, y, x, popupText, notionUrl) {
-        const marker = L.marker([y, x]).addTo(map);
-        
-        // Create a clickable link inside the popup box
-        const popupContent = `
-            <div style="font-family: sans-serif; text-align: center;">
-                <h3>${popupText}</h3>
-                <a href="${notionUrl}" target="_blank" style="color: #0078ff; text-decoration: none; font-weight: bold;">Open Entry in Notion ➔</a>
-            </div>
-        `;
-        const state = encountered
-            ? "encountered"
-            : "unencountered";
-        marker.bindPopup(popupContent);
-        marker.addTo(layers[state][type]);
-    }
-
-    function addMarker(type, encountered, y, x, title, notionUrl) {
-
+    function addMarker(type, encountered, y, x, popupText, notionUrl) {
         const style = markerStyles[type];
-    
         const icon = L.divIcon({
             className: '',
             html: `
@@ -314,69 +295,25 @@
             iconSize: [style.size, style.size],
             iconAnchor: [style.size/2, style.size/2]
         });
-    
         const marker = L.marker([y, x], { icon });
-    
-        marker.bindPopup(`
-            <div style="font-family:sans-serif;text-align:center;">
-                <div style="
-                    opacity:0.7;
-                    text-transform:uppercase;
-                    font-size:12px;
-                    margin-bottom:5px;
-                ">
-                    ${type}
-                </div>
-    
-                <h3>${title}</h3>
-    
-                <div style="
-                    margin-bottom:10px;
-                ">
-                    ${encountered ? 'Encountered' : 'Unknown'}
-                </div>
-    
-                <a href="${notionUrl}" target="_blank">
-                    Open Entry ➔
-                </a>
+        // Create a clickable link inside the popup box
+        const popupContent = `
+            <div style="font-family: sans-serif; text-align: center;">
+                <h3>${popupText}</h3>
+                <a href="${notionUrl}" target="_blank" style="color: #0078ff; text-decoration: none; font-weight: bold;">Open Entry in Notion ➔</a>
             </div>
-        `);
-    
+        `;
+        marker.bindPopup(popupContent);
         const state = encountered
             ? "encountered"
             : "unencountered";
-    
         marker.addTo(layers[state][type]);
-    
         return marker;
     }
 
-    addNotionMarker(
-        "city",
-        true,
-        750,
-        1000,
-        "Capital City",
-        "https://notion.so/page1"
-    );
-    
-    addNotionMarker(
-        "dungeon",
-        false,
-        400,
-        1300,
-        "The Buried Crypt",
-        "https://notion.so/page2"
-    );
-    
-    addNotionMarker(
-        "mountain",
-        true,
-        250,
-        700,
-        "Iron Peaks",
-        "https://notion.so/page3"
-    );
+    addMarker("city", true, 750, 1000, "Capital City", "https://notion.so/page1");
+    addMarker("dungeon", false, 400, 1300, "The Buried Crypt", "https://notion.so/page2");
+    addMarker("mountain", true, 250, 700, "Iron Peaks", "https://notion.so/page3");
 
     L.control.groupedLayers(
         null,
