@@ -59,7 +59,7 @@ function initializeAtlas(settings) {
 
     // 4. Mount the controller overlay to layout
     // Changed collapsed to true so it starts as a clean icon button
-    L.control.groupedLayers(null, groupedOverlays, {
+    const layerControl = L.control.groupedLayers(null, groupedOverlays, {
         collapsed: true,         // Panel starts closed as a clean hover/click icon
         groupCheckboxes: true
     }).addTo(map);
