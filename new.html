@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <link rel="stylesheet"
+    href="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.css"/>
+    
+    <script src="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
+
     <style>
         html, body, #map {
             width: 100%;
@@ -97,8 +102,8 @@
 
     const map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -2,
-        maxZoom: 2,
+        minZoom: -1,
+        maxZoom: 5,
         zoomSnap: 0.25
     });
 
@@ -227,33 +232,37 @@
     
     };
 
-    const visibleLayers = {
+    const groupedOverlays = {
 
-        "Encountered Cities": layers.encountered.city,
-        "Encountered Towns": layers.encountered.town,
-        "Encountered Ruins": layers.encountered.ruin,
-        "Encountered Forests": layers.encountered.forest,
-        "Encountered Swamps": layers.encountered.swamp,
-        "Encountered Roads": layers.encountered.road,
-        "Encountered Mountains": layers.encountered.mountain,
-        "Encountered Regions": layers.encountered.region,
-        "Encountered Dungeons": layers.encountered.dungeon,
-        "Encountered Bodies": layers.encountered.body,
-        "Encountered Rivers": layers.encountered.river,
-        "Encountered Features": layers.encountered.feature,
+        "Encountered": {
+            "Cities": layers.encountered.city,
+            "Towns": layers.encountered.town,
+            "Ruins": layers.encountered.ruin,
+            "Forests": layers.encountered.forest,
+            "Swamps": layers.encountered.swamp,
+            "Roads": layers.encountered.road,
+            "Mountains": layers.encountered.mountain,
+            "Regions": layers.encountered.region,
+            "Dungeons": layers.encountered.dungeon,
+            "Bodies": layers.encountered.body,
+            "Rivers": layers.encountered.river,
+            "Features": layers.encountered.feature
+        },
     
-        "Unknown Cities": layers.unencountered.city,
-        "Unknown Towns": layers.unencountered.town,
-        "Unknown Ruins": layers.unencountered.ruin,
-        "Unknown Forests": layers.unencountered.forest,
-        "Unknown Swamps": layers.unencountered.swamp,
-        "Unknown Roads": layers.unencountered.road,
-        "Unknown Mountains": layers.unencountered.mountain,
-        "Unknown Regions": layers.unencountered.region,
-        "Unknown Dungeons": layers.unencountered.dungeon,
-        "Unknown Bodies": layers.unencountered.body,
-        "Unknown Rivers": layers.unencountered.river,
-        "Unknown Features": layers.unencountered.feature
+        "Unencountered": {
+            "Cities": layers.unencountered.city,
+            "Towns": layers.unencountered.town,
+            "Ruins": layers.unencountered.ruin,
+            "Forests": layers.unencountered.forest,
+            "Swamps": layers.unencountered.swamp,
+            "Roads": layers.unencountered.road,
+            "Mountains": layers.unencountered.mountain,
+            "Regions": layers.unencountered.region,
+            "Dungeons": layers.unencountered.dungeon,
+            "Bodies": layers.unencountered.body,
+            "Rivers": layers.unencountered.river,
+            "Features": layers.unencountered.feature
+        }
     
     };
 
@@ -352,9 +361,14 @@
         "https://notion.so/page3"
     );
 
-    L.control.layers(null, visibleLayers, {
-        collapsed: false
-    }).addTo(map);
+    L.control.groupedLayers(
+        null,
+        groupedOverlays,
+        {
+            collapsed: false,
+            groupCheckboxes: true
+        }
+    ).addTo(map);
 
     // PRETTY CLICK INTERACTION
     map.on('click', function(e) {
