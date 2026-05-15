@@ -33,6 +33,16 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.35); pointer-events: none;
         }
 
+        /* Make our custom popup look and behave like a premium link button */
+        .clickable-notion-popup .leaflet-popup-content-wrapper {
+            cursor: pointer;
+        }
+        .clickable-notion-popup h3 {
+            margin: 0;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
         /* Click Ripple Vector Animation */
         .click-ripple {
             width: 18px; height: 18px; border-radius: 50%;
@@ -133,6 +143,7 @@
         `, {
             closeButton: false, // Removes the 'x' button for a cleaner aesthetic
             autoClose: true     // Automatically shuts if another map element takes focus
+            className: 'clickable-notion-popup'
         });
 
         // STABLE HOVER ENGINE: Instant reactions without DOM element validation loops
