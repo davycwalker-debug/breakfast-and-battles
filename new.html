@@ -9,9 +9,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <link rel="stylesheet"
-    href="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.css"/>
+    href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css"/>
     
-    <script src="https://unpkg.com/leaflet.groupedlayercontrol@0.6.1/dist/leaflet.groupedlayercontrol.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
 
     <style>
         html, body, #map {
@@ -216,18 +216,18 @@
         },
     
         unencountered: {
-            city: L.layerGroup().addTo(map),
-            town: L.layerGroup().addTo(map),
-            ruin: L.layerGroup().addTo(map),
-            forest: L.layerGroup().addTo(map),
-            swamp: L.layerGroup().addTo(map),
-            road: L.layerGroup().addTo(map),
-            mountain: L.layerGroup().addTo(map),
-            region: L.layerGroup().addTo(map),
-            dungeon: L.layerGroup().addTo(map),
-            body: L.layerGroup().addTo(map),
-            river: L.layerGroup().addTo(map),
-            feature: L.layerGroup().addTo(map)
+            city: L.layerGroup(),
+            town: L.layerGroup(),
+            ruin: L.layerGroup(),
+            forest: L.layerGroup(),
+            swamp: L.layerGroup(),
+            road: L.layerGroup(),
+            mountain: L.layerGroup(),
+            region: L.layerGroup(),
+            dungeon: L.layerGroup(),
+            body: L.layerGroup(),
+            river: L.layerGroup(),
+            feature: L.layerGroup()
         }
     
     };
