@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Interactive World Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Dark background matching Notion */
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+    // 1. Change these to your actual map image's width and height in pixels
+    const imgWidth = 2000;
+    const imgHeight = 1500;
+    const imgUrl = 'YOUR_IMAGE_URL_HERE'; // Host your image on Imgur, Discord, or GitHub
+
+    // 2. Setup the Leaflet map for a flat, custom image (CRS.Simple)
+    const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        maxZoom: 2
+    });
+
+    // Calculate boundaries so the map centers correctly
+    const bounds = [[0, 0], [imgHeight, imgWidth]];
+    L.imageOverlay(imgUrl, bounds).addTo(map);
+    map.fitBounds(bounds);
+
+    // 3. Helper function to quickly add markers that link to Notion
+    function addNotionMarker(y, x, popupText, notionUrl) {
+        const marker = L.marker([y, x]).addTo(map);
+        
+        // Create a clickable link inside the popup box
+        const popupContent = `
+            <div style="font-family: sans-serif; text-align: center;">
+                <h3>${popupText}</h3>
+                <a href="${notionUrl}" target="_blank" style="color: #0078ff; text-decoration: none; font-weight: bold;">Open Entry in Notion ➔</a>
+            </div>
+        `;
+        marker.bindPopup(popupContent);
+    }
+
+    // 4. ADD YOUR MARKERS HERE
+    // Syntax: addNotionMarker(Y-Coordinate, X-Coordinate, "Name", "Your Notion Page Link")
+    // Note: Y goes from 0 (bottom) to imgHeight (top). X goes from 0 (left) to imgWidth (right).
+    addNotionMarker(750, 1000, "Capital City", "https://www.notion.so/your-page-id-1");
+    addNotionMarker(400, 1300, "Monster Lair", "https://www.notion.so/your-page-id-2");
+
+</script>
+</body>
+</html>
