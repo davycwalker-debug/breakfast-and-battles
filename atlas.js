@@ -85,6 +85,12 @@ function initializeAtlas(settings) {
             // 2. Challenge with a standard browser prompt
             const codephrase = prompt("Enter DM password to reveal unencountered features:");
             
+            // FIX: If the user clicks "Cancel" or hits Escape, break out quietly
+            if (codephrase === null) {
+                layerControl._update(); // Reverts the checkbox back to unchecked visually
+                return;                 // Stop execution immediately
+            }
+
             if (codephrase === "password") {
                 unencounteredUnlocked = true; // Mark as authenticated
                 map.addLayer(e.layer);        // Safely restore the layer they clicked
