@@ -106,41 +106,189 @@
     L.imageOverlay(imgUrl, bounds).addTo(map);
     map.fitBounds(bounds);
 
-    // Pretty marker helper
-    function addNotionMarker(y, x, popupText, notionUrl) {
+    const markerStyles = {
 
+        city: {
+            color: "#ffd166",
+            icon: "🏰",
+            size: 26,
+            glow: "rgba(255,209,102,0.8)"
+        },
+    
+        town: {
+            color: "#f4a261",
+            icon: "🏠",
+            size: 22,
+            glow: "rgba(244,162,97,0.8)"
+        },
+    
+        ruin: {
+            color: "#9e9e9e",
+            icon: "🪦",
+            size: 24,
+            glow: "rgba(180,180,180,0.7)"
+        },
+    
+        forest: {
+            color: "#2a9d8f",
+            icon: "🌲",
+            size: 24,
+            glow: "rgba(42,157,143,0.8)"
+        },
+    
+        swamp: {
+            color: "#556b2f",
+            icon: "🦟",
+            size: 24,
+            glow: "rgba(85,107,47,0.8)"
+        },
+    
+        road: {
+            color: "#c2b280",
+            icon: "🛤️",
+            size: 18,
+            glow: "rgba(194,178,128,0.6)"
+        },
+    
+        mountain: {
+            color: "#8d99ae",
+            icon: "⛰️",
+            size: 28,
+            glow: "rgba(141,153,174,0.8)"
+        },
+    
+        region: {
+            color: "#b5179e",
+            icon: "🗺️",
+            size: 30,
+            glow: "rgba(181,23,158,0.8)"
+        },
+    
+        dungeon: {
+            color: "#d62828",
+            icon: "⚔️",
+            size: 26,
+            glow: "rgba(214,40,40,0.8)"
+        },
+    
+        water: {
+            color: "#4cc9f0",
+            icon: "🌊",
+            size: 26,
+            glow: "rgba(76,201,240,0.8)"
+        },
+    
+        river: {
+            color: "#4895ef",
+            icon: "💧",
+            size: 20,
+            glow: "rgba(72,149,239,0.8)"
+        },
+    
+        geo: {
+            color: "#adb5bd",
+            icon: "🪨",
+            size: 24,
+            glow: "rgba(173,181,189,0.8)"
+        }
+    };
+
+    function addMarker(type, y, x, title, notionUrl) {
+
+        const style = markerStyles[type];
+    
         const icon = L.divIcon({
             className: '',
-            html: `<div class="custom-marker"></div>`,
-            iconSize: [18, 18],
-            iconAnchor: [9, 9]
+            html: `
+                <div style="
+                    width:${style.size}px;
+                    height:${style.size}px;
+                    border-radius:50%;
+                    background:${style.color};
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:${style.size * 0.65}px;
+                    box-shadow:
+                        0 0 12px ${style.glow},
+                        0 0 30px ${style.glow};
+                    border:2px solid white;
+                ">
+                    ${style.icon}
+                </div>
+            `,
+            iconSize: [style.size, style.size],
+            iconAnchor: [style.size/2, style.size/2]
         });
-
+    
         const marker = L.marker([y, x], { icon }).addTo(map);
-
+    
         const popupContent = `
-            <div style="font-family:sans-serif;text-align:center;padding:4px;">
-                <h3 style="margin:0 0 10px 0;">${popupText}</h3>
+            <div style="
+                font-family:sans-serif;
+                text-align:center;
+                padding:6px;
+                min-width:180px;
+            ">
+                <div style="
+                    font-size:13px;
+                    opacity:0.7;
+                    margin-bottom:6px;
+                    text-transform:uppercase;
+                    letter-spacing:1px;
+                ">
+                    ${type}
+                </div>
+    
+                <h3 style="margin:0 0 10px 0;">
+                    ${title}
+                </h3>
+    
                 <a href="${notionUrl}"
                    target="_blank"
                    style="
-                        color:#4db8ff;
+                        color:${style.color};
                         text-decoration:none;
                         font-weight:bold;
                    ">
-                    Open Entry in Notion ➔
+                    Open Entry ➔
                 </a>
             </div>
         `;
-
+    
         marker.bindPopup(popupContent);
     }
 
-    addNotionMarker(
+    addMarker(
+        "city",
         750,
         1000,
         "Capital City",
-        "https://www.notion.so/your-page-id-1"
+        "https://notion.so/page1"
+    );
+    
+    addMarker(
+        "forest",
+        400,
+        1300,
+        "Whisperwood",
+        "https://notion.so/page2"
+    );
+    
+    addMarker(
+        "dungeon",
+        1100,
+        900,
+        "The Sunken Crypt",
+        "https://notion.so/page3"
+    );
+    
+    addMarker(
+        "mountain",
+        250,
+        700,
+        "The Iron Peaks",
+        "https://notion.so/page4"
     );
 
     // PRETTY CLICK INTERACTION
