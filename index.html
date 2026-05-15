@@ -78,7 +78,8 @@
         crs: L.CRS.Simple,
         minZoom: -1,
         maxZoom: 5,
-        zoomSnap: 0.25
+        zoomSnap: 0.25,
+        doubleClickZoom: false
     });
 
     const bounds = [[0, 0], [imgHeight, imgWidth]];
@@ -154,10 +155,6 @@
         collapsed: false,
         groupCheckboxes: true
     }).addTo(map);
-
-    // FIX DOUBLE CLICK ZOOM: Disables click/double-click propagation through the panel container
-    const controlContainer = layerControl.getContainer();
-    L.DomEvent.disableClickPropagation(controlContainer);
 
     // --- INTERACTIVE MOUSE INTERACTIONS ---
     map.on('click', function(e) {
