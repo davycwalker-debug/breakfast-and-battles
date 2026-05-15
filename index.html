@@ -135,43 +135,33 @@
             autoClose: true     // Automatically shuts if another map element takes focus
         });
 
-        // 2. STABLE HOVER ENGINE: Prevents rapid-movement lockups
-        marker.on('mouseenter', function (e) {
+        // STABLE HOVER ENGINE: Instant reactions without DOM element validation loops
+        marker.on('mouseenter', function () {
             this.openPopup();
-
-            const popupElement = this.getPopup().getElement();
-            if (popupElement) {
-                // CLICK POPUP TO OPEN LINK: Allows users to click the text bubble itself
-                popupElement.style.cursor = 'pointer';
-                popupElement.onclick = function() {
-                    window.open(notionUrl, '_blank');
-                };
-
-                // Keep popup alive if cursor is inside it
-                popupElement.onmouseenter = () => { this.openPopup(); };
-                popupElement.onmouseleave = () => { this.closePopup(); };
-            }
         });
 
-        marker.on('mouseleave', function (e) {
-            // Short delay to allow the cursor to cross the gap into the popup
+        marker.on('mouseleave', function () {
             setTimeout(() => {
                 const popup = this.getPopup();
                 if (popup && popup.getElement()) {
                     const isHoveringPopup = popup.getElement().matches(':hover');
                     const isHoveringMarker = marker.getElement() && marker.getElement().matches(':hover');
                     
-                    // Only close if the mouse is completely outside both elements
                     if (!isHoveringPopup && !isHoveringMarker) {
                         this.closePopup();
                     }
+                    
+                    // Bind the click redirect rule natively to the popup element frame safely
+                    popup.getElement().onclick = function() {
+                        window.open(notionUrl, '_blank');
+                    };
                 } else {
                     this.closePopup();
                 }
-            }, 120); // Slightly increased to 120ms for fast mouse movements
+            }, 120);
         });
 
-        // 3. DIRECT MARKER CLICK TRIGGER: Standard link opener on circle click
+        // DIRECT MARKER CLICK TRIGGER
         marker.on('click', function() {
             window.open(notionUrl, '_blank');
         });
