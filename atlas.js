@@ -17,6 +17,32 @@ const mapConfiguration = {
 // Global variables for layer management
 let map, layers;
 
+// Global tracking variable
+let unencounteredUnlocked = false;
+
+// UI functions called by the HTML buttons
+function toggleDMPanel() {
+    const wrapper = document.getElementById('dm-input-wrapper');
+    wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
+}
+
+function checkDMPassword() {
+    const passwordInput = document.getElementById('dm-pass');
+    const toggleBtn = document.getElementById('dm-toggle-btn');
+    const wrapper = document.getElementById('dm-input-wrapper');
+
+    if (passwordInput.value === "password") {
+        unencounteredUnlocked = true;
+        toggleBtn.innerText = "🔓 DM Layers Unlocked";
+        toggleBtn.style.background = "#2a9d8f";
+        wrapper.style.display = "none";
+        passwordInput.value = "";
+    } else {
+        alert("Access Denied.");
+        passwordInput.value = "";
+    }
+}
+
 // Master initialization routine called by individual map files
 function initializeAtlas(settings) {
     // 1. Setup basic Leaflet instance map layout frame
@@ -81,32 +107,6 @@ function initializeAtlas(settings) {
             layerControl._update(); // Updates the checkbox seamlessly
         }
     });
-
-    // Global tracking variable
-let unencounteredUnlocked = false;
-
-// UI functions called by the HTML buttons
-function toggleDMPanel() {
-    const wrapper = document.getElementById('dm-input-wrapper');
-    wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
-}
-
-function checkDMPassword() {
-    const passwordInput = document.getElementById('dm-pass');
-    const toggleBtn = document.getElementById('dm-toggle-btn');
-    const wrapper = document.getElementById('dm-input-wrapper');
-
-    if (passwordInput.value === "password") {
-        unencounteredUnlocked = true;
-        toggleBtn.innerText = "🔓 DM Layers Unlocked";
-        toggleBtn.style.background = "#2a9d8f";
-        wrapper.style.display = "none";
-        passwordInput.value = "";
-    } else {
-        alert("Access Denied.");
-        passwordInput.value = "";
-    }
-}
 
     // 6. Connect basic structural click handlers for Coordinate HUD
     map.on('click', function(e) {
