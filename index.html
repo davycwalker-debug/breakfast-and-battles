@@ -128,7 +128,6 @@
         marker.bindPopup(`
             <div style="font-family: sans-serif; text-align: center;">
                 <h3>${popupText}</h3>
-                <a href="${notionUrl}" target="_blank" style="color: #0078ff; text-decoration: none; font-weight: bold;">Open Entry in Notion ➔</a>
             </div>
         `);
 
@@ -138,6 +137,11 @@
         });
         marker.on('mouseout', function (e) {
             this.closePopup();
+        });
+
+        // DIRECT LINK TRIGGER: Bypasses the popup box to open link
+        marker.on('click', function() {
+            window.open(notionUrl, '_blank');
         });
 
         const state = encountered ? "encountered" : "unencountered";
