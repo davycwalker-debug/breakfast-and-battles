@@ -51,9 +51,16 @@ function initializeAtlas(settings) {
         });
     }
 
+    // --- ENCOUNTERED DEFAULT SHOWCASE SETUP ---
+    // Make sure all populated encountered folder groups display immediately on page render
+    Object.keys(layers.encountered).forEach(key => {
+        layers.encountered[key].addTo(map);
+    });
+
     // 4. Mount the controller overlay to layout
+    // Changed collapsed to true so it starts as a clean icon button
     L.control.groupedLayers(null, groupedOverlays, {
-        collapsed: false,
+        collapsed: true,         // Panel starts closed as a clean hover/click icon
         groupCheckboxes: true
     }).addTo(map);
 
@@ -97,28 +104,28 @@ function addMarker(type, encountered, y, x, popupText, notionUrl) {
         iconAnchor: [style.size / 2, style.size / 2]
     });
 
-      const marker = L.marker([y, x], { icon });
+    const marker = L.marker([y, x], { icon });
 
-      // 1. Bind the popup with a dark-mode friendly setup, ensuring it doesn't fight our hover logic
-      marker.bindPopup(`
-          <div style="font-family: sans-serif; text-align: center;">
-              <h3>${popupText}</h3>
-          </div>
-      `, {
-          closeButton: false, // Removes the 'x' button for a cleaner aesthetic
-          autoClose: true     // Automatically shuts if another map element takes focus
-      });
+    // 1. Bind the popup with a dark-mode friendly setup, ensuring it doesn't fight our hover logic
+    marker.bindPopup(`
+        <div style="font-family: sans-serif; text-align: center;">
+            <h3>${popupText}</h3>
+        </div>
+    `, {
+        closeButton: false, // Removes the 'x' button for a cleaner aesthetic
+        autoClose: true     // Automatically shuts if another map element takes focus
+    });
 
-      // HOVER FUNCTIONALITY: Bind hover triggers instead of using standard click behaviors
-      marker.on('mouseover', function (e) {
-          this.openPopup();
-      });
-      marker.on('mouseout', function (e) {
-          this.closePopup();
-      });
-      marker.on('click', function() {
-          window.open(notionUrl, '_blank');
-      });
+    // HOVER FUNCTIONALITY: Bind hover triggers instead of using standard click behaviors
+    marker.on('mouseover', function (e) {
+        this.openPopup();
+    });
+    marker.on('mouseout', function (e) {
+        this.closePopup();
+    });
+    marker.on('click', function() {
+        window.open(notionUrl, '_blank');
+    });
 
     const state = encountered ? "encountered" : "unencountered";
     marker.addTo(layers[state][type]);
