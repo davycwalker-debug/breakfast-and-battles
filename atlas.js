@@ -32,42 +32,47 @@ function initializeAtlas(settings) {
     L.imageOverlay(settings.imgUrl, bounds).addTo(map);
     map.fitBounds(bounds);
 
-    // 2. Build tracking arrays dynamically
-    layers = { encountered: {}, unencountered: {} };
+    // 2. Build master Feature Groups instead of plain objects
+    layers = { 
+        encountered: L.featureGroup(), 
+        unencountered: L.featureGroup() 
+    };
+    
+    // We maintain a secondary tracking matrix specifically to feed structural groupings to the UI plugin
+    const subCategories = { encountered: {}, unencountered: {} };
     const groupedOverlays = { "Encountered": {}, "Unencountered": {} };
 
     Object.keys(mapConfiguration).forEach(key => {
         const item = mapConfiguration[key];
-        layers.encountered[key] = L.layerGroup();
-        layers.unencountered[key] = L.layerGroup();
-        groupedOverlays["Encountered"][item.label] = layers.encountered[key];
-        groupedOverlays["Unencountered"][item.label] = layers.unencountered[key];
+        
+        // Create sub layer groups for precise type-toggling (e.g. Cities, Ruins)
+        subCategories.encountered[key] = L.layerGroup().addTo(layers.encountered);
+        subCategories.unencountered[key] = L.layerGroup().addTo(layers.unencountered);
+        
+        // Map them out for the UI settings
+        groupedOverlays["Encountered"][item.label] = subCategories.encountered[key];
+        groupedOverlays["Unencountered"][item.label] = subCategories.unencountered[key];
     });
 
     // 3. Batch inject configured markers array
     if (settings.markers && Array.isArray(settings.markers)) {
         settings.markers.forEach(m => {
-            addMarker(m.type, m.encountered, m.y, m.x, m.text, m.url);
+            // We pass the nested subCategories down so markers drop into their specific sub-layer groups
+            addMarker(subCategories, m.type, m.encountered, m.y, m.x, m.text, m.url);
         });
     }
 
-    // --- ENCOUNTERED DEFAULT SHOWCASE SETUP ---
-    // Make sure all populated encountered folder groups display immediately on page render
-    // Object.keys(layers.encountered).forEach(key => {
-    //     layers.encountered[key].addTo(map);
-    // });
+    // 4. Turn on the entire Encountered Feature Group natively
+    // This line works perfectly now because layers.encountered is a genuine Leaflet object!
+    layers.encountered.addTo(map);
 
-    // 4. Mount the controller overlay to layout
-    // Changed collapsed to true so it starts as a clean icon button
-    const layerControl = L.control.groupedLayers(null, groupedOverlays, {
-        collapsed: true,         // Panel starts closed as a clean hover/click icon
+    // 5. Mount the controller overlay to layout
+    L.control.groupedLayers(null, groupedOverlays, {
+        collapsed: true,
         groupCheckboxes: true
     }).addTo(map);
 
-    Object.values(layers.encountered).forEach(layer => layer.addTo(map));
-    layerControl._update();
-
-    // 5. Connect basic structural click handlers for Coordinate HUD
+    // 6. Connect basic structural click handlers for Coordinate HUD
     map.on('click', function(e) {
         document.getElementById('coords').innerHTML = `
             <strong>X:</strong> ${Math.round(e.latlng.lng)} &nbsp;&nbsp;
@@ -86,7 +91,7 @@ function initializeAtlas(settings) {
 }
 
 // Marker Constructor Engine
-function addMarker(type, encountered, y, x, popupText, notionUrl) {
+function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl) {
     const style = mapConfiguration[type];
     if (!style) return;
 
@@ -109,27 +114,22 @@ function addMarker(type, encountered, y, x, popupText, notionUrl) {
 
     const marker = L.marker([y, x], { icon });
 
-    // 1. Bind the popup with a dark-mode friendly setup, ensuring it doesn't fight our hover logic
+    // Bind the popup setup
     marker.bindPopup(`
         <div style="font-family: sans-serif; text-align: center;">
             <h3>${popupText}</h3>
         </div>
     `, {
-        closeButton: false, // Removes the 'x' button for a cleaner aesthetic
-        autoClose: true     // Automatically shuts if another map element takes focus
+        closeButton: false,
+        autoClose: true
     });
 
-    // HOVER FUNCTIONALITY: Bind hover triggers instead of using standard click behaviors
-    marker.on('mouseover', function (e) {
-        this.openPopup();
-    });
-    marker.on('mouseout', function (e) {
-        this.closePopup();
-    });
-    marker.on('click', function() {
-        window.open(notionUrl, '_blank');
-    });
+    // Hover functionalities
+    marker.on('mouseover', function () { this.openPopup(); });
+    marker.on('mouseout', function () { this.closePopup(); });
+    marker.on('click', function() { window.open(notionUrl, '_blank'); });
 
+    // Determine target sub-group placement (encountered or unencountered folder stack)
     const state = encountered ? "encountered" : "unencountered";
-    marker.addTo(layers[state][type]);
+    marker.addTo(subCategories[state][type]);
 }
