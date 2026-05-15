@@ -60,6 +60,10 @@
     addNotionMarker(750, 1000, "Capital City", "https://www.notion.so/your-page-id-1");
     addNotionMarker(400, 1300, "Monster Lair", "https://www.notion.so/your-page-id-2");
 
+    map.on('click', function(e) {
+        alert("Clicked coordinates: " + e.latlng.lat + ", " + e.latlng.lng);
+    });
+
 </script>
 </body>
 </html>
