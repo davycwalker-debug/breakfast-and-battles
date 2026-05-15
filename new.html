@@ -195,27 +195,71 @@
 
     const layers = {
 
-        city: L.layerGroup().addTo(map),
-        town: L.layerGroup().addTo(map),
-        ruin: L.layerGroup().addTo(map),
-        forest: L.layerGroup().addTo(map),
-        swamp: L.layerGroup().addTo(map),
-        road: L.layerGroup().addTo(map),
-        mountain: L.layerGroup().addTo(map),
-        region: L.layerGroup().addTo(map),
-        dungeon: L.layerGroup().addTo(map),
-        body: L.layerGroup().addTo(map),
-        river: L.layerGroup().addTo(map),
-        feature: L.layerGroup().addTo(map),
+        encountered: {
+            city: L.layerGroup().addTo(map),
+            town: L.layerGroup().addTo(map),
+            ruin: L.layerGroup().addTo(map),
+            forest: L.layerGroup().addTo(map),
+            swamp: L.layerGroup().addTo(map),
+            road: L.layerGroup().addTo(map),
+            mountain: L.layerGroup().addTo(map),
+            region: L.layerGroup().addTo(map),
+            dungeon: L.layerGroup().addTo(map),
+            body: L.layerGroup().addTo(map),
+            river: L.layerGroup().addTo(map),
+            feature: L.layerGroup().addTo(map)
+        },
+    
+        unencountered: {
+            city: L.layerGroup().addTo(map),
+            town: L.layerGroup().addTo(map),
+            ruin: L.layerGroup().addTo(map),
+            forest: L.layerGroup().addTo(map),
+            swamp: L.layerGroup().addTo(map),
+            road: L.layerGroup().addTo(map),
+            mountain: L.layerGroup().addTo(map),
+            region: L.layerGroup().addTo(map),
+            dungeon: L.layerGroup().addTo(map),
+            body: L.layerGroup().addTo(map),
+            river: L.layerGroup().addTo(map),
+            feature: L.layerGroup().addTo(map)
+        }
+    
+    };
+
+    const visibleLayers = {
+
+        "Encountered Cities": layers.encountered.city,
+        "Encountered Towns": layers.encountered.town,
+        "Encountered Ruins": layers.encountered.ruin,
+        "Encountered Forests": layers.encountered.forest,
+        "Encountered Swamps": layers.encountered.swamp,
+        "Encountered Roads": layers.encountered.road,
+        "Encountered Mountains": layers.encountered.mountain,
+        "Encountered Regions": layers.encountered.region,
+        "Encountered Dungeons": layers.encountered.dungeon,
+        "Encountered Bodies": layers.encountered.body,
+        "Encountered Rivers": layers.encountered.river,
+        "Encountered Features": layers.encountered.feature,
+    
+        "Unknown Cities": layers.unencountered.city,
+        "Unknown Towns": layers.unencountered.town,
+        "Unknown Ruins": layers.unencountered.ruin,
+        "Unknown Forests": layers.unencountered.forest,
+        "Unknown Swamps": layers.unencountered.swamp,
+        "Unknown Roads": layers.unencountered.road,
+        "Unknown Mountains": layers.unencountered.mountain,
+        "Unknown Regions": layers.unencountered.region,
+        "Unknown Dungeons": layers.unencountered.dungeon,
+        "Unknown Bodies": layers.unencountered.body,
+        "Unknown Rivers": layers.unencountered.river,
+        "Unknown Features": layers.unencountered.feature
     
     };
 
     function addMarker(type, encountered, y, x, title, notionUrl) {
 
         const style = markerStyles[type];
-    
-        const opacity = encountered ? 1 : 0.35;
-        const grayscale = encountered ? 0 : 1;
     
         const icon = L.divIcon({
             className: '',
@@ -233,10 +277,6 @@
                     font-size:${style.size * 0.65}px;
     
                     border:2px solid white;
-    
-                    opacity:${opacity};
-    
-                    filter: grayscale(${grayscale});
     
                     box-shadow:
                         0 0 12px ${style.glow},
@@ -266,7 +306,6 @@
     
                 <div style="
                     margin-bottom:10px;
-                    color:${encountered ? '#6ee7b7' : '#9ca3af'};
                 ">
                     ${encountered ? 'Encountered' : 'Unknown'}
                 </div>
@@ -277,8 +316,11 @@
             </div>
         `);
     
-        // Add to proper category layer
-        marker.addTo(layers[type]);
+        const state = encountered
+            ? "encountered"
+            : "unencountered";
+    
+        marker.addTo(layers[state][type]);
     
         return marker;
     }
@@ -310,22 +352,7 @@
         "https://notion.so/page3"
     );
 
-    L.control.layers(null, {
-
-        "Cities": layers.city,
-        "Towns": layers.town,
-        "Ruins": layers.ruin,
-        "Forests": layers.forest,
-        "Swamps": layers.swamp,
-        "Roads": layers.road,
-        "Mountains": layers.mountain,
-        "Regions": layers.region,
-        "Dungeons": layers.dungeon,
-        "Bodies of Water": layers.body,
-        "Rivers": layers.river,
-        "Geographical Features": layers.feature
-
-    }, {
+    L.control.layers(null, visibleLayers, {
         collapsed: false
     }).addTo(map);
 
