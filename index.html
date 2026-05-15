@@ -131,6 +131,14 @@
             </div>
         `);
 
+        // HOVER FUNCTIONALITY: Bind hover triggers instead of using standard click behaviors
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+
         const state = encountered ? "encountered" : "unencountered";
         marker.addTo(layers[state][type]);
         return marker;
@@ -146,6 +154,10 @@
         collapsed: false,
         groupCheckboxes: true
     }).addTo(map);
+
+    // FIX DOUBLE CLICK ZOOM: Disables click/double-click propagation through the panel container
+    const controlContainer = layerControl.getContainer();
+    L.DomEvent.disableClickPropagation(controlContainer);
 
     // --- INTERACTIVE MOUSE INTERACTIONS ---
     map.on('click', function(e) {
