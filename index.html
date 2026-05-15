@@ -115,8 +115,8 @@
                     display:flex; align-items:center; justify-content:center;
                     font-size:${style.size * 0.65}px; border:2px solid white;
                     box-shadow: 0 0 12px ${style.glow}, 0 0 30px ${style.glow};
-                    cursor: pointer; /* Changes mouse to a hand icon on hover */
-                " title="${popupText}"> ${style.icon}
+                ">
+                    ${style.icon}
                 </div>
             `,
             iconSize: [style.size, style.size],
@@ -125,7 +125,52 @@
 
         const marker = L.marker([y, x], { icon });
 
-        // DIRECT LINK TRIGGER: Bypasses the popup box to open link
+        // 1. Bind the popup with a dark-mode friendly setup, ensuring it doesn't fight our hover logic
+        marker.bindPopup(`
+            <div style="font-family: sans-serif; text-align: center;">
+                <h3>${popupText}</h3>
+            </div>
+        `, {
+            closeButton: false, // Removes the 'x' button for a cleaner aesthetic
+            autoClose: true     // Automatically shuts if another map element takes focus
+        });
+
+        // 2. HOVER FUNCTIONALITY: Keeps popup open when moving mouse between marker and popup
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+
+            // Select the popup's HTML container element once it renders
+            const popupElement = this.getPopup().getElement();
+            if (popupElement) {
+                // If the user's mouse wanders into the popup box, clear any close triggers
+                popupElement.addEventListener('mouseenter', () => {
+                    this.openPopup(); 
+                });
+                // If they exit the popup box entirely, cleanly close it
+                popupElement.addEventListener('mouseleave', () => {
+                    this.closePopup();
+                });
+            }
+        });
+
+        marker.on('mouseout', function (e) {
+            // Give the user a microscopic grace period (100ms) to travel across the gap 
+            // between the marker edge and the popup box before forcing it closed
+            setTimeout(() => {
+                const popup = this.getPopup();
+                if (popup && popup.getElement()) {
+                    // Check if the cursor is currently hovering over the popup container
+                    const isHoveringPopup = popup.getElement().matches(':hover');
+                    if (!isHoveringPopup) {
+                        this.closePopup();
+                    }
+                } else {
+                    this.closePopup();
+                }
+            }, 100);
+        });
+
+        // 3. DIRECT LINK TRIGGER: Bypasses popup interactions to open your Notion URL instantly
         marker.on('click', function() {
             window.open(notionUrl, '_blank');
         });
