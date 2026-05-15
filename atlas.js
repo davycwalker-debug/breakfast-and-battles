@@ -70,45 +70,48 @@ function initializeAtlas(settings) {
         groupCheckboxes: true
     }).addTo(map);
 
-    // --- PASSWORD PROTECTION INTERCEPTOR ENGINE ---
-    // Track unlocked state so DM doesn't have to re-type password for every single sub-checkbox
-    let unencounteredUnlocked = false; 
+    // Global tracking variable
+let unencounteredUnlocked = false;
 
+// UI functions called by the HTML buttons
+function toggleDMPanel() {
+    const wrapper = document.getElementById('dm-input-wrapper');
+    wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
+}
+
+function checkDMPassword() {
+    const passwordInput = document.getElementById('dm-pass');
+    const toggleBtn = document.getElementById('dm-toggle-btn');
+    const wrapper = document.getElementById('dm-input-wrapper');
+
+    if (passwordInput.value === "password") {
+        unencounteredUnlocked = true;
+        toggleBtn.innerText = "🔓 DM Layers Unlocked";
+        toggleBtn.style.background = "#2a9d8f";
+        wrapper.style.display = "none";
+        passwordInput.value = "";
+    } else {
+        alert("Access Denied.");
+        passwordInput.value = "";
+    }
+}
+
+// Inside your initializeAtlas function, replace the old interceptor with this clean check:
+function initializeAtlas(settings) {
+    // ... (Your existing map setup steps 1 through 5 remain exactly the same) ...
+
+    // --- CLEAN HTML-BASED PASSWORD ENFORCER ---
     map.on('overlayadd', function(e) {
-        // Check if the layer being turned on belongs to the Unencountered stack
-        const isUnencounteredSubLayer = Object.values(subCategories.unencountered).includes(e.layer);
-
-        if (isUnencounteredSubLayer && !unencounteredUnlocked) {
-            // 1. Immediately yank it off the map before it renders visually to players
+        // Is this an unencountered sublayer?
+        const isUnencountered = Object.values(subCategories.unencountered).includes(e.layer);
+        
+        // If it's unencountered and we aren't unlocked, instantly kick it off without a prompt
+        if (isUnencountered && !unencounteredUnlocked) {
             map.removeLayer(e.layer);
-
-            // 2. Challenge with a standard browser prompt
-            const codephrase = prompt("Enter DM password to reveal unencountered features:");
-            
-            // FIX: If the user clicks "Cancel" or hits Escape, break out quietly
-            if (codephrase === null) {
-                layerControl._update(); // Reverts the checkbox back to unchecked visually
-                return;                 // Stop execution immediately
-            }
-
-            if (codephrase === "password") {
-                unencounteredUnlocked = true; // Mark as authenticated
-                map.addLayer(e.layer);        // Safely restore the layer they clicked
-                layerControl._update();       // Force checkboxes to sync UI state
-            } else {
-                alert("Access Denied: Incorrect DM Credentials.");
-                layerControl._update();       // Reverts the checkbox back to unchecked visually
-            }
+            layerControl._update(); // Updates the checkbox seamlessly
         }
     });
-
-    // If the DM turns off all unencountered layers manually, lock it back up
-    map.on('overlayremove', function(e) {
-        const activeUnencountered = Object.values(subCategories.unencountered).filter(layer => map.hasLayer(layer));
-        if (activeUnencountered.length === 0) {
-            unencounteredUnlocked = false; 
-        }
-    });
+}
 
     // 6. Connect basic structural click handlers for Coordinate HUD
     map.on('click', function(e) {
