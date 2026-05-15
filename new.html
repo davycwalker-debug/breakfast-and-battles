@@ -34,6 +34,17 @@
             background: #232323;
         }
 
+        .leaflet-marker-icon {
+            transition:
+                transform 0.15s ease,
+                filter 0.15s ease;
+        }
+        
+        .leaflet-marker-icon:hover {
+            transform: scale(1.15);
+            z-index: 1000 !important;
+        }
+
         /* Coordinate HUD */
         #coords {
             position: absolute;
@@ -273,31 +284,60 @@
             className: '',
             html: `
                 <div style="
-                    width:${style.size}px;
-                    height:${style.size}px;
-                    border-radius:50%;
-                    background:${style.color};
-    
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-    
-                    font-size:${style.size * 0.65}px;
-    
-                    border:2px solid white;
-    
-                    box-shadow:
-                        0 0 12px ${style.glow},
-                        0 0 30px ${style.glow};
+                    position: relative;
+                    width: ${style.size}px;
+                    height: ${style.size * 1.4}px;
                 ">
-                    ${style.icon}
+                
+                    <!-- Pin Body -->
+                    <div style="
+                        position:absolute;
+                        width:${style.size}px;
+                        height:${style.size}px;
+                
+                        background:${style.color};
+                
+                        border-radius:50% 50% 50% 0;
+                
+                        transform: rotate(-45deg);
+                
+                        box-shadow:
+                            0 0 12px ${style.glow},
+                            0 0 28px ${style.glow};
+                
+                        border:2px solid white;
+                    "></div>
+                
+                    <!-- Icon -->
+                    <div style="
+                        position:absolute;
+                
+                        width:${style.size}px;
+                        height:${style.size}px;
+                
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                
+                        font-size:${style.size * 0.55}px;
+                
+                        z-index:2;
+                
+                        transform: translateY(1px);
+                    ">
+                        ${style.icon}
+                    </div>
+                
                 </div>
-            `,
+                `,
             iconSize: [style.size, style.size],
-            iconAnchor: [style.size/2, style.size/2]
+            iconAnchor: [style.size / 2, style.size * 1.4]
         });
     
-        const marker = L.marker([y, x], { icon });
+        const marker = L.marker([y, x], {
+            icon,
+            riseOnHover: true
+        });
     
         marker.bindPopup(`
             <div style="font-family:sans-serif;text-align:center;">
