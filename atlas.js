@@ -17,13 +17,39 @@ const mapConfiguration = {
 // Global variables for layer management
 let map, layers;
 
-// Global tracking variable
 let unencounteredUnlocked = false;
 
-// UI functions called by the HTML buttons
-function toggleDMPanel() {
+// Handles clicking the main button (Toggles panel or immediately locks down)
+function handleDMButtonClick() {
+    const toggleBtn = document.getElementById('dm-toggle-btn');
     const wrapper = document.getElementById('dm-input-wrapper');
-    wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
+
+    if (unencounteredUnlocked) {
+        // --- LOCKDOWN SEQUENCE ---
+        unencounteredUnlocked = false;
+        
+        // 1. Instantly strip all visible unencountered layers off the map workspace
+        if (window.subCategories && window.subCategories.unencountered) {
+            Object.values(window.subCategories.unencountered).forEach(layer => {
+                if (map.hasLayer(layer)) {
+                    map.removeLayer(layer);
+                }
+            });
+        }
+        
+        // 2. Reset the button UI state back to locked
+        toggleBtn.innerText = "🔒 Unlock DM Layers";
+        toggleBtn.style.background = "#d62828";
+        wrapper.style.display = "none";
+        
+        // 3. Force checkboxes in the menu to visually clear out
+        if (window.layerControl) {
+            window.layerControl._update();
+        }
+    } else {
+        // If locked, clicking just opens/closes the password box input
+        wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
+    }
 }
 
 function checkDMPassword() {
@@ -34,7 +60,7 @@ function checkDMPassword() {
     if (passwordInput.value === "password") {
         unencounteredUnlocked = true;
         toggleBtn.innerText = "🔓 DM Layers Unlocked";
-        toggleBtn.style.background = "#2a9d8f";
+        toggleBtn.style.background = "#2a9d8f"; // Changes to green
         wrapper.style.display = "none";
         passwordInput.value = "";
     } else {
@@ -65,7 +91,7 @@ function initializeAtlas(settings) {
     };
     
     // We maintain a secondary tracking matrix specifically to feed structural groupings to the UI plugin
-    const subCategories = { encountered: {}, unencountered: {} };
+    subCategories = { encountered: {}, unencountered: {} };
     const groupedOverlays = { "Encountered": {}, "Unencountered": {} };
 
     Object.keys(mapConfiguration).forEach(key => {
@@ -91,7 +117,7 @@ function initializeAtlas(settings) {
     layers.encountered.addTo(map);
 
     // 5. Mount the controller overlay to layout
-    const layerControl = L.control.groupedLayers(null, groupedOverlays, {
+    layerControl = L.control.groupedLayers(null, groupedOverlays, {
         collapsed: true,
         groupCheckboxes: true
     }).addTo(map);
