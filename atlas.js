@@ -70,6 +70,18 @@ function initializeAtlas(settings) {
         groupCheckboxes: true
     }).addTo(map);
 
+    // --- CLEAN HTML-BASED PASSWORD ENFORCER ---
+    map.on('overlayadd', function(e) {
+        // Is this an unencountered sublayer?
+        const isUnencountered = Object.values(subCategories.unencountered).includes(e.layer);
+        
+        // If it's unencountered and we aren't unlocked, instantly kick it off without a prompt
+        if (isUnencountered && !unencounteredUnlocked) {
+            map.removeLayer(e.layer);
+            layerControl._update(); // Updates the checkbox seamlessly
+        }
+    });
+
     // Global tracking variable
 let unencounteredUnlocked = false;
 
@@ -94,23 +106,6 @@ function checkDMPassword() {
         alert("Access Denied.");
         passwordInput.value = "";
     }
-}
-
-// Inside your initializeAtlas function, replace the old interceptor with this clean check:
-function initializeAtlas(settings) {
-    // ... (Your existing map setup steps 1 through 5 remain exactly the same) ...
-
-    // --- CLEAN HTML-BASED PASSWORD ENFORCER ---
-    map.on('overlayadd', function(e) {
-        // Is this an unencountered sublayer?
-        const isUnencountered = Object.values(subCategories.unencountered).includes(e.layer);
-        
-        // If it's unencountered and we aren't unlocked, instantly kick it off without a prompt
-        if (isUnencountered && !unencounteredUnlocked) {
-            map.removeLayer(e.layer);
-            layerControl._update(); // Updates the checkbox seamlessly
-        }
-    });
 }
 
     // 6. Connect basic structural click handlers for Coordinate HUD
