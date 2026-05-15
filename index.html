@@ -21,6 +21,13 @@
 
 <div id="map"></div>
 <div id="coords">Click anywhere on the map</div>
+<div id="dm-panel" style="position: absolute; bottom: 20px; right: 20px; z-index: 1000; background: rgba(20,20,20,0.85); color: white; padding: 10px 14px; border-radius: 12px; font-family: sans-serif; font-size: 14px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.35); display: flex; gap: 8px; align-items: center;">
+<button id="dm-toggle-btn" onclick="toggleDMPanel()" style="background: #d62828; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">🔒 Unlock DM Layers</button>
+<div id="dm-input-wrapper" style="display: none; gap: 6px;">
+    <input type="password" id="dm-pass" placeholder="Password" style="background: #333; color: white; border: 1px solid #444; padding: 6px; border-radius: 6px; width: 100px; font-size: 12px;">
+    <button onclick="checkDMPassword()" style="background: #2a9d8f; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">Go</button>
+</div>
+</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
