@@ -276,11 +276,12 @@
                 <a href="${notionUrl}" target="_blank" style="color: #0078ff; text-decoration: none; font-weight: bold;">Open Entry in Notion ➔</a>
             </div>
         `;
+        marker.bindPopup(popupContent);
         const state = encountered
             ? "encountered"
             : "unencountered";
-        marker.bindPopup(popupContent);
         marker.addTo(layers[state][type]);
+        return marker;
     }
 
     function addMarker(type, encountered, y, x, title, notionUrl) {
