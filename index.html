@@ -135,42 +135,43 @@
             autoClose: true     // Automatically shuts if another map element takes focus
         });
 
-        // 2. HOVER FUNCTIONALITY: Keeps popup open when moving mouse between marker and popup
-        marker.on('mouseover', function (e) {
+        // 2. STABLE HOVER ENGINE: Prevents rapid-movement lockups
+        marker.on('mouseenter', function (e) {
             this.openPopup();
 
-            // Select the popup's HTML container element once it renders
             const popupElement = this.getPopup().getElement();
             if (popupElement) {
-                // If the user's mouse wanders into the popup box, clear any close triggers
-                popupElement.addEventListener('mouseenter', () => {
-                    this.openPopup(); 
-                });
-                // If they exit the popup box entirely, cleanly close it
-                popupElement.addEventListener('mouseleave', () => {
-                    this.closePopup();
-                });
+                // CLICK POPUP TO OPEN LINK: Allows users to click the text bubble itself
+                popupElement.style.cursor = 'pointer';
+                popupElement.onclick = function() {
+                    window.open(notionUrl, '_blank');
+                };
+
+                // Keep popup alive if cursor is inside it
+                popupElement.onmouseenter = () => { this.openPopup(); };
+                popupElement.onmouseleave = () => { this.closePopup(); };
             }
         });
 
-        marker.on('mouseout', function (e) {
-            // Give the user a microscopic grace period (100ms) to travel across the gap 
-            // between the marker edge and the popup box before forcing it closed
+        marker.on('mouseleave', function (e) {
+            // Short delay to allow the cursor to cross the gap into the popup
             setTimeout(() => {
                 const popup = this.getPopup();
                 if (popup && popup.getElement()) {
-                    // Check if the cursor is currently hovering over the popup container
                     const isHoveringPopup = popup.getElement().matches(':hover');
-                    if (!isHoveringPopup) {
+                    const isHoveringMarker = marker.getElement() && marker.getElement().matches(':hover');
+                    
+                    // Only close if the mouse is completely outside both elements
+                    if (!isHoveringPopup && !isHoveringMarker) {
                         this.closePopup();
                     }
                 } else {
                     this.closePopup();
                 }
-            }, 100);
+            }, 120); // Slightly increased to 120ms for fast mouse movements
         });
 
-        // 3. DIRECT LINK TRIGGER: Bypasses popup interactions to open your Notion URL instantly
+        // 3. DIRECT MARKER CLICK TRIGGER: Standard link opener on circle click
         marker.on('click', function() {
             window.open(notionUrl, '_blank');
         });
