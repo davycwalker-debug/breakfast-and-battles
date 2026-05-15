@@ -33,16 +33,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.35); pointer-events: none;
         }
 
-        /* Make our custom popup look and behave like a premium link button */
-        .clickable-notion-popup .leaflet-popup-content-wrapper {
-            cursor: pointer;
-        }
-        .clickable-notion-popup h3 {
-            margin: 0;
-            font-family: sans-serif;
-            text-align: center;
-        }
-
         /* Click Ripple Vector Animation */
         .click-ripple {
             width: 18px; height: 18px; border-radius: 50%;
@@ -142,37 +132,16 @@
             </div>
         `, {
             closeButton: false, // Removes the 'x' button for a cleaner aesthetic
-            autoClose: true,     // Automatically shuts if another map element takes focus
-            className: 'clickable-notion-popup'
+            autoClose: true     // Automatically shuts if another map element takes focus
         });
 
-        // STABLE HOVER ENGINE: Instant reactions without DOM element validation loops
-        marker.on('mouseenter', function () {
+        // HOVER FUNCTIONALITY: Bind hover triggers instead of using standard click behaviors
+        marker.on('mouseover', function (e) {
             this.openPopup();
         });
-
-        marker.on('mouseleave', function () {
-            setTimeout(() => {
-                const popup = this.getPopup();
-                if (popup && popup.getElement()) {
-                    const isHoveringPopup = popup.getElement().matches(':hover');
-                    const isHoveringMarker = marker.getElement() && marker.getElement().matches(':hover');
-                    
-                    if (!isHoveringPopup && !isHoveringMarker) {
-                        this.closePopup();
-                    }
-                    
-                    // Bind the click redirect rule natively to the popup element frame safely
-                    popup.getElement().onclick = function() {
-                        window.open(notionUrl, '_blank');
-                    };
-                } else {
-                    this.closePopup();
-                }
-            }, 120);
+        marker.on('mouseout', function (e) {
+            this.closePopup();
         });
-
-        // DIRECT MARKER CLICK TRIGGER
         marker.on('click', function() {
             window.open(notionUrl, '_blank');
         });
