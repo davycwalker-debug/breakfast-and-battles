@@ -57,20 +57,52 @@ function initializeAtlas(settings) {
     // 3. Batch inject configured markers array
     if (settings.markers && Array.isArray(settings.markers)) {
         settings.markers.forEach(m => {
-            // We pass the nested subCategories down so markers drop into their specific sub-layer groups
             addMarker(subCategories, m.type, m.encountered, m.y, m.x, m.text, m.url);
         });
     }
 
     // 4. Turn on the entire Encountered Feature Group natively
-    // This line works perfectly now because layers.encountered is a genuine Leaflet object!
     layers.encountered.addTo(map);
 
     // 5. Mount the controller overlay to layout
-    L.control.groupedLayers(null, groupedOverlays, {
+    const layerControl = L.control.groupedLayers(null, groupedOverlays, {
         collapsed: true,
         groupCheckboxes: true
     }).addTo(map);
+
+    // --- PASSWORD PROTECTION INTERCEPTOR ENGINE ---
+    // Track unlocked state so DM doesn't have to re-type password for every single sub-checkbox
+    let unencounteredUnlocked = false; 
+
+    map.on('overlayadd', function(e) {
+        // Check if the layer being turned on belongs to the Unencountered stack
+        const isUnencounteredSubLayer = Object.values(subCategories.unencountered).includes(e.layer);
+
+        if (isUnencounteredSubLayer && !unencounteredUnlocked) {
+            // 1. Immediately yank it off the map before it renders visually to players
+            map.removeLayer(e.layer);
+
+            // 2. Challenge with a standard browser prompt
+            const codephrase = prompt("Enter DM password to reveal unencountered features:");
+            
+            if (codephrase === "password") {
+                unencounteredUnlocked = true; // Mark as authenticated
+                map.addLayer(e.layer);        // Safely restore the layer they clicked
+                layerControl._update();       // Force checkboxes to sync UI state
+            } else {
+                alert("Access Denied: Incorrect DM Credentials.");
+                layerControl._update();       // Reverts the checkbox back to unchecked visually
+            }
+        }
+    });
+
+    // If the DM turns off all unencountered layers manually, lock it back up
+    map.on('overlayremove', function(e) {
+        const activeUnencountered = Object.values(subCategories.unencountered).filter(layer => map.hasLayer(layer));
+        if (activeUnencountered.length === 0) {
+            unencounteredUnlocked = false; 
+        }
+    });
 
     // 6. Connect basic structural click handlers for Coordinate HUD
     map.on('click', function(e) {
@@ -114,7 +146,6 @@ function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl)
 
     const marker = L.marker([y, x], { icon });
 
-    // Bind the popup setup
     marker.bindPopup(`
         <div style="font-family: sans-serif; text-align: center;">
             <h3>${popupText}</h3>
@@ -124,12 +155,10 @@ function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl)
         autoClose: true
     });
 
-    // Hover functionalities
     marker.on('mouseover', function () { this.openPopup(); });
     marker.on('mouseout', function () { this.closePopup(); });
     marker.on('click', function() { window.open(notionUrl, '_blank'); });
 
-    // Determine target sub-group placement (encountered or unencountered folder stack)
     const state = encountered ? "encountered" : "unencountered";
     marker.addTo(subCategories[state][type]);
 }
