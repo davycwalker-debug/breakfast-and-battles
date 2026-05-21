@@ -1,18 +1,25 @@
 // Global configuration matrix used to tint custom markers dynamically
 const mapConfiguration = {
-    city:     { label: "Cities",    color: "#ffd166", icon: "🏰", size: 26, glow: "rgba(255,209,102,0.8)" },
-    town:     { label: "Towns",     color: "#f4a261", icon: "🏠", size: 22, glow: "rgba(244,162,97,0.8)" },
-    ruin:     { label: "Ruins",     color: "#9e9e9e", icon: "🪦", size: 24, glow: "rgba(180,180,180,0.7)" },
-    forest:   { label: "Forests",   color: "#2a9d8f", icon: "🌲", size: 24, glow: "rgba(42,157,143,0.8)" },
-    swamp:    { label: "Swamps",    color: "#556b2f", icon: "🦟", size: 24, glow: "rgba(85,107,47,0.8)" },
-    desert:   { label: "Deserts",   color: "#e9c46a", icon: "🌵", size: 24, glow: "rgba(233,196,106,0.8)" },
-    road:     { label: "Roads",     color: "#c2b280", icon: "🛤️", size: 18, glow: "rgba(194,178,128,0.6)" },
-    mountain: { label: "Mountains", color: "#8d99ae", icon: "⛰️", size: 28, glow: "rgba(141,153,174,0.8)" },
-    region:   { label: "Regions",   color: "#b5179e", icon: "🗺️", size: 30, glow: "rgba(181,23,158,0.8)" },
-    dungeon:  { label: "Dungeons",  color: "#d62828", icon: "⚔️", size: 26, glow: "rgba(214,40,40,0.8)" },
-    body:     { label: "Bodies",    color: "#4cc9f0", icon: "🌊", size: 26, glow: "rgba(76,201,240,0.8)" },
-    river:    { label: "Rivers",    color: "#4895ef", icon: "💧", size: 20, glow: "rgba(72,149,239,0.8)" },
-    feature:  { label: "Features",  color: "#adb5bd", icon: "🪨", size: 24, glow: "rgba(173,181,189,0.8)" }
+    // --- YOUR SPECIFIED MAP MATES ---
+    mountain: { label: "Mountains", color: "#beada5", icon: "⛰️", size: 28, glow: "rgba(190,173,165,0.85)" },
+    forest:   { label: "Forests",   color: "#bad39a", icon: "🌲", size: 24, glow: "rgba(186,211,154,0.85)" },
+    swamp:    { label: "Swamps",    color: "#778653", icon: "🦟", size: 24, glow: "rgba(119,134,83,0.85)" },
+    desert:   { label: "Deserts",   color: "#ffedb7", icon: "🌵", size: 24, glow: "rgba(255,237,183,0.85)" },
+    body:     { label: "Bodies",    color: "#e5f2fa", icon: "🌊", size: 26, glow: "rgba(229,242,250,0.85)" },
+    river:    { label: "Rivers",    color: "#9bcbf5", icon: "💧", size: 20, glow: "rgba(155,203,245,0.75)" }, // Slightly deeper than map water for readability
+
+    // --- NEW ADDITION ---
+    room:     { label: "Rooms",     color: "#5e548e", icon: "🚪", size: 22, glow: "rgba(94,84,142,0.8)" },
+
+    // --- DISTINCT PALETTE FOR UNASSIGNED MARKERS ---
+    // (Designed to pop clearly over #f1ecdd, #e9eed0, and your terrain colors)
+    city:     { label: "Cities",    color: "#d81159", icon: "🏰", size: 26, glow: "rgba(216,17,89,0.8)" },    // Vibrant Ruby Red
+    town:     { label: "Towns",     color: "#f26419", icon: "🏠", size: 22, glow: "rgba(242,100,25,0.8)" },   // Safety Orange
+    dungeon:  { label: "Dungeons",  color: "#000000", icon: "⚔️", size: 26, glow: "rgba(214,40,40,0.9)" },    // Pitch Black core with a Blood Red glow
+    ruin:     { label: "Ruins",     color: "#707d88", icon: "🪦", size: 24, glow: "rgba(112,125,136,0.7)" },  // Dark Slate Gray
+    road:     { label: "Roads",     color: "#6f4e37", icon: "🛤️", size: 18, glow: "rgba(111,78,55,0.6)" },    // Deep Earth Brown
+    region:   { label: "Regions",   color: "#0077b6", icon: "🗺️", size: 30, glow: "rgba(0,119,182,0.8)" },   // Deep Ocean Blue
+    feature:  { label: "Features",  color: "#4a5759", icon: "🪨", size: 24, glow: "rgba(74,87,89,0.7)" }     // Dark Mossy Stone
 };
 
 // Global variables for layer management
