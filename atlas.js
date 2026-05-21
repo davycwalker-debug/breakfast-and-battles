@@ -75,7 +75,7 @@ function initializeAtlas(settings) {
     // 1. Setup Leaflet instance with adaptive zoom properties
     map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -1,         
+        minZoom: -2,         
         maxZoom: 2,
         zoomSnap: 0.1,       
         zoomDelta: 0.5,
