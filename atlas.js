@@ -5,7 +5,7 @@ const mapConfiguration = {
     ruin:     { label: "Ruins",     color: "#9e9e9e", icon: "🪦", size: 24, glow: "rgba(180,180,180,0.7)" },
     forest:   { label: "Forests",   color: "#2a9d8f", icon: "🌲", size: 24, glow: "rgba(42,157,143,0.8)" },
     swamp:    { label: "Swamps",    color: "#556b2f", icon: "🦟", size: 24, glow: "rgba(85,107,47,0.8)" },
-    desert:    { label: "Deserts",   color: "#e9c46a", icon: "🌵", size: 24, glow: "rgba(233,196,106,0.8)" },
+    desert:   { label: "Deserts",   color: "#e9c46a", icon: "🌵", size: 24, glow: "rgba(233,196,106,0.8)" },
     road:     { label: "Roads",     color: "#c2b280", icon: "🛤️", size: 18, glow: "rgba(194,178,128,0.6)" },
     mountain: { label: "Mountains", color: "#8d99ae", icon: "⛰️", size: 28, glow: "rgba(141,153,174,0.8)" },
     region:   { label: "Regions",   color: "#b5179e", icon: "🗺️", size: 30, glow: "rgba(181,23,158,0.8)" },
@@ -16,8 +16,7 @@ const mapConfiguration = {
 };
 
 // Global variables for layer management
-let map, layers;
-
+let map, layers, subCategories, layerControl;
 let unencounteredUnlocked = false;
 
 // Handles clicking the main button (Toggles panel or immediately locks down)
@@ -26,10 +25,8 @@ function handleDMButtonClick() {
     const wrapper = document.getElementById('dm-input-wrapper');
 
     if (unencounteredUnlocked) {
-        // --- LOCKDOWN SEQUENCE ---
         unencounteredUnlocked = false;
         
-        // 1. Instantly strip all visible unencountered layers off the map workspace
         if (window.subCategories && window.subCategories.unencountered) {
             Object.values(window.subCategories.unencountered).forEach(layer => {
                 if (map.hasLayer(layer)) {
@@ -38,17 +35,14 @@ function handleDMButtonClick() {
             });
         }
         
-        // 2. Reset the button UI state back to locked
         toggleBtn.innerText = "🔒 Unlock DM Layers";
         toggleBtn.style.background = "#d62828";
         wrapper.style.display = "none";
         
-        // 3. Force checkboxes in the menu to visually clear out
         if (window.layerControl) {
             window.layerControl._update();
         }
     } else {
-        // If locked, clicking just opens/closes the password box input
         wrapper.style.display = wrapper.style.display === 'none' ? 'flex' : 'none';
     }
 }
@@ -61,7 +55,7 @@ function checkDMPassword() {
     if (passwordInput.value === "password") {
         unencounteredUnlocked = true;
         toggleBtn.innerText = "🔓 DM Layers Unlocked";
-        toggleBtn.style.background = "#2a9d8f"; // Changes to green
+        toggleBtn.style.background = "#2a9d8f";
         wrapper.style.display = "none";
         passwordInput.value = "";
     } else {
@@ -72,18 +66,29 @@ function checkDMPassword() {
 
 // Master initialization routine called by individual map files
 function initializeAtlas(settings) {
-    // 1. Setup basic Leaflet instance map layout frame
+    // 1. Setup Leaflet instance with adaptive zoom properties
     map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -1,
-        maxZoom: 5,
-        zoomSnap: 0.25,
-        doubleClickZoom: false
+        minZoom: -2,         // Allowed deeper zooming out to see full map on small monitors
+        maxZoom: 4,
+        zoomSnap: 0.1,       // Much finer grain zoom adjustment intervals
+        zoomDelta: 0.5,
+        doubleClickZoom: false,
+        attributionControl: false // Cleans up UI space
     });
 
+    // Map pixel coordinates explicitly to Leaflet LatLng space
     const bounds = [[0, 0], [settings.imgHeight, settings.imgWidth]];
     L.imageOverlay(settings.imgUrl, bounds).addTo(map);
-    map.fitBounds(bounds);
+    
+    // Maximizes visibility while keeping aspect ratio locked
+    map.fitBounds(bounds, { padding: [0, 0] });
+
+    // Forces aspect ratio maintenance during browser window resizing
+    window.addEventListener('resize', () => {
+        map.invalidateSize();
+        map.fitBounds(bounds, { padding: [0, 0] });
+    });
 
     // 2. Build master Feature Groups instead of plain objects
     layers = { 
@@ -91,18 +96,15 @@ function initializeAtlas(settings) {
         unencountered: L.featureGroup() 
     };
     
-    // We maintain a secondary tracking matrix specifically to feed structural groupings to the UI plugin
     subCategories = { encountered: {}, unencountered: {} };
     const groupedOverlays = { "Encountered": {}, "Unencountered": {} };
 
     Object.keys(mapConfiguration).forEach(key => {
         const item = mapConfiguration[key];
         
-        // Create sub layer groups for precise type-toggling (e.g. Cities, Ruins)
         subCategories.encountered[key] = L.layerGroup().addTo(layers.encountered);
         subCategories.unencountered[key] = L.layerGroup().addTo(layers.unencountered);
         
-        // Map them out for the UI settings
         groupedOverlays["Encountered"][item.label] = subCategories.encountered[key];
         groupedOverlays["Unencountered"][item.label] = subCategories.unencountered[key];
     });
@@ -125,13 +127,10 @@ function initializeAtlas(settings) {
 
     // --- CLEAN HTML-BASED PASSWORD ENFORCER ---
     map.on('overlayadd', function(e) {
-        // Is this an unencountered sublayer?
         const isUnencountered = Object.values(subCategories.unencountered).includes(e.layer);
-        
-        // If it's unencountered and we aren't unlocked, instantly kick it off without a prompt
         if (isUnencountered && !unencounteredUnlocked) {
             map.removeLayer(e.layer);
-            layerControl._update(); // Updates the checkbox seamlessly
+            layerControl._update();
         }
     });
 
