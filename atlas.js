@@ -188,7 +188,7 @@ function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl)
 
     marker.on('mouseover', function () { this.openPopup(); });
     marker.on('mouseout', function () { this.closePopup(); });
-    marker.on('click', function() { window.open(notionUrl, '_blank'); });
+    marker.on('click', function() { window.open(notionUrl, '_self'); });
 
     const state = encountered ? "encountered" : "unencountered";
     marker.addTo(subCategories[state][type]);
