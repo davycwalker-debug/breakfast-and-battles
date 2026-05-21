@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Showcase</title>
+    <style>
+        /* Reset and layout basics */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212; /* Dark theme makes images pop */
+            color: #ffffff;
+            overflow: hidden; /* Prevents awkward scrollbars on desktop */
+        }
+
+        /* Container that holds both image sections */
+        .showcase-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+        }
+
+        /* Individual clickable card wrapper */
+        .image-card {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Pushes title to the bottom */
+            align-items: center;
+            text-decoration: none; /* Removes underline from links */
+            color: inherit;
+            overflow: hidden;
+            border: 2px solid #121212; /* Clean separation line */
+            transition: flex 0.4s ease; /* Smooth hover expand effect */
+        }
+
+        /* High-performance background image sizing */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+            z-index: 1;
+        }
+
+        /* Dark overlay to ensure titles are readable over bright images */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
+            z-index: 2;
+            transition: background 0.3s ease;
+        }
+
+        /* Text Title styles */
+        .image-title {
+            position: relative;
+            z-index: 3;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5vh; /* Responsive spacing from bottom */
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        /* Desktop Hover Effects */
+        @media (hover: hover) {
+            .image-card:hover {
+                flex: 1.15; /* Slightly expands the hovered section */
+            }
+            .image-card:hover .bg-image {
+                transform: scale(1.05); /* Soft zoom into the image */
+            }
+            .image-card:hover .overlay {
+                background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.1) 100%);
+            }
+            .image-card:hover .image-title {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Mobile responsiveness - stack them vertically */
+        @media (max-width: 768px) {
+            body, html {
+                overflow: auto; /* Allows scrolling on small screens */
+            }
+            .showcase-container {
+                flex-direction: column;
+                height: 100vh; /* Keeps total height to one viewport on load */
+            }
+            .image-card {
+                flex: 1;
+                min-height: 50vh; 
+            }
+            .image-title {
+                font-size: 1.8rem;
+                margin-bottom: 3vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="showcase-container">
+        
+        <!-- LEFT / TOP IMAGE CARD -->
+        <a href="https://your-destination-link-1.com" class="image-card" target="_blank" rel="noopener">
+            <!-- Replace the URL inside url('...') with your own image path -->
+            <div class="bg-image" style="background-image: url('https://picsum.photos/1200/1600?random=1');"></div>
+            <div class="overlay"></div>
+            <h2 class="image-title">First Showcase Title</h2>
+        </a>
+
+        <!-- RIGHT / BOTTOM IMAGE CARD -->
+        <a href="https://your-destination-link-2.com" class="image-card" target="_blank" rel="noopener">
+            <!-- Replace the URL inside url('...') with your own image path -->
+            <div class="bg-image" style="background-image: url('https://picsum.photos/1200/1600?random=2');"></div>
+            <div class="overlay"></div>
+            <h2 class="image-title">Second Showcase Title</h2>
+        </a>
+
+    </main>
+
+</body>
+</html>
