@@ -69,8 +69,8 @@ function initializeAtlas(settings) {
     // 1. Setup Leaflet instance with adaptive zoom properties
     map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: -2,         // Allowed deeper zooming out to see full map on small monitors
-        maxZoom: 4,
+        minZoom: -1,         // Allowed deeper zooming out to see full map on small monitors
+        maxZoom: 2,
         zoomSnap: 0.1,       // Much finer grain zoom adjustment intervals
         zoomDelta: 0.5,
         doubleClickZoom: false,
