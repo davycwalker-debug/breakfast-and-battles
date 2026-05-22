@@ -173,18 +173,21 @@ function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl)
     const style = mapConfiguration[type];
     if (!style) return;
 
+    // We wrap the entire marker interior inside an <a> tag so browsers see a real hyperlink.
     const icon = L.divIcon({
         className: '',
         html: `
-            <div style="
-                width:${style.size}px; height:${style.size}px;
-                border-radius:50%; background:${style.color};
-                display:flex; align-items:center; justify-content:center;
-                font-size:${style.size * 0.65}px; border:2px solid white;
-                box-shadow: 0 0 12px ${style.glow}, 0 0 30px ${style.glow};
-            ">
-                ${style.icon}
-            </div>
+            <a href="${notionUrl}" target="_self" class="map-marker-link" style="text-decoration: none; display: block;">
+                <div style="
+                    width:${style.size}px; height:${style.size}px;
+                    border-radius:50%; background:${style.color};
+                    display:flex; align-items:center; justify-content:center;
+                    font-size:${style.size * 0.65}px; border:2px solid white;
+                    box-shadow: 0 0 12px ${style.glow}, 0 0 30px ${style.glow};
+                ">
+                    ${style.icon}
+                </div>
+            </a>
         `,
         iconSize: [style.size, style.size],
         iconAnchor: [style.size / 2, style.size / 2]
@@ -203,7 +206,13 @@ function addMarker(subCategories, type, encountered, y, x, popupText, notionUrl)
 
     marker.on('mouseover', function () { this.openPopup(); });
     marker.on('mouseout', function () { this.closePopup(); });
-    marker.on('click', function() { window.open(notionUrl, '_self'); });
+    
+    // Left-click interception rules
+    marker.on('click', function(e) { 
+        // Leaflet handles left-clicks via JavaScript. 
+        // We let it navigate in '_self' to match your current logic.
+        window.open(notionUrl, '_self'); 
+    });
 
     const state = encountered ? "encountered" : "unencountered";
     marker.addTo(subCategories[state][type]);
