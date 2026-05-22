@@ -183,6 +183,55 @@ function injectEngineStyles() {
         .tracker-cell input[type="checkbox"] { transform: scale(1.15); cursor: pointer; margin: 0; }
         .tracker-cell.init-col { font-weight: bold; color: var(--accent-gold); font-family: monospace; font-size: 1rem; white-space: nowrap; }
         .tracker-cell.name-col { font-weight: 600; color: var(--text-main); }
+
+        /* HP Interactive Input Configuration */
+        .hp-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            width: 45px;
+            text-align: right;
+            padding: 0;
+            margin: 0;
+        }
+        .hp-input:focus {
+            outline: none;
+            border-bottom: 1px dashed var(--accent-gold);
+        }
+        /* Hide default spinner arrows on inputs */
+        .hp-input::-webkit-outer-spin-button,
+        .hp-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .hp-input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        /* Status Flags Matrix */
+        .status-text {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-right: 6px;
+            padding: 1px 4px;
+            border-radius: 3px;
+            display: none;
+        }
+        
+        /* State Engine Target Classes */
+        .tracker-row-staggered .status-text.flag-staggered { display: inline-block; background: #5c4014; color: #ffca3a; }
+        .tracker-row-dying .status-text.flag-dying { display: inline-block; background: #5c1414; color: #ff5a60; }
+        .tracker-row-dead .status-text.flag-dead { display: inline-block; background: #2b2b36; color: #9494a1; }
+        
+        .tracker-row-staggered .name-col { color: #ffca3a; }
+        .tracker-row-dying .name-col { color: var(--accent-red); }
+        .tracker-row-dead { opacity: 0.4; }
+        .tracker-row-dead .name-col { text-decoration: line-through; color: var(--text-muted); }
         
         .init-badge {
             min-width: 65px; /* Changed from static width to min-width to prevent truncation/wrapping */
@@ -455,26 +504,39 @@ function renderCombatTracker(creaturesArray, setupPositions) {
             <div class="tracker-box">
                 <div class="tracker-grid">
                     <!-- HEADER ROW -->
-                    <div class="tracker-header-cell"></div> <!-- Empty space above checkboxes -->
+                    <div class="tracker-header-cell"></div>
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell" style="text-align: right;">Health</div>
                     
                     <!-- DATA ROWS -->
-                    ${sortedTracker.map(c => `
-                        <div class="tracker-cell">
-                            <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
-                        </div>
-                        <div class="tracker-cell init-col">
-                            Init ${c.initRoll}
-                        </div>
-                        <div class="tracker-cell name-col">
-                            ${c.name}
-                        </div>
-                        <div class="tracker-cell" style="text-align: right;">
-                            <span class="hp-badge">${c.hp} / ${c.maxHp} HP</span>
-                        </div>
-                    `).join('')}
+                    ${sortedTracker.map((c, index) => {
+                        const rowId = `row-${index}`;
+                        return `
+                            <div class="tracker-cell" data-row-id="${rowId}">
+                                <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
+                            </div>
+                            <div class="tracker-cell init-col" data-row-id="${rowId}">
+                                Init ${c.initRoll}
+                            </div>
+                            <div class="tracker-cell name-col" data-row-id="${rowId}">
+                                <span class="status-text flag-staggered">Staggered</span>
+                                <span class="status-text flag-dying">Dying</span>
+                                <span class="status-text flag-dead">Dead</span>
+                                ${c.name}
+                            </div>
+                            <div class="tracker-cell" style="text-align: right;" data-row-id="${rowId}">
+                                <span class="hp-badge">
+                                    <input type="number" 
+                                           class="hp-input" 
+                                           value="${c.hp}" 
+                                           data-max="${c.maxHp}" 
+                                           oninput="evaluateCreatureVitals('${rowId}', this)">
+                                    / ${c.maxHp} HP
+                                </span>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
             </div>
 
@@ -506,6 +568,31 @@ function renderCombatTracker(creaturesArray, setupPositions) {
             ${setupPositions ? `<p class="setup-positions" style="margin-top:20px;"><strong>Setup Positions:</strong> ${setupPositions}</p>` : ''}
         </section>
     `;
+}
+
+/**
+ * Evaluates HP changes to toggle D&D 3.5 health condition states across row grids.
+ */
+function evaluateCreatureVitals(rowId, inputElement) {
+    const currentHp = parseInt(inputElement.value, 10);
+    
+    // Safely look up all cell blocks linked to this creature entry index
+    const siblingCells = document.querySelectorAll(`[data-row-id="${rowId}"]`);
+    
+    if (isNaN(currentHp)) return;
+
+    siblingCells.forEach(cell => {
+        // Clean out previous states before evaluating conditions
+        cell.classList.remove('tracker-row-staggered', 'tracker-row-dying', 'tracker-row-dead');
+
+        if (currentHp === 0) {
+            cell.classList.add('tracker-row-staggered');
+        } else if (currentHp <= -1 && currentHp >= -9) {
+            cell.classList.add('tracker-row-dying');
+        } else if (currentHp <= -10) {
+            cell.classList.add('tracker-row-dead');
+        }
+    });
 }
 
 /**
