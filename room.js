@@ -259,15 +259,14 @@ function renderReadAloudBox(text) {
  * 2: Renders dynamic ability checks (used natively & within special events)
  */
 function renderInlineChecks(mechanicsArray) {
-
     if (!mechanicsArray || !mechanicsArray.length) return '';
     
     return mechanicsArray.map(check => `
         <div class="check-card">
-            ${check.prompt ? <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${check.prompt}"</div> : ''}
+            ${check.prompt ? `<div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> ${check.prompt}</div>` : ''}
             ${check.readAloud ? renderReadAloudBox(check.readAloud) : ''}
             <div class="check-dc-badge">
-                <span class="check-type">${check.type}</span>
+                <span class="check-type">${check.type || 'Ability Check'}</span>
                 <span class="check-dc">DC ${check.dc}</span>
             </div>
             <div class="check-branches">
