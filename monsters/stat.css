@@ -1,122 +1,86 @@
 /* ==========================================================================
-   DELUXE D&D 3.5 MONSTER COMPENDIUM STYLE (CORRECTED LINE WRAPPING)
+   OFFICIAL 3.5 SYSTEM REFERENCE DOCUMENT (SRD) COMPREHENSIVE COMPENDIUM STYLE
    ========================================================================== */
 
-/* Page Background Environment */
-body { 
-    font-family: "Verdana", "Arial", sans-serif; 
-    margin: 0;
-    padding: 40px 20px; 
-    background-color: #2e2824; 
-    display: flex;
-    justify-content: center;
+/* Flat White Site Background Environment */
+html, body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-family: "Verdana", Arial, sans-serif;
+    margin: 30px;
+    margin-top: 15px;
 }
 
-/* Master Parchment Card Frame */
+/* Base Document Wrapper Container */
 .srd-container {
-    background-color: #fcf6eb; 
-    color: #1a1a1a;            
-    max-width: 650px;
+    max-width: 750px;
     width: 100%;
-    padding: 35px 30px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-    border: 1px solid #dcd1be;
-    font-size: 9pt;            
-    line-height: 1.6;
-    box-sizing: border-box;
+    background-color: #ffffff;
 }
 
-/* Master Component Block Rules */
+/* --- THE SECTION LINE DIVIDERS ---
+   Replicates the official 4px solid #8b2323 lines generated on the SRD site */
 .srd-block {
-    padding-bottom: 14px;
-    margin-bottom: 14px;
-    border-bottom: 1px solid #cbd4c5; /* Soft grey-green separator lines */
-}
-
-/* 1. Refined Minimalist Header (Corrected Wrapping) */
-.srd-header {
-    background-color: transparent;
-    color: #1a1a1a;
-    margin: 0 0 16px 0;
-    padding: 0 0 12px 0;
-    border-bottom: 3px double #8b2323; /* Classic editorial double-underline accent */
-    font-size: 10pt;
+    font-size: 8pt;
     line-height: 1.5;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    border-bottom: 4px solid #8b2323; /* Iconic crimson line break */
 }
 
-/* Style the loose Name / CR string cleanly */
-.srd-header b {
-    color: #8b2323 !important;
-    font-size: 16pt;
-    letter-spacing: 0.05em;
-    font-family: "Georgia", "Times New Roman", serif;
-    display: block;
-    margin-bottom: 4px;
+/* --- MONSTER SHEET TITLE ---
+   Implements the classic 20pt spaced-out title header rule */
+.srd-header {
+    border-bottom: 4px solid #8b2323;
+    padding-bottom: 6px;
 }
-
-/* Universal Label Highlighting */
-.srd-block b {
-    color: #4a5a6a; /* Muted slate blue for general stat tags */
+.srd-header b:first-of-type {
+    font-size: 20pt !important;
+    color: #000000 !important;
+    letter-spacing: 0.25em; /* Spaced out styling match */
     font-weight: bold;
-    font-size: 9pt;
-    display: inline; /* Keeps labels inline with their modifiers */
+    display: inline-block;
+    margin-bottom: 6px;
+    font-family: "Verdana", sans-serif;
 }
 
-/* 2 & 3. Balanced Combat Feature Panels (Defenses & Offenses) */
-.srd-defenses, .srd-offense {
-    padding: 12px 16px;
-    background-color: #f4edd9; /* Subtle warm gold shadow backdrop */
-    border-left: 3px solid #b89665; /* Antique gold sidebar frame element */
-    border-bottom: none;
-    margin-bottom: 14px;
-    border-radius: 2px;
-}
-
-/* Custom coloring for numbers inside combat boxes */
-.srd-defenses b, .srd-offense b {
-    color: #1a1a1a; /* Keep numbers maximum contrast */
-}
-
-/* 4. Core Attributes & Skills Paragraph formatting */
-.srd-stats {
-    line-height: 1.7;
-    padding-top: 4px;
-}
-.srd-stats b {
-    color: #5d3a3a; /* Deep mahogany coloring for stats/feats labels */
+/* Universal Bold label overrides to match standard site behavior */
+.srd-container b {
+    color: #000000;
+    font-weight: bold;
+    font-size: 8pt;
     display: inline;
 }
 
-/* 5. Special Ability Glossary */
-.srd-abilities {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    padding-left: 20px;
-    text-indent: -20px;
+/* Special links formatting to match the reference site teal */
+.srd-container a:link, 
+.srd-container a:visited { 
+    text-decoration: none; 
+    color: rgb(87, 158, 182); 
+}
+.srd-container a:hover { 
+    text-decoration: underline; 
 }
 
-/* Creates clean, uniform spaces between individual abilities 
-   instead of changing the behavior of standard <br> tags everywhere */
-.srd-abilities br {
+/* --- HANGING INTENT ABILITY PROFILES ---
+   Implements the official site's .stat-block class rule to prevent walls of text */
+.srd-abilities-block {
+    font-size: 8pt;
+    line-height: 1.6;
+    display: block;
+    padding-left: 25px;    /* Offsets text container spacing */
+    text-indent: -25px;   /* Shifts the very first word back out out to left edge */
+}
+
+/* Colorize the ability headers to the classic deep crimson accent */
+.srd-abilities-block b {
+    color: #8b2323;
+    font-size: 8pt;
+}
+
+/* Ensures the line breaks within the glossary wrap beautifully */
+.srd-abilities-block br {
     display: block;
     content: "";
-    margin-bottom: 12px;
-}
-
-.srd-abilities b {
-    color: #8b2323; /* Keeps ability titles matching the 3.5 red accents */
-    font-size: 9.5pt;
-    display: inline;
-}
-
-/* Software Footer Footprint cleanup */
-.srd-container p {
-    font-size: 7.5pt;
-    line-height: 1.5;
-    color: #8a8275;
-    border-top: 1px dashed #dcd1be;
-    padding-top: 15px;
-    margin-top: 30px;
-    text-indent: 0;
+    margin-bottom: 6px;
 }
