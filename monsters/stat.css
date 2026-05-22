@@ -7,47 +7,55 @@ body {
     font-family: Verdana, Arial, sans-serif; 
     margin: 0;
     padding: 40px 20px; 
-    background-color: #2e2824; /* Rich dark environment behind the page */
+    background-color: #2e2824; 
     display: flex;
     justify-content: center;
 }
 
 /* The Printable Book Page Container */
 .srd-container {
-    background-color: #fcf6eb; /* Authentic warm cream parchment tone */
-    color: #000000;            /* Sharp black body text for readability */
+    background-color: #fcf6eb; 
+    color: #000000;            
     max-width: 650px;
     width: 100%;
     padding: 30px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     border: 1px solid #dcd1be;
-    font-size: 9pt;            /* Bumped slightly for monitor reading clarity */
-    line-height: 1.5;
+    font-size: 9pt;            
+    line-height: 1.6; /* Increased slightly to dissolve the text wall further */
 }
 
 /* Main Character Header (Top String Transformation) */
 .srd-container h1, .srd-title-fallback { 
     font-size: 18pt; 
     color: #ffffff; 
-    background-color: #8b2323; /* Classic 3.5 deep crimson title banner */
+    background-color: #8b2323; 
     padding: 6px 12px;
-    margin: -30px -30px 15px -30px; /* Extends header flush to edges */
+    margin: -30px -30px 15px -30px; 
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 0.1em;
 }
 
-/* Sub-headers inside abilities (if any get dropped in) */
+/* Sub-headers inside abilities */
 .srd-container h2, .srd-container h3, .srd-container h4 {
-    color: #579eb6; /* Signature 3.5 SRD deep teal accent blue */
+    color: #579eb6; 
     font-family: Verdana, sans-serif;
-    margin: 1em 0 0.5em 0;
+    margin: 1.2em 0 0.6em 0;
 }
 
 /* The Core Stat Lines Styling */
 .srd-container b {
-    color: #000000;
+    color: #2b0d0d; /* Slightly deeper tint for operational titles */
     font-weight: bold;
+}
+
+/* Make block start labels (Init, AC, Speed, Abilities) punchier */
+.srd-container hr + b {
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8b2323;
 }
 
 /* 3.5 Thick Crimson Structural Breaks */
@@ -55,7 +63,7 @@ body {
     height: 3px; 
     background-color: #8b2323; 
     border: none;
-    margin: 10px 0;
+    margin: 14px 0; /* Expanded padding creates breathing space */
     width: 100%;
     display: block;
 }
@@ -64,7 +72,7 @@ body {
 .srd-container a:link, 
 .srd-container a:visited { 
     text-decoration: none; 
-    color: #579eb6; /* Interactive elements color-matched to SRD blue */
+    color: #579eb6; 
     font-weight: bold;
 }
 
@@ -74,5 +82,15 @@ body {
 
 /* Keeps spacing clean on breaks */
 .srd-container br {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+}
+
+/* Structural Cleanup for the Bottom Software/Legal Footnote */
+.srd-container p {
+    font-size: 7.5pt;
+    line-height: 1.4;
+    color: #8a8275;
+    border-top: 1px dashed #dcd1be;
+    padding-top: 12px;
+    margin-top: 30px;
 }
