@@ -158,7 +158,16 @@ function injectEngineStyles() {
         .tracker-row:last-child { border-bottom: none; }
         .tracker-row input[type="checkbox"] { margin-right: 16px; transform: scale(1.15); cursor: pointer; }
         .creature-name { flex-grow: 1; font-weight: 600; }
-        .hp-badge { background: var(--card-inner); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border-muted); font-size: 0.85rem; color: var(--text-muted); }
+
+        .hp-badge { 
+            background: var(--card-inner); 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-muted); 
+            font-size: 0.85rem; 
+            color: var(--text-muted);
+            white-space: nowrap; /* GUARANTEE: Forces HP strings to always stay flat on one line */
+        }
 
         .table-responsive { overflow-x: auto; margin-top: 16px; border-radius: 8px; border: 1px solid var(--border-color); }
         .roster-table {
@@ -184,7 +193,7 @@ function injectEngineStyles() {
             letter-spacing: 0.05em;
             border-bottom: 2px solid var(--border-color);
         }
-
+    
         .stat-block {
             background: var(--bg-color);
             padding: 4px 8px;
@@ -193,6 +202,7 @@ function injectEngineStyles() {
             border: 1px solid var(--border-muted);
             color: var(--text-main);
             font-size: 0.9rem;
+            white-space: nowrap; /* GUARANTEE: Prevents 'Fort +2' from splitting across multiple lines */
         }
 
         .trap-card {
@@ -422,7 +432,7 @@ function renderCombatTracker(creaturesArray, setupPositions) {
                         <tr>
                             <th>Creature</th>
                             <th>AC</th>
-                            <th>Saves (F/R/W)</th>
+                            <th style="white-space: nowrap;">Saves (F/R/W)</th> <!-- Keeps the column wide enough for flat stat strings -->
                             <th>Type / Subtype</th>
                             <th>Quick Bio</th>
                         </tr>
