@@ -542,11 +542,12 @@ function renderDialogueTree(dialogueArray) {
 /**
  * 5: Renders combat order matrix & detailed stats
  */
-function renderCombatTracker(unusedParam, setupPositions) {
-    // Read directly from our mutable live state array
-    if (!liveCreatureTracker) return '';
+function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPositions) {
+    if (!liveCreaturesArray) return '';
     
-    const sortedTracker = [...liveCreatureTracker].sort((a, b) => b.initRoll - a.initRoll);
+    // Sort our live tracked entries by rolling index order
+    const sortedTracker = [...liveCreaturesArray].sort((a, b) => b.initRoll - a.initRoll);
+    const rosterData = originalRosterArray || [];
     
     return `
         <section class="room-section combat-section">
@@ -559,7 +560,7 @@ function renderCombatTracker(unusedParam, setupPositions) {
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell" style="text-align: right;">Health</div>
                     
-                    <!-- QUICK ADD FORM ROW (Stays fixed at the top) -->
+                    <!-- QUICK ADD FORM ROW -->
                     <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
                         <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
                     </div>
@@ -619,13 +620,13 @@ function renderCombatTracker(unusedParam, setupPositions) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${liveCreatureTracker.map(c => `
+                        ${rosterData.map(c => `
                             <tr>
                                 <td><strong>${c.name}</strong></td>
-                                <td><code class="stat-block">${c.ac || '—'}</code></td>
-                                <td><code class="stat-block">${c.saves || '—'}</code></td>
-                                <td>${c.type || 'Custom'}</td>
-                                <td><em class="bio-text">${c.bio || 'Added during encounter.'}</em></td>
+                                <td><code class="stat-block">${c.ac}</code></td>
+                                <td><code class="stat-block">${c.saves}</code></td>
+                                <td>${c.type}</td>
+                                <td><em class="bio-text">${c.bio}</em></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -670,35 +671,30 @@ function addNewCombatantEntry() {
     const hpEl = document.getElementById('new-hp');
     const maxHpEl = document.getElementById('new-max-hp');
     
-    // Validation: Require at least a name and baseline numeric data to safely render
+    if (!nameEl || !initEl || !hpEl || !maxHpEl) return;
+    
+    // Validation: Require minimum properties
     if (!nameEl.value.trim() || initEl.value === '' || hpEl.value === '' || maxHpEl.value === '') {
         alert('Please fill out all tracker properties (Initiative, Name, Current HP, and Max HP).');
         return;
     }
     
-    // Construct the standard database object layout
+    // Construct the added item payload block
     const newCreature = {
         name: nameEl.value.trim(),
         initRoll: parseInt(initEl.value, 10),
         hp: parseInt(hpEl.value, 10),
-        maxHp: parseInt(maxHpEl.value, 10),
-        ac: '—',
-        saves: '—',
-        type: 'Custom Entry',
-        bio: 'Dynamically injected into active combat loop.'
+        maxHp: parseInt(maxHpEl.value, 10)
     };
     
-    // Push directly to live local context state
-    liveCreatureTracker.push(newCreature);
+    // Append tracking element to runtime state vault
+    window.dndEngineState.liveCreatures.push(newCreature);
     
-    // Re-render your engine interface container to instantly update the viewport
-    if (typeof renderEngine === 'function') {
-        renderEngine();
-    } else {
-        // Fallback: If you do not have a global wrapper rendering function, 
-        // you can manually overwrite your combat section element innerHTML here.
-        console.warn("Combatant added successfully. Ensure your global render wrapper triggers.");
-    }
+    // Safely force a local engine frame redraw using active cache paths
+    renderRoomTemplate(
+        window.dndEngineState.currentContainerId, 
+        window.dndEngineState.rawBaselineData
+    );
 }
 
 /**
@@ -811,9 +807,27 @@ function renderSpecialEvent(eventObj) {
 // MAIN RUNTIME CORE ENGINE
 // =========================================================================
 
+// A simple global state persistence vault
+if (typeof window.dndEngineState === 'undefined') {
+    window.dndEngineState = {
+        initialized: false,
+        liveCreatures: [],
+        currentContainerId: '',
+        rawBaselineData: null
+    };
+}
+
 function renderRoomTemplate(containerId, data) {
     // Inject dynamic template styles straight into document frame
     injectEngineStyles();
+
+    // 1. STATE INITIALIZATION (Runs exactly once per structural encounter load)
+    if (!window.dndEngineState.initialized || window.dndEngineState.currentContainerId !== containerId) {
+        window.dndEngineState.liveCreatures = data.creatures ? JSON.parse(JSON.stringify(data.creatures)) : [];
+        window.dndEngineState.currentContainerId = containerId;
+        window.dndEngineState.rawBaselineData = data;
+        window.dndEngineState.initialized = true;
+    }
 
     const container = document.getElementById(containerId);
     if (!container) return console.error(`Container ID "${containerId}" not found.`);
@@ -853,8 +867,8 @@ function renderRoomTemplate(containerId, data) {
         html += renderDialogueTree(data.dialogueTree);
     }
 
-    // 5. Active Combat Matrix Tracking System & Monster Indexes
-    html += renderCombatTracker(data.creatures, data.setupPositions);
+    // 5. Active Combat Matrix Tracking System & Monster Indexes (Uses State for Tracker, original data for Roster)
+    html += renderCombatTracker(window.dndEngineState.liveCreatures, data.creatures, data.setupPositions);
 
     // 6. Tactical AI Rulesets & Narrative Consequences
     html += renderTactics(data.tactics, data.development);
