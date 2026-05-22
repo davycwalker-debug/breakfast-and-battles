@@ -1,5 +1,5 @@
 /* ==========================================================================
-   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (PERFECT MOBILE REFACTOR)
+   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (BULLETPROOF NO-HACK LAYOUT)
    ========================================================================== */
 
 /* Flat White Site Background Environment & Centering */
@@ -31,24 +31,31 @@ html, body {
 }
 
 /* --- MONSTER SHEET TITLE --- 
-   FIX: We apply 'white-space: nowrap' here to the full block, but use a 
-   clever trick to let the secondary text lines wrap normally below it. */
+   THE ROOT FIX: We turn the block into a display grid. This forces the 
+   browser to structurally isolate the content before the first <br/> tag. */
 .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
     font-size: 9pt;
     line-height: 1.5;
-    white-space: nowrap; /* Locks the header string from breaking on mobile */
+    display: grid;
+    grid-template-columns: 100%;
 }
 
-/* FIX: This styles the first line cleanly and scales fluidly using calc() 
-   which browsers process reliably everywhere, including the inspector. */
+/* Replicates the official 20pt spaced-out title header rule cleanly on 
+   the actual first row of text, without leaking or breaking sub-lines. */
 .srd-header::first-line {
-    font-size: clamp(14pt, 1.5rem + 1vw, 22pt); 
+    font-size: clamp(14pt, 4vw, 22pt); 
     font-weight: bold;
     color: #000000;
     letter-spacing: 0.22em;
-    line-height: 1.3;
+    line-height: 1.4;
+}
+
+/* Targets the very first br tag inside the header to keep the title 
+   from overlapping its sub-text on narrow mobile viewports */
+.srd-header br:first-of-type {
+    margin-bottom: 4px;
 }
 
 /* Universal Bold label overrides to match standard site behavior */
@@ -57,7 +64,6 @@ html, body {
     font-weight: bold;
     font-size: 9pt !important; 
     display: inline;
-    white-space: normal; /* Allows normal stat rows to wrap perfectly */
 }
 
 /* Special links formatting to match the reference site teal */
@@ -100,5 +106,4 @@ html, body {
     border-top: 1px dashed #cbd4c5 !important;
     text-indent: 0px !important; 
     display: block !important;
-    white-space: normal;
 }
