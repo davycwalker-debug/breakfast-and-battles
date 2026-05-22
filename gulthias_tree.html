@@ -13,26 +13,51 @@
     </div>
 
     <!-- Link your styling + layout engine -->
-    <script src="roon.js"></script>
+    <script src="room.js"></script>
 
     <script>
         const roomData = {
             title: "The Twilight Grove: Final Confrontation",
             subtitle: "The Sunless Citadel Climax — Belak & The Gulthias Tree",
             readAloud: "“A broad stone courtyard opens before you, its walls broken and half-swallowed by a dense tangle of thick, wiry briars. Strange plants crowd the edges, some with glossy leaves that catch the light like wet teeth... Beneath a dim, green-tinged glow rises a single, monstrous tree. Its blackened limbs twist upward like grasping fingers, its bark slick and uneven... At its base stand three human figures, one woman, two men, perfectly still. Perched among the branches above them, a massive tree frog crouches in silence... Then, a voice, high, lilting, and bright with misplaced delight, cuts through the stillness. ‘Oh, oh, oh! Stop! Stop, my tiny dancers! Hold your little actions a moment, won’t you? You do not yet know the steps… the rhythm of the grove... Please,’ he says warmly. ‘Ask me anything you’d like.’”",
-            
+            initialReadAloudChecks: [
+                {
+                    type: "Spot Check",
+                    dc: "13",
+                    success: "You notice Sir Braford and Sharwyn's skin is completely rough, dry, and barklike. They are entirely transformed.",
+                    failure: "The figures seem abnormally rigid, but their features are obscured by the heavy green shadow of the grove."
+                }
+            ],
             environment: {
                 dimensions: "70ft x 40ft broken chamber courtyard inside a much larger stalactite cavern (50ft high ceilings, 20ft broken walls)",
                 illumination: "Dim, sickly green-tinged glow radiating from the central tree, punctuated by peripheral shadow.",
                 features: [
                     { name: "The Gulthias Tree", desc: "Gargantuan centerpiece along the south edge. Houses human-sized root depressions where Sharwyn and Braford were absorbed. Contains two annual fruits (Ruby Red = Heal spell effect / Albino White = Power Word Kill effect)." },
-                    { name: "Thick Briars", desc: "Difficult Terrain. Druids (Lv 2+) and Small or smaller creatures move normally. Medium/Larger creatures move at half speed OR must pass a DC 16 Fortitude save every 10ft or take 1 point of subdual damage. Hacking away a 5x5ft square takes 1d4+3 rounds (too green/wet to burn; alerts Blights immediately)." },
-                    { name: "Corruption Scrutiny", desc: "A DC 13 Spot check reveals Sir Braford and Sharwyn's skin is completely rough and barklike." }
+                    { name: "Thick Briars", desc: "Difficult Terrain. Druids (Lv 2+) and Small or smaller creatures move normally. Medium/Larger creatures move at half speed OR must pass a DC 16 Fortitude save every 10ft or take 1 point of subdual damage. Hacking away a 5x5ft square takes 1d4+3 rounds (too green/wet to burn; alerts Blights immediately)." }
                 ],
                 doors: [
                     { location: "Cavern Perimeter", desc: "Open boundaries expanding out into the dark, unmapped reaches of the northern cavern system." }
                 ]
             },
+
+            // Simple arrays map out your conversations cleanly
+            dialogueTree: [
+                {
+                    prompt: "What are you doing here?",
+                    speaker: "Belak",
+                    response: "I am Belak! Belak the Outcast! Ha! Expelled, oh yes… the druidic society cast me out — fools! They could not fathom my grand experiment! At last, I have found what I longed for... the Gulthias Tree!"
+                },
+                {
+                    prompt: "What is the Gulthias Tree?",
+                    speaker: "Belak",
+                    response: "Beautiful, no? Dead… yet living! Ha! As to how it came to be… who can say? Ooh hoo hoo! Such a wondrous, terrible tree, thrumming with secrets that only I can coax!"
+                },
+                {
+                    prompt: "What did you do to the other adventurers?",
+                    speaker: "Belak",
+                    response: "The first two… Ah, such exquisite examples! The Tree has ‘accepted’ them, yes, yes! And now, they belong to me, like my little marionettes. You cannot save them, not now… not ever… unless, of course, you join the dance!"
+                }
+            ],
 
             creatures: [
                 { name: "Sharwyn Hucrele", initRoll: 15, hp: 8, maxHp: 8, ac: "17", saves: "+2 / +1 / +2", type: "Med Outsider (Native)", bio: "Totally corrupt Supplicant. Possesses permanent Barkskin. Pocket healer using Inflict spells to stitch Belak's undead form." },
@@ -66,42 +91,22 @@
                 ]
             },
 
-            // --- Leveraged to seamlessly map Dialogue trees and Secret Post-Game phases ---
-            additionalSections: [
+            // Separate specialized events into clean, modular blocks
+            specialEvents: [
                 {
-                    heading: "💬 Interactive Dialogue Tree (Belak's parley)",
-                    content: `
-                        <p>If players accept his offer to talk, forces stand down temporarily. Run through the following lore disclosures:</p>
-                        <ul>
-                            <li><strong>"What are you doing?"</strong> — <em>“I am Belak! Belak the Outcast! Ha! Expelled, oh yes… the druidic society cast me out — fools! Fools, I say! They could not fathom my grand experiment! Look here, look, look! At last, I have found what I longed for... the Gulthias Tree!”</em></li>
-                            <li><strong>"What is the Gulthias Tree?"</strong> — <em>“Beautiful, no? Dead… yet living! Ha! As to how it came to be… who can say? Ooh hoo hoo! Such a wondrous, terrible tree, thrumming with secrets that only I can coax!”</em></li>
-                            <li><strong>"What's with the stick-monsters?"</strong> — <em>“Ah! The twig blights! My little puppets! Children of the Tree! They sprouted from its… fruitful gifts. Playful little things, yes? But bite if they must!”</em></li>
-                            <li><strong>"What's going on with the fruit?"</strong> — <em>“Fruit! Oh, yes! I give them to the goblins, little barterers, clever little misers! They scatter the seeds across the surface, unaware they’re dancing to my tune! My plan… to colonize the world with the Children of Gulthias… continues!”</em></li>
-                            <li><strong>"What did you do to the other adventurers?"</strong> — <em>“The first two… Ah, such exquisite examples! The Tree has ‘accepted’ them, yes, yes! And now, they belong to me, like my little marionettes. You cannot save them, not now… not ever… unless, of course, you join the dance!”</em></li>
-                            <li><strong>"Why are you talking to us?"</strong> — <em>“Your tiny, fragile lives… hmm… useful yet! You will serve… in your own little way, alive… or compost. You choose! Surrender your shiny weapons, my little actors! Step lightly, submit… or I shall rewrite your steps.”</em></li>
-                        </ul>
-                    `
-                },
-                {
-                    heading: "🔓 UNLOCKED SPECIAL EVENT: The Return of Gulthias",
-                    content: `
-                        <div style="background: rgba(190, 173, 165, 0.05); border: 1px solid var(--accent-gold); padding: 15px; border-radius: 6px;">
-                            <p><strong>Trigger Condition:</strong> Erky Timbers is alive when the Gulthias Tree collapses.</p>
-                            <blockquote>
-                                "For a moment, there is only the sharp crack of splintering wood. The great tree, once towering, once terrible, now lies broken across the cavern floor. Thick, black sap seeps slowly from the shattered stump..."
-                            </blockquote>
-                            <p>Erky reveals the tree was an ancient wooden stake pinning a vampire lord. He triggers a telekinetic surge, reviving a headless corpse that regenerates into <strong>Lord Gulthias</strong> (complete with an eccentric pair of hot pink sunglasses).</p>
-                            
-                            <div style="background: #221415; border: 1px solid #4a1c1e; padding: 12px; margin: 15px 0; border-radius: 4px;">
-                                <h4 style="color: var(--accent-red); margin-bottom: 5px;">⚠️ INTERVENTION ENCOUNTER: GULTHIAS MINDSLIP</h4>
-                                <p>When Gulthias prepares to summarily consume Erky Timbers as 'initiation' into the cult, characters acting to stop it must roll:</p>
-                                <p><strong>Will Save Check:</strong> <code class="dc-block">DC 26</code></p>
-                                <ul>
-                                    <li><strong>Failed Save:</strong> <em>"That seems quite reasonable, now that you think about it. And besides, Erky wanted this!"</em> (Characters stand paralyzed as Gulthias drinks calmly and glides north into the abyssal subterranean dark).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    `
+                    title: "The Return of Gulthias (Special Climax Ending)",
+                    trigger: "Erky Timbers remains alive at the structural collapse of the Gulthias Tree",
+                    severity: "danger",
+                    readAloud: "The great tree now lies broken across the cavern floor. Thick, black sap seeps slowly from the shattered stump... Erky steps forward, peering at the ruined stump. 'Friends… I do believe we’ve done it! Y’all have helped me finish a pilgrimage I’ve been working on for a very, very long time.' He concentrates, and the earth erupts as a pale vampire lord rises, sliding on bright pink sunglasses...",
+                    mechanics: [
+                        {
+                            type: "Will Save (Mindslip Overwhelm)",
+                            dc: "26",
+                            success: "You maintain tracking focus and can move or strike immediately before the entity acts.",
+                            failure: "That seems quite reasonable, now that you think about it. And besides, Erky wanted this! You remain frozen as he drinks."
+                        }
+                    ],
+                    outcome: "Gulthias consumes Erky, then turns to glide away out into the northern dark of the Underdark chasm."
                 }
             ]
         };
