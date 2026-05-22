@@ -243,6 +243,21 @@ function injectEngineStyles() {
     document.head.appendChild(styleTag);
 }
 
+/**
+ * 1 & Generic: Renders standard narrative read-aloud blocks
+ */
+function renderReadAloudBox(text) {
+    if (!text) return '';
+    return `
+        <div class="read-aloud-box">
+            <p>${text}</p>
+        </div>
+    `;
+}
+
+/**
+ * 2: Renders dynamic ability checks (used natively & within special events)
+ */
 function renderInlineChecks(mechanicsArray) {
     if (!mechanicsArray || !mechanicsArray.length) return '';
     
@@ -260,31 +275,199 @@ function renderInlineChecks(mechanicsArray) {
     `).join('');
 }
 
+/**
+ * 3: Renders spatial and architectural settings
+ */
+function renderEnvironment(envObj) {
+    if (!envObj) return '';
+    
+    return `
+        <section class="room-section environment-section">
+            <h3>🗺️ Room Features & Environment</h3>
+            <ul class="env-meta-list">
+                <li><strong>Dimensions:</strong> ${envObj.dimensions || 'N/A'}</li>
+                <li><strong>Illumination:</strong> ${envObj.illumination || 'N/A'}</li>
+            </ul>
+            <div class="env-details">
+                ${envObj.features && envObj.features.length ? `
+                    <h4>Key Features:</h4>
+                    <ul class="features-list">
+                        ${envObj.features.map(f => `<li><strong>${f.name}:</strong> ${f.desc}</li>`).join('')}
+                    </ul>
+                ` : ''}
+                ${envObj.doors && envObj.doors.length ? `
+                    <h4>Doors:</h4>
+                    <ul class="doors-list">
+                        ${envObj.doors.map(d => `<li><strong>${d.location}:</strong> ${d.desc}</li>`).join('')}
+                    </ul>
+                ` : ''}
+            </div>
+        </section>
+    `;
+}
+
+/**
+ * 4: Renders social and roleplay branches
+ */
 function renderDialogueTree(dialogueArray) {
     if (!dialogueArray || !dialogueArray.length) return '';
     
-    let html = `<div class="dialogue-tree-container">
-                    <h3 class="section-title">💬 Dialogue Tree</h3>
-                    <div class="dialogue-branches">`;
+    return `
+        <div class="dialogue-tree-container">
+            <h3 class="section-title">💬 Dialogue Tree</h3>
+            <div class="dialogue-branches">
+                ${dialogueArray.map(node => `
+                    <div class="dialogue-node">
+                        <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
+                        <div class="dialogue-response">
+                            <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * 5: Renders combat order matrix & detailed stats
+ */
+function renderCombatTracker(creaturesArray, setupPositions) {
+    if (!creaturesArray || !creaturesArray.length) return '';
     
-    dialogueArray.forEach(node => {
+    const sortedTracker = [...creaturesArray].sort((a, b) => b.initRoll - a.initRoll);
+    
+    return `
+        <section class="room-section combat-section">
+            <h3>⚔️ Combat & Initiative Tracker</h3>
+            <div class="tracker-box">
+                ${sortedTracker.map(c => `
+                    <div class="tracker-row">
+                        <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
+                        <span class="init-badge">(${c.initRoll})</span>
+                        <span class="creature-name">${c.name}</span>
+                        <span class="hp-badge">${c.hp} / ${c.maxHp} HP</span>
+                    </div>
+                `).join('')}
+            </div>
+
+            <h3>👾 Creature Rosters & Quick Bios</h3>
+            <div class="table-responsive">
+                <table class="roster-table">
+                    <thead>
+                        <tr>
+                            <th>Creature</th>
+                            <th>AC</th>
+                            <th>Saves (F / R / W)</th>
+                            <th>Type / Subtype</th>
+                            <th>Quick Bio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${creaturesArray.map(c => `
+                            <tr>
+                                <td><strong>${c.name}</strong></td>
+                                <td><code class="stat-block">${c.ac}</code></td>
+                                <td><code class="stat-block">${c.saves}</code></td>
+                                <td>${c.type}</td>
+                                <td><em class="bio-text">${c.bio}</em></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+            ${setupPositions ? `<p class="setup-positions" style="margin-top:15px;"><strong>Setup Positions:</strong> ${setupPositions}</p>` : ''}
+        </section>
+    `;
+}
+
+/**
+ * 6: Renders behavioral and dynamic tactical frameworks
+ */
+function renderTactics(tacticsObj, developmentText) {
+    if (!tacticsObj && !developmentText) return '';
+    
+    let html = `<section class="room-section tactics-section"><h3>🧠 Tactics & Development</h3>`;
+    
+    if (tacticsObj) {
+        if (tacticsObj.initialRound) {
+            html += `<p><strong>Initial Round / Trigger:</strong> ${tacticsObj.initialRound}</p>`;
+        }
+        if (tacticsObj.individual && tacticsObj.individual.length) {
+            html += `
+                <h4>Individual Strategy:</h4>
+                <ul class="tactics-list">
+                    ${tacticsObj.individual.map(t => `<li><strong>${t.name}:</strong> ${t.strategy}</li>`).join('')}
+                </ul>
+            `;
+        }
+    }
+    
+    if (developmentText) {
         html += `
-            <div class="dialogue-node">
-                <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
-                <div class="dialogue-response">
-                    <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
-                </div>
-            </div>`;
-    });
+            <div class="development-box">
+                <strong>Development / Morale:</strong> ${developmentText}
+            </div>
+        `;
+    }
     
-    html += `</div></div>`;
+    html += `</section>`;
     return html;
 }
 
+/**
+ * 7: Renders mechanical traps and map hazards
+ */
+function renderTraps(trapsArray) {
+    if (!trapsArray || !trapsArray.length) return '';
+    
+    return `
+        <section class="room-section traps-section">
+            <h3>⚠️ Hazards & Traps</h3>
+            ${trapsArray.map(t => `
+                <div class="trap-card">
+                    <div class="trap-header">
+                        <span class="trap-title"><strong>${t.name}</strong></span>
+                        <span class="trap-cr">CR ${t.cr}</span>
+                    </div>
+                    <ul class="trap-meta">
+                        <li><strong>Trigger:</strong> ${t.trigger} | <strong>Reset:</strong> ${t.reset}</li>
+                        <li><strong>Search DC:</strong> <code class="dc-block">${t.searchDc}</code> | <strong>Disable Device DC:</strong> <code class="dc-block">${t.disableDc}</code></li>
+                        <li><strong>Effect:</strong> ${t.effect}</li>
+                    </ul>
+                </div>
+            `).join('')}
+        </section>
+    `;
+}
+
+/**
+ * 8: Renders loose and containerized loot matrices
+ */
+function renderTreasure(treasureObj) {
+    if (!treasureObj) return '';
+    
+    return `
+        <section class="room-section treasure-section">
+            <h3>💰 Treasure & Rewards</h3>
+            ${treasureObj.carried ? `<p><strong>Carried Gear:</strong> ${treasureObj.carried}</p>` : ''}
+            ${treasureObj.containers && treasureObj.containers.length ? `
+                <h4>Hidden / Secured Wealth:</h4>
+                <ul class="treasure-list">
+                    ${treasureObj.containers.map(box => `<li><strong>${box.name}:</strong> ${box.contents}</li>`).join('')}
+                </ul>
+            ` : ''}
+        </section>
+    `;
+}
+
+/**
+ * 9: Renders phase changes and narrative developments
+ */
 function renderSpecialEvent(eventObj) {
     if (!eventObj) return '';
     
-    let html = `
+    return `
         <div class="special-event-card ${eventObj.severity || 'info'}">
             <div class="event-header">
                 <span class="event-icon">🔓</span>
@@ -294,16 +477,21 @@ function renderSpecialEvent(eventObj) {
                 </div>
             </div>
             <div class="event-body">
-                <p class="read-aloud">"${eventObj.readAloud}"</p>
+                ${renderReadAloudBox(eventObj.readAloud)}
                 ${eventObj.mechanics ? `<div class="event-mechanics">${renderInlineChecks(eventObj.mechanics)}</div>` : ''}
                 ${eventObj.outcome ? `<div class="event-outcome"><strong>Outcome:</strong> ${eventObj.outcome}</div>` : ''}
             </div>
-        </div>`;
-    return html;
+        </div>
+    `;
 }
 
+
+// =========================================================================
+// MAIN RUNTIME CORE ENGINE
+// =========================================================================
+
 function renderRoomTemplate(containerId, data) {
-    // Inject custom styling system to document head instantly
+    // Inject dynamic template styles straight into document frame
     injectEngineStyles();
 
     const container = document.getElementById(containerId);
@@ -319,168 +507,49 @@ function renderRoomTemplate(containerId, data) {
             <hr class="section-divider">
     `;
 
-    // 1. Read-Aloud Box
+    // 1. Primary Narrative Read-Aloud Segment
     if (data.readAloud) {
         html += `
             <section class="room-section read-aloud-section">
                 <h3>📜 Read-Aloud Text</h3>
-                <div class="read-aloud-box">
-                    <p>${data.readAloud}</p>
-                </div>
+                ${renderReadAloudBox(data.readAloud)}
             </section>
         `;
     }
 
-    // 2. Inject structured Inline Ability Checks into the main ReadAloud segment if they exist
+    // 2. Initial Read-Aloud Ability/Perception Checks
     if (data.initialReadAloudChecks) {
-        html += renderInlineChecks(data.initialReadAloudChecks)
+        html += renderInlineChecks(data.initialReadAloudChecks);
     }
 
-    // 3. Room Features & Environment
-    if (data.environment) {
-        html += `
-            <section class="room-section environment-section">
-                <h3>🗺️ Room Features & Environment</h3>
-                <ul class="env-meta-list">
-                    <li><strong>Dimensions:</strong> ${data.environment.dimensions || 'N/A'}</li>
-                    <li><strong>Illumination:</strong> ${data.environment.illumination || 'N/A'}</li>
-                </ul>
-                <div class="env-details">
-                    <h4>Key Features:</h4>
-                    <ul class="features-list">
-                        ${data.environment.features.map(f => `<li><strong>${f.name}:</strong> ${f.desc}</li>`).join('')}
-                    </ul>
-                    ${data.environment.doors && data.environment.doors.length ? `
-                        <h4>Doors:</h4>
-                        <ul class="doors-list">
-                            ${data.environment.doors.map(d => `<li><strong>${d.location}:</strong> ${d.desc}</li>`).join('')}
-                        </ul>
-                    ` : ''}
-                </div>
-            </section>
-        `;
-    }
+    // 3. Environmental Dimensions, Lighting & Structural Elements
+    html += renderEnvironment(data.environment);
 
-    // 4. Process natively handled Dialogue Trees
+    // 4. Social Dialogue Interlays
     if (data.dialogueTree) {
         html += renderDialogueTree(data.dialogueTree);
     }
 
-    // 5. Combat Tracker & Roster
-    if (data.creatures && data.creatures.length) {
-        const sortedTracker = [...data.creatures].sort((a, b) => b.initRoll - a.initRoll);
+    // 5. Active Combat Matrix Tracking System & Monster Indexes
+    html += renderCombatTracker(data.creatures, data.setupPositions);
 
-        html += `
-            <section class="room-section combat-section">
-                <h3>⚔️ Combat & Initiative Tracker</h3>
-                <div class="tracker-box">
-                    ${sortedTracker.map(c => `
-                        <div class="tracker-row">
-                            <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
-                            <span class="init-badge">(${c.initRoll})</span>
-                            <span class="creature-name">${c.name}</span>
-                            <span class="hp-badge">${c.hp} / ${c.maxHp} HP</span>
-                        </div>
-                    `).join('')}
-                </div>
+    // 6. Tactical AI Rulesets & Narrative Consequences
+    html += renderTactics(data.tactics, data.development);
 
-                <h3>👾 Creature Rosters & Quick Bios</h3>
-                <div class="table-responsive">
-                    <table class="roster-table">
-                        <thead>
-                            <tr>
-                                <th>Creature</th>
-                                <th>AC</th>
-                                <th>Saves (F / R / W)</th>
-                                <th>Type / Subtype</th>
-                                <th>Quick Bio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.creatures.map(c => `
-                                <tr>
-                                    <td><strong>${c.name}</strong></td>
-                                    <td><code class="stat-block">${c.ac}</code></td>
-                                    <td><code class="stat-block">${c.saves}</code></td>
-                                    <td>${c.type}</td>
-                                    <td><em class="bio-text">${c.bio}</em></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                ${data.setupPositions ? `<p class="setup-positions" style="margin-top:15px;"><strong>Setup Positions:</strong> ${data.setupPositions}</p>` : ''}
-            </section>
-        `;
-    }
+    // 7. Dungeon Mechanics: Danger Zones, Traps & Level Obstacles
+    html += renderTraps(data.traps);
 
-    // 6. Tactics & Development
-    if (data.tactics || data.development) {
-        html += `
-            <section class="room-section tactics-section">
-                <h3>🧠 Tactics & Development</h3>
-                ${data.tactics && data.tactics.initialRound ? `<p><strong>Initial Round / Trigger:</strong> ${data.tactics.initialRound}</p>` : ''}
-                ${data.tactics && data.tactics.individual ? `
-                    <h4>Individual Strategy:</h4>
-                    <ul class="tactics-list">
-                        ${data.tactics.individual.map(t => `<li><strong>${t.name}:</strong> ${t.strategy}</li>`).join('')}
-                    </ul>
-                ` : ''}
-                ${data.development ? `
-                    <div class="development-box">
-                        <strong>Development / Morale:</strong> ${data.development}
-                    </div>
-                ` : ''}
-            </section>
-        `;
-    }
+    // 8. Loot Tables & Stash Manifests
+    html += renderTreasure(data.treasure);
 
-    // 7. Hazards & Traps
-    if (data.traps && data.traps.length) {
-        html += `
-            <section class="room-section traps-section">
-                <h3>⚠️ Hazards & Traps</h3>
-                ${data.traps.map(t => `
-                    <div class="trap-card">
-                        <div class="trap-header">
-                            <span class="trap-title"><strong>${t.name}</strong></span>
-                            <span class="trap-cr">CR ${t.cr}</span>
-                        </div>
-                        <ul class="trap-meta">
-                            <li><strong>Trigger:</strong> ${t.trigger} | <strong>Reset:</strong> ${t.reset}</li>
-                            <li><strong>Search DC:</strong> <code class="dc-block">${t.searchDc}</code> | <strong>Disable Device DC:</strong> <code class="dc-block">${t.disableDc}</code></li>
-                            <li><strong>Effect:</strong> ${t.effect}</li>
-                        </ul>
-                    </div>
-                `).join('')}
-            </section>
-        `;
-    }
-
-    // 8. Treasure & Rewards
-    if (data.treasure) {
-        html += `
-            <section class="room-section treasure-section">
-                <h3>💰 Treasure & Rewards</h3>
-                ${data.treasure.carried ? `<p><strong>Carried Gear:</strong> ${data.treasure.carried}</p>` : ''}
-                ${data.treasure.containers && data.treasure.containers.length ? `
-                    <h4>Hidden / Secured Wealth:</h4>
-                    <ul class="treasure-list">
-                        ${data.treasure.containers.map(box => `<li><strong>${box.name}:</strong> ${box.contents}</li>`).join('')}
-                    </ul>
-                ` : ''}
-            </section>
-        `;
-    }
-
-    // 9. Process natively handled Special/Conditional Narrative Phases
+    // 9. Conditional / Multi-State Event Nodes
     if (data.specialEvents) {
         data.specialEvents.forEach(evt => {
             html += renderSpecialEvent(evt);
         });
     }
 
-    // 10. Dynamic Open Sections
+    // 10. Unstructured Open Documentation Extensions
     if (data.additionalSections && data.additionalSections.length) {
         data.additionalSections.forEach(sec => {
             html += `
