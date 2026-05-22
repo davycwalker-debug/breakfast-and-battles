@@ -12,106 +12,223 @@
         <div id="encounter-output"></div>
     </div>
 
-    <!-- Link your styling + layout engine -->
+    <!-- 1. Bring in your styling + script layout core engine -->
     <script src="room.js"></script>
 
+    <!-- 2. Simply feed your raw JSON values here -->
     <script>
+        // Data input object mapping out your exact campaign homework notes
         const roomData = {
-            title: "The Twilight Grove: Final Confrontation",
-            subtitle: "The Sunless Citadel Climax — Belak & The Gulthias Tree",
-            readAloud: "“A broad stone courtyard opens before you, its walls broken and half-swallowed by a dense tangle of thick, wiry briars. Strange plants crowd the edges, some with glossy leaves that catch the light like wet teeth... Beneath a dim, green-tinged glow rises a single, monstrous tree. Its blackened limbs twist upward like grasping fingers, its bark slick and uneven... At its base stand three human figures, one woman, two men, perfectly still. Perched among the branches above them, a massive tree frog crouches in silence... Then, a voice, high, lilting, and bright with misplaced delight, cuts through the stillness. ‘Oh, oh, oh! Stop! Stop, my tiny dancers! Hold your little actions a moment, won’t you? You do not yet know the steps… the rhythm of the grove... Please,’ he says warmly. ‘Ask me anything you’d like.’”",
-            initialReadAloudChecks: [
-                {
-                    type: "Spot Check",
-                    dc: "13",
-                    success: "You notice Sir Braford and Sharwyn's skin is completely rough, dry, and barklike. They are entirely transformed.",
-                    failure: "The figures seem abnormally rigid, but their features are obscured by the heavy green shadow of the grove."
-                }
-            ],
-            environment: {
-                dimensions: "70ft x 40ft broken chamber courtyard inside a much larger stalactite cavern (50ft high ceilings, 20ft broken walls)",
-                illumination: "Dim, sickly green-tinged glow radiating from the central tree, punctuated by peripheral shadow.",
-                features: [
-                    { name: "The Gulthias Tree", desc: "Gargantuan centerpiece along the south edge. Houses human-sized root depressions where Sharwyn and Braford were absorbed. Contains two annual fruits (Ruby Red = Heal spell effect / Albino White = Power Word Kill effect)." },
-                    { name: "Thick Briars", desc: "Difficult Terrain. Druids (Lv 2+) and Small or smaller creatures move normally. Medium/Larger creatures move at half speed OR must pass a DC 16 Fortitude save every 10ft or take 1 point of subdual damage. Hacking away a 5x5ft square takes 1d4+3 rounds (too green/wet to burn; alerts Blights immediately)." }
-                ],
-                doors: [
-                    { location: "Cavern Perimeter", desc: "Open boundaries expanding out into the dark, unmapped reaches of the northern cavern system." }
-                ]
-            },
-
-            // Simple arrays map out your conversations cleanly
-            dialogueTree: [
-                {
-                    prompt: "What are you doing here?",
-                    speaker: "Belak",
-                    response: "I am Belak! Belak the Outcast! Ha! Expelled, oh yes… the druidic society cast me out — fools! They could not fathom my grand experiment! At last, I have found what I longed for... the Gulthias Tree!"
-                },
-                {
-                    prompt: "What is the Gulthias Tree?",
-                    speaker: "Belak",
-                    response: "Beautiful, no? Dead… yet living! Ha! As to how it came to be… who can say? Ooh hoo hoo! Such a wondrous, terrible tree, thrumming with secrets that only I can coax!"
-                },
-                {
-                    prompt: "What did you do to the other adventurers?",
-                    speaker: "Belak",
-                    response: "The first two… Ah, such exquisite examples! The Tree has ‘accepted’ them, yes, yes! And now, they belong to me, like my little marionettes. You cannot save them, not now… not ever… unless, of course, you join the dance!"
-                }
-            ],
-
-            creatures: [
-                { name: "Sharwyn Hucrele", initRoll: 15, hp: 8, maxHp: 8, ac: "17", saves: "+2 / +1 / +2", type: "Med Outsider (Native)", bio: "Totally corrupt Supplicant. Possesses permanent Barkskin. Pocket healer using Inflict spells to stitch Belak's undead form." },
-                { name: "Twig Blight 4", initRoll: 10, hp: 7, maxHp: 7, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Immune to Entangle. Swarms aggressively through the protective briars." },
-                { name: "Kulket (Giant Frog)", initRoll: 9, hp: 31, maxHp: 31, ac: "14", saves: "+7 / +3 / +0", type: "Med Magical Beast", bio: "Belak's protective frontline pet. Prioritizes small targets to leverage its Swallow Whole ability." },
-                { name: "Twig Blight 1", initRoll: 6, hp: 4, maxHp: 4, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Swarms into difficult terrain sectors to choke out incoming melee threats." },
-                { name: "Belak the Outcast", initRoll: 5, hp: 34, maxHp: 34, ac: "16", saves: "Ø / +1 / +9", type: "Med Undead (Augmented)", bio: "The mad curator of the grove. Controls the field from the rear line using invisible terrain hazards." },
-                { name: "Twig Blight 2", initRoll: 2, hp: 6, maxHp: 6, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Sprouted child of the tree. Ferociously guards the southern perimeter." },
-                { name: "Twig Blight 3", initRoll: 2, hp: 5, maxHp: 5, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Lurks inside the brush line ready to step into defensive flanking positions." },
-                { name: "Sir Braford", initRoll: 2, hp: 14, maxHp: 14, ac: "25", saves: "+7 / +2 / +5", type: "Med Humanoid", bio: "Corrupt Supplicant warden. Wields an Illuminating Silver Longsword +1. Intercepts threats directly." },
-                { name: "Gulthias Tree (Object Target)", initRoll: 0, hp: 60, maxHp: 60, ac: "9", saves: "+10 / +0 / +14", type: "Gargantuan Plant", bio: "The encounter anchor. If destroyed, Supplicants perish immediately and Blights lose all strategy, attacking blindly." }
-            ],
-
-            setupPositions: "Belak stands directly at the base of the Gulthias tree. Sir Braford, Sharwyn, and Kulket stand in a parallel defensive wall directly in front of him. 4 Twig Blights are hidden dynamically across the briar lines.",
-
-            tactics: {
-                initialRound: "Belak uses his single surprise round to cast an invisible Entangle directly centered on the players' entry point (40ft away).",
-                individual: [
-                    { name: "Belak", strategy: "Stays safely in the rear. Follows Entangle with invisible Impeding Stones, then spams three invisible extended Spiritjaws spells to pin advancing players. Uses Blinding Spittle or Snake’s Swiftness on Braford." },
-                    { name: "Sir Braford", strategy: "Stays just outside Belak's hazard spell templates. Peppers incoming targets with his shortbow, swapping to his greatsword for close-range choke-points." },
-                    { name: "Kulket & Minions", strategy: "Kulket intercepts targets bypassing Braford. Sharwyn shoots arrows from the rear line, saving spell slots to deliver touch-range Inflict Wounds healing onto Belak." }
-                ]
-            },
-
-            development: "Supplicant Bindings: Any sentient humanoid bound to the tree is fully absorbed over 24 hours. They emerge 1 hour later as unredeemable thralls with permanent barkskin supernatural traits. If the tree dies, the thralls dissolve into ash instantly.",
-
-            treasure: {
-                carried: "Sir Braford's weapon: Illuminating Silver Longsword +1.",
-                containers: [
-                    { name: "The Gulthias Cysts", contents: "1x Ruby Red Solstice Fruit (Acts as a total Heal spell, can be quartered), 1x Albino Winter Solstice Fruit (Acts as Power Word Kill, can be quartered). Contains 1d4 Blight seeds." }
-                ]
-            },
-
-            // Separate specialized events into clean, modular blocks
-            specialEvents: [
-                {
-                    title: "The Return of Gulthias (Special Climax Ending)",
-                    trigger: "Erky Timbers remains alive at the structural collapse of the Gulthias Tree",
-                    severity: "danger",
-                    readAloud: "The great tree now lies broken across the cavern floor. Thick, black sap seeps slowly from the shattered stump... Erky steps forward, peering at the ruined stump. 'Friends… I do believe we’ve done it! Y’all have helped me finish a pilgrimage I’ve been working on for a very, very long time.' He concentrates, and the earth erupts as a pale vampire lord rises, sliding on bright pink sunglasses...",
-                    mechanics: [
-                        {
-                            type: "Will Save (Mindslip Overwhelm)",
-                            dc: "26",
-                            success: "You maintain tracking focus and can move or strike immediately before the entity acts.",
-                            failure: "That seems quite reasonable, now that you think about it. And besides, Erky wanted this! You remain frozen as he drinks."
-                        }
-                    ],
-                    outcome: "Gulthias consumes Erky, then turns to glide away out into the northern dark of the Underdark chasm."
-                }
+          "title": "Area 56: The Gulthias Tree",
+          "subtitle": "Sunless Citadel Grove Level -- CL 3.96, XP 309",
+          "readAloud": "A broad stone courtyard opens before you, its walls broken and half-swallowed by a dense tangle of thick, wiry briars. Strange plants crowd the edges, some with glossy leaves that catch the light like wet teeth, others with twisted stems that seem to twitch when not directly observed. But all of it pales before what stands at the center. Beneath a dim, green-tinged glow rises a single, monstrous tree. Its blackened limbs twist upward like grasping fingers, its bark slick and uneven, as though something beneath it has bled and never quite stopped. At its base stand three human figures, one woman, two men, perfectly still. Perched among the branches above them, a massive tree frog crouches in silence, its broad eyes blinking slowly, thoughtfully, as though taking careful measure of everything it sees. Then, a voice, high, lilting, and bright with misplaced delight, cuts through the stillness. ‘Oh, oh, oh! Stop! Stop, my tiny dancers!’ The central figure steps forward, his grin wide, his eyes far too bright. ‘Hold your little actions a moment, won’t you? You do not yet know the steps… the rhythm of the grove.’ He tilts his head, studying you with open curiosity. ‘Please,’ he says warmly. ‘Ask me anything you’d like.’",
+          "initialReadAloudChecks": [
+            {
+              "type": "Spot Check",
+              "dc": "13",
+              "success": "You notice that the skin of two of the figures is rough and bark-like.",
+              "failure": "Nothing seems amiss."
+            }
+          ],
+          "environment": {
+            "dimensions": "70 ft. x 40 ft. rectangular chamber within a much larger cavern. Walls are only 20ft. tall, as opposed to the 50ft. tall ceiling.",
+            "illumination": "Shadowy illumination from glowing fungi.",
+            "features": [
+              {
+                "name": "Stalactite Ceiling",
+                "desc": "The courtyard's walls stand only 20 feet tall, while the cavern's stalactite-dotted ceiling reaches a total of 50 feet above the ground."
+              },
+              {
+                "name": "Briars",
+                "desc": "Druids of 2nd level and higher, as well as those creatures who are Small or smaller, move through briars at normal speed. Larger creatures move at half speed or must succeed at a Fortitude save (DC 16) for every 10 feet covered to avoid 1 point of subdual damage from thorns. Player characters can clear a 5-foot-by-5-foot area of briars for every 1d4+3 rounds spent hacking. The briars are too green and moist to burn well. If the PCs haven't already alerted the twig blights of their presence, clearing a path does so immediately."
+              }
             ]
+          },
+          "dialogueTree": [
+            {
+              "prompt": "If a player asks about Belak:",
+              "speaker": "Belak",
+              "response": "'I am Belak! Belak the Outcast! Ha! Expelled, oh yes… the druidic society cast me out — fools! Fools, I say! They could not fathom my… my… grand experiment! I do not care! Look here, look, look!' He gestures wildly at the Gulthias Tree, hopping from one foot to the other. 'At last, I have found what I longed for, hidden in plain sight, wriggling and breathing and… oh, so deliciously alive… the Gulthias Tree!'"
+            },
+            {
+              "prompt": "If a player asks about the Gulthias Tree:",
+              "speaker": "Belak",
+              "response": "Beautiful, no? Dead… yet living! Ha! As to how it came to be… who can say? Ooh hoo hoo! Such a wondrous, terrible tree, thrumming with secrets that only I can coax!"
+            },
+            {
+              "prompt": "If a player asks about the Twig Blights:",
+              "speaker": "Belak",
+              "response": "Ah! The twig blights! My little puppets! Children of the Tree! They sprouted from its… fruitful gifts. Playful little things, yes? But bite if they must!"
+            },
+            {
+              "prompt": "If a player asks about the Fruit:",
+              "speaker": "Belak",
+              "response": "Fruit! Oh, yes! I give them to the goblins, little barterers, clever little misers! They scatter the seeds across the surface, unaware they’re dancing to my tune! My plan… my delightful plan… to colonize the world with the Children of Gulthias… continues!"
+            },
+            {
+              "prompt": "If a player asks about the Adventurers:",
+              "speaker": "Belak",
+              "response": "The first two… Ah, such exquisite examples! The Tree has accepted them, yes, yes! And now, they belong to me, like my little marionettes. You cannot save them, not now… not ever… unless, of course, you join the dance!"
+            },
+            {
+              "prompt": "If a player asks why Belak is talking to them:",
+              "speaker": "Belak",
+              "response": "Your tiny, fragile lives… hmm… useful yet! You will serve… in your own little way, alive… or compost. You choose! Surrender your shiny weapons, my little actors! Step lightly, submit… or I shall rewrite your steps. And we wouldn’t want that, now would we?"
+            }
+          ],
+          "creatures": [
+            {
+              "name": "Sharwyn Hucrele",
+              "initRoll": 15,
+              "hp": 8,
+              "maxHp": 8,
+              "ac": "17",
+              "saves": "Fort +2 / Ref +1 / Will +2",
+              "type": "Medium Outsider (Native)",
+              "bio": "An Aasimar Dread Necromancer corrupted by the Tree."
+            },
+            {
+              "name": "Twig Blight 4",
+              "initRoll": 10,
+              "hp": 7,
+              "maxHp": 7,
+              "ac": "15",
+              "saves": "Fort +3 / Ref +1 / Will +0",
+              "type": "Small Plant",
+              "bio": "Twigs of the Gulthias Tree, animated by its evil spirit."
+            },
+            {
+              "name": "Kulket",
+              "initRoll": 9,
+              "hp": 31,
+              "maxHp": 31,
+              "ac": "14",
+              "saves": "Fort +7 / Ref +3 / Will +0",
+              "type": "Medium Magical Beast",
+              "bio": "Belak's pet Giant Frog, transformed into this form long ago."
+            },
+            {
+              "name": "Twig Blight 1",
+              "initRoll": 6,
+              "hp": 4,
+              "maxHp": 4,
+              "ac": "15",
+              "saves": "Fort +3 / Ref +1 / Will +0",
+              "type": "Small Plant",
+              "bio": "Twigs of the Gulthias Tree, animated by its evil spirit."
+            },
+            {
+              "name": "Belak the Outcast",
+              "initRoll": 5,
+              "hp": 34,
+              "maxHp": 34,
+              "ac": "16",
+              "saves": "Fort Ø / Ref +1 / Will +9",
+              "type": "Medium Undead (Augmented Humanoid)",
+              "bio": "The crazed Necropolitan Human Spirit Shaman at the center of this mess."
+            },
+            {
+              "name": "Twig Blight 2",
+              "initRoll": 2,
+              "hp": 6,
+              "maxHp": 6,
+              "ac": "15",
+              "saves": "Fort +3 / Ref +1 / Will +0",
+              "type": "Small Plant",
+              "bio": "Twigs of the Gulthias Tree, animated by its evil spirit."
+            },
+            {
+              "name": "Twig Blight 3",
+              "initRoll": 2,
+              "hp": 5,
+              "maxHp": 5,
+              "ac": "15",
+              "saves": "Fort +3 / Ref +1 / Will +0",
+              "type": "Small Plant",
+              "bio": "Twigs of the Gulthias Tree, animated by its evil spirit."
+            },
+            {
+              "name": "Sir Braford",
+              "initRoll": 2,
+              "hp": 14,
+              "maxHp": 14,
+              "ac": "25",
+              "saves": "Fort +7 / Ref +2 / Will +5",
+              "type": "Medium Humanoid",
+              "bio": "A Human Crusader corrupted by the Tree."
+            },
+            {
+              "name": "The Gulthias Tree",
+              "initRoll": "-",
+              "hp": 60,
+              "maxHp": 60,
+              "ac": "9",
+              "saves": "Fort +10 / Ref +0 / Will +14",
+              "type": "Gargantuan Plant",
+              "bio": "The tree grown from the stake through Gulthias."
+            }
+          ],
+          "setupPositions": "The Gulthias Tree sits at the back of the room, with Belak, Sharwyn, and Braford standing in line in front of it. Kulket hangs back in the tree. The blights start hidden around the room.",
+          "tactics": {
+            "initialRound": "Belak is the main threat in this fight, and he knows it. As such, he will stay back if possible, letting Sir Braford, the twig blights, and Kulket take hits for him. He gets a single partial surprise round, which he uses to cast (invisible) Entangle, which the players are in the middle of (40ft away).",
+            "individual": [
+              {
+                "name": "Belak",
+                "strategy": "He gets a single partial surprise round, which he uses to cast (invisible) Entangle, which the players are in the middle of (40ft away). He prefers to cast (invisible) Impeding Stones next, then all three of his (invisible extended) Spiritjaws spells as quickly as he can to grapple anyone making headway through his terrain, then use Blinding Spittle if any opponents are in range. If not, he will use Snake’s Swiftness on Sir Braford, or failing that, make a ranged attack himself with his bow."
+              },
+              {
+                "name": "Sir Braford",
+                "strategy": "Sir Braford knows he aims to protect the tree first, and protect Belak second. He is also aware of where Belak has cast his terrain spells. He stays just out of their range while peppering enemies with shots from his bow until they reach him, at which point he drops his bow for his greatsword. He makes sure to put himself between the targets and Belak and the tree."
+              },
+              {
+                "name": "Kulket",
+                "strategy": "Kulket has similar tactics, if with reversed priority. He will prioritize Small targets due to his Swallow Whole ability, but will ultimately do what is needed to protect Belak."
+              },
+              {
+                "name": "Twig Blights",
+                "strategy": "The twig blights swarm into the difficult terrain, as they are immune to Entangle."
+              },
+              {
+                "name": "Sharwyn",
+                "strategy": "Sharwyn initially takes pot shots with her bow, saving her spells to heal Belak if needed with inflict spells as he is undead. She stays in the back within range so she can touch Belak when needed."
+              }
+            ]
+          },
+          "development": "If the Gulthias Tree is destroyed, Sir Braford and Sharwyn immediately die, and the twig blights lose all strategy, attacking whoever is closest that isn’t one of them (this includes, and likely is, Belak or Kulket).",
+          "treasure": {
+            "carried": "Sir Braford is wielding an Illuminating Silver Longsword +1."
+          },
+          "specialEvents": [
+            {
+              "severity": "danger",
+              "title": "The Return of Gulthias",
+              "trigger": "If Erky is alive at the end of the encounter.",
+              "readAloud": "For a moment, there is only the sharp crack of splintering wood. The great tree, once towering, once terrible, now lies broken across the cavern floor. Thick, black sap seeps slowly from the shattered stump, pooling into the soil like something too heavy to flow quickly. A pale fog begins to rise from the earth, curling low around the roots. Erky Timbers brushes some dirt off his little cloak and steps forward, peering at the ruined stump with bright, fascinated eyes. ‘Well now,’ he says softly, almost to himself. ‘Would ya look at that.’ He turns towards you with a wide, grateful smile. ‘Friends… I do believe we’ve done it!’ He clasps his hands together. ‘Truly, I can’t thank y’all enough. I know it must’ve seemed off, the way I kept insisting the tree had to go. But, well, you see—’ Erky gestures towards the stump ‘—this wasn’t just any old evil tree.’ The fog thickens around his boots. ‘It was a stake.’ He says it with cheerful matter-of-factness. ‘Driven straight through the heart of a rather important fellow.’ The ground begins to tremble faintly, as loose dirt slides towards the shattered roots. Erky continues, almost conversationally. ‘Oh, he was buried here centuries ago, you see. Head chopped clean off, stuffed full of holy wafers, stake through the heart, the whole nine yards. Very thorough job, that. But…’ he tilts his head with a sympathetic shrug. ‘Not quite thorough enough. What can you do, you know?’ The trembling grows stronger as pebbles lift from the ground and the fog spills upwards in coils. Erky spreads his arms happily. ‘Y’all have helped me finish a pilgrimage I’ve been working on for a very, very long time.’ He then inhales sharply and closes his eyes. For a moment, he concentrates. His body stiffens, and a faint tremor runs through him as he draws inward, gathering focus. ‘Just one… more… little… There we go.’ He exhales, and the air pulses. A ripple of unseen force sinks into the earth beneath the ruined tree as the ground erupts. Dirt explodes upward in a violent telekinetic blast. Roots tear free of the soil and hang suspended in the air as if caught in an invisible current.  And then, from the crater, something stirs… a figure rising as if drawn by invisible strings. Tall, pale, perfectly rigid, arms crossed tightly over its chest. At its center, a ragged cavity marks where something once pierced its heart; the neck ends abruptly, a cruel stub where a head once sat. Erky drops immediately to his knees. ‘Oh my,’ he whispers reverently. Gas swirls through the air around the corpse’s shoulders like dark smoke, gathering at the ruined neck. Muscle forms first, then bone, then skin. Long brown hair spills down over muscled shoulders as a face slowly emerges from the fog. When the process finishes, the man hovering above the crater reaches up and casually cracks his neck. The man exhales. ‘Ahh,’ he says, his voice smooth, warm, and faintly amused. ‘Now that was an unpleasant nap.’ He slowly lowers himself to the ground, and the dirt and stones hanging in the air fall with a soft patter.  He dusts off his black coat, then pulls a pair of bright pink sunglasses from his pocket and slips them on. His gaze sweeps across you with mild curiosity before landing on the kneeling gnome. ‘Well,’ he says casually. ‘This is new.’ Erky bows low, forehead nearly touching the dirt. ‘M-my lord Gulthias! It is an honor beyond words!’ Gulthias tilts his head slightly. ‘Is it now.’ ‘Oh, yes, sir!’ Erky says eagerly. ‘I’m the one who freed you! Tracked your story for years — old cult writings in the vale, bits of dragon lore in the wastes… wonderful stuff. I figured out the tree was the stake; just needed a little help toppling it.’ Erky gestures towards you. ‘They assisted quite nicely.’ Gulthias glances at you again, studying you with an expression that is more curious than threatening. ‘Did they.’ ‘Oh, yes, sir. Splendid work, really. Lots of pain and agony.’ ‘Well.’ Gulthias drawls. ‘That was thoughtful of you.’ Erky beams up at him. ‘And if it pleases you, my lord… I was hoping to join.’ ‘Join.’ ‘The cult!’ Erky says quickly. ‘The dragon cult. Your cult. I’d be proud to serve. I’ve always admired the philosophy. Pain, chaos, rebirth — beautiful ideas, really.’ Gulthias seems to consider this. For a long moment, he simply stares at Erky over the rim of his sunglasses. ‘Joining,’ Gulthias says thoughtfully. ‘Yes, I suppose that’s one way to describe it.’ Then he shrugs. ‘Sure.’ Erky’s eyes light up. ‘Rea—’ Gulthias moves. One moment, he’s standing several feet away; the next, he’s holding Erky by the collar. The gnome barely has time to yelp before Gulthias bites down on his neck. Erky’s scream echoes through the cavern. ‘W—WAIT—!’ His small hands claw uselessly at Gulthias’s arm. ‘That’s not—! That’s not what I meant—!’ Gulthias drinks calmly, completely unhurried.",
+              "mechanics": [
+                {
+                  "prompt": "If a player attempts to intervene:",  
+                  "readAloud": "Gulthias’s mind slips smoothly into your mind like silk as he looks at you. ‘Easy now. No need to ruin a perfectly pleasant occasion.’ The pressure behind the thought carries the quiet weight of absolute authority.",  
+                  "dc": "26",
+                  "success": "Are you certain you want to do this?",
+                  "failure": "That seems quite reasonable, now that you think about it. And besides, Erky wanted this!"
+                }
+              ],
+              "outcome": "After a few moments, Erky’s struggling weakens, then stops. Gulthias lets the body hang limp for a second before lowering it gently to the ground. He wipes a drop of blood from his lip with his thumb. ‘Ah,’ he says pleasantly. ‘That hit the spot.’ Erky’s corpse lifts from the floor as an unseen force takes hold of it. Gulthias glances back at you. ‘Really, I should thank you,’ he says casually. ‘You’ve been enormously helpful.’ The force holding the body behind him raises one of Erky’s arms, forming his hand into a thumbs-up. Gulthias pushes his sunglasses up the bridge of his nose. ‘Do say hello if we ever run into each other again.’ Then, with a faint gust of wind, he lifts off the ground and glides north into the darkness of the cavern. The fog slowly begins to settle as the ruined stump of the Gulthias Tree sits silent once more."
+            }
+          ],
+          "additionalSections": [
+            {
+              "heading": "Supplicants",
+              "content": "If a sentient, Small or Medium sized humanoid, monstrous humanoid, or native outsider is bound to the bole of the Gulthias Tree, the tree slowly "accepts" the creature as a supplicant. Over the period of 24 hours, the victim is sucked completely into the tree. At any time before total immersion, the victim could still be saved if unbound and hacked free. Once completely absorbed into the tree, the victim becomes a supplicant and is expelled over the course of 1 hour. The Gulthias Tree may have only four supplicants at any one time. As a supplicant, the victim possesses all its former abilities, with the addition of a permanent barkskin spell, treated as a supernatural ability. The heart of a supplicant is totally corrupt, and supplicants are unredeemable. They serve the tree, or any who shepherd it (Belak, in this instance). If the Gulthias Tree is destroyed, all supplicants perish with it."
+            },
+            {
+              "heading": "Gulthias Tree",
+              "content": "As noted under Adventure Background, only two fruits ripen on the tree per year. Though they resemble apples, the ripening fruits do not hang green on the tree from a stem. Instead, they slowly extrude from the tree, as if abscessing from a woody cyst. On or up to a week before the summer solstice, the ruby red fruit affects an imbiber like a heal spell (it can be cut into four sections without losing efficacy). On or up to a week before the winter solstice, the albino fruit affects an imbiber like a power word, kill (it can also be cut into four sections). Both fruits have 1d4 seeds that, if planted, sprout fully functional twig blights after one year. Scrutiny of the tree reveals human-sized depressions, where Sir Braford and Sharwyn were somehow absorbed, changed, and returned in their current supplicant state (see Supplicants and the Gulthias Tree on the next page)."
+            }
+          ]
         };
 
-        // Command execution to draw final node maps
+        // Fire rendering execution
         renderRoomTemplate('encounter-output', roomData);
     </script>
 </body>
