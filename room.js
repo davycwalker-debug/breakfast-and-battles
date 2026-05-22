@@ -607,8 +607,8 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
             </div>
             
             <div class="tracker-box">
-                <div class="tracker-grid">
-                    <!-- HEADER ROW (FIXED: Added tracking descriptor label) -->
+                <div class="tracker-grid" ondragover="handleTrackerDragOver(event)">
+                    <!-- HEADER ROW -->
                     <div class="tracker-header-cell" style="text-align: center; color: var(--accent-gold);">Turn Done</div>
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
@@ -616,9 +616,14 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                     
                     <!-- DATA ROWS -->
                     ${sortedTracker.map((c, index) => {
-                        const rowId = `row-${index}`;
+                        // LIVE STATUS EVALUATION ENGINE
+                        let statusClass = '';
+                        if (c.hp === 0) statusClass = 'tracker-row-staggered';
+                        else if (c.hp <= -1 && c.hp >= -9) statusClass = 'tracker-row-dying';
+                        else if (c.hp <= -10) statusClass = 'tracker-row-dead';
+
                         return `
-                            <div class="tracker-cell draggable-row-cell" 
+                            <div class="tracker-cell draggable-row-cell ${statusClass}" 
                                  style="text-align: center;"
                                  draggable="true" 
                                  data-index="${index}"
@@ -626,22 +631,22 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                                  ondragend="handleTrackerDragEnd(event)">
                                 <button type="button" class="btn-send-bottom" title="End Turn (Send to Bottom)" onclick="sendCreatureToBottom(${index})">⬇️</button>
                             </div>
-                            <div class="tracker-cell init-col draggable-row-cell" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell init-col draggable-row-cell ${statusClass}" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 Init ${c.initRoll}
                             </div>
-                            <div class="tracker-cell name-col draggable-row-cell" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell name-col draggable-row-cell ${statusClass}" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 <span class="status-text flag-staggered">Staggered</span>
                                 <span class="status-text flag-dying">Dying</span>
                                 <span class="status-text flag-dead">Dead</span>
                                 ${c.name}
                             </div>
-                            <div class="tracker-cell draggable-row-cell" style="text-align: right;" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell draggable-row-cell ${statusClass}" style="text-align: right;" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 <span class="hp-badge" draggable="false" ondragstart="return false;">
                                     <input type="number" 
                                            class="hp-input" 
                                            value="${c.hp}" 
                                            data-max="${c.maxHp}" 
-                                           oninput="evaluateCreatureVitals('${rowId}', this)">
+                                           oninput="updateCreatureHpInline(${index}, this.value)">
                                     / ${c.maxHp} HP
                                 </span>
                             </div>
@@ -776,25 +781,31 @@ function sortTrackerByInitiative() {
 }
 
 /**
- * Evaluates HP changes to toggle D&D 3.5 health condition states across row grids.
+ * Safely captures changes to inline health inputs, preserves them in the data model,
+ * and handles UI state shifting instantly across the grid matrix rows.
  */
-function evaluateCreatureVitals(rowId, inputElement) {
-    const currentHp = parseInt(inputElement.value, 10);
+function updateCreatureHpInline(index, value) {
+    if (!window.dndEngineState || !window.dndEngineState.liveCreatures) return;
     
-    // Safely look up all cell blocks linked to this creature entry index
-    const siblingCells = document.querySelectorAll(`[data-row-id="${rowId}"]`);
+    const parsedHp = parseInt(value, 10);
+    if (isNaN(parsedHp)) return;
     
-    if (isNaN(currentHp)) return;
-
-    siblingCells.forEach(cell => {
-        // Clean out previous states before evaluating conditions
+    // Commit change down into state storage
+    window.dndEngineState.liveCreatures[index].hp = parsedHp;
+    
+    // Select all layout cells related to this creature index row group
+    const cells = document.querySelectorAll(`.tracker-grid > [data-index="${index}"]`);
+    
+    cells.forEach(cell => {
+        // Drop previous condition status configurations before updating
         cell.classList.remove('tracker-row-staggered', 'tracker-row-dying', 'tracker-row-dead');
-
-        if (currentHp === 0) {
+        
+        // Append fresh rule class configurations dynamically
+        if (parsedHp === 0) {
             cell.classList.add('tracker-row-staggered');
-        } else if (currentHp <= -1 && currentHp >= -9) {
+        } else if (parsedHp <= -1 && parsedHp >= -9) {
             cell.classList.add('tracker-row-dying');
-        } else if (currentHp <= -10) {
+        } else if (parsedHp <= -10) {
             cell.classList.add('tracker-row-dead');
         }
     });
