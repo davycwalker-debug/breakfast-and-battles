@@ -136,6 +136,11 @@ function injectEngineStyles() {
             border-radius: 8px;
             padding: 8px;
             margin-bottom: 24px;
+            
+            /* NEW: This ensures long rows scroll horizontally instead of clipping or breaking layouts */
+            overflow-x: auto;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .tracker-row {
@@ -143,7 +148,10 @@ function injectEngineStyles() {
             align-items: center;
             padding: 10px 14px;
             border-bottom: 1px solid var(--border-muted);
-            gap: 12px; /* Added explicit gap to separate elements neatly */
+            gap: 12px;
+            
+            /* NEW: Ensures children elements don't crush down past their minimum sizes when scrolling */
+            min-width: max-content; 
         }
         
         .init-badge {
