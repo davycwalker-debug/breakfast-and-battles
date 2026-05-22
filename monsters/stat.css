@@ -1,48 +1,78 @@
-/* Force the base page properties to override dark-mode templates or extensions */
-html, body { 
-    background-color: #ffffff !important; 
-    color: #000000 !important;
+/* ==========================================================================
+   AUTHENTIC D&D 3.5 MONSTER MANUAL / SRD PRINT LAYOUT TEMPLATE
+   ========================================================================== */
+
+/* Page Background Setup */
+body { 
     font-family: Verdana, Arial, sans-serif; 
-    margin: 30px; 
-    margin-top: 15px;
-    height: auto;
+    margin: 0;
+    padding: 40px 20px; 
+    background-color: #2e2824; /* Rich dark environment behind the page */
+    display: flex;
+    justify-content: center;
 }
 
-/* --- THE 3.5 SRD TITLE FIX ---
-   Because 'TCHAD CR 2' is just loose raw text at the top of the file, 
-   we can style the first line of text dynamically without editing the HTML structure. */
-body {
-    font-size: 8pt;
-    line-height: 1.4;
+/* The Printable Book Page Container */
+.srd-container {
+    background-color: #fcf6eb; /* Authentic warm cream parchment tone */
+    color: #000000;            /* Sharp black body text for readability */
+    max-width: 650px;
+    width: 100%;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 1px solid #dcd1be;
+    font-size: 9pt;            /* Bumped slightly for monitor reading clarity */
+    line-height: 1.5;
 }
 
-/* Style all the bold descriptors (Init, Senses, AC, hp, etc.) */
-b { 
-    color: #000000 !important;
-    font-size: 8pt;
+/* Main Character Header (Top String Transformation) */
+.srd-container h1, .srd-title-fallback { 
+    font-size: 18pt; 
+    color: #ffffff; 
+    background-color: #8b2323; /* Classic 3.5 deep crimson title banner */
+    padding: 6px 12px;
+    margin: -30px -30px 15px -30px; /* Extends header flush to edges */
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
 }
 
-/* Overhaul the thin grey lines in your screenshot to the authentic thick SRD Maroon lines */
-hr {
-    height: 4px !important;
-    background-color: #8b2323 !important;
-    border: none !important;
-    margin: 8px 0 !important;
-    opacity: 1 !important; /* Prevents opacity fading from dark-mode extensions */
+/* Sub-headers inside abilities (if any get dropped in) */
+.srd-container h2, .srd-container h3, .srd-container h4 {
+    color: #579eb6; /* Signature 3.5 SRD deep teal accent blue */
+    font-family: Verdana, sans-serif;
+    margin: 1em 0 0.5em 0;
 }
 
-/* Hyperlinks styled to the classic SRD Teal */
-a:link, a:visited { 
-    text-decoration: none !important; 
-    color: #579eb6 !important; 
-}
-a:hover { 
-    text-decoration: underline !important; 
+/* The Core Stat Lines Styling */
+.srd-container b {
+    color: #000000;
+    font-weight: bold;
 }
 
-/* Formatting for the bottom paragraph legal text */
-p { 
-    font-size: 8pt; 
-    color: #555555 !important;
-    margin-top: 15px;
+/* 3.5 Thick Crimson Structural Breaks */
+.srd-container hr {
+    height: 3px; 
+    background-color: #8b2323; 
+    border: none;
+    margin: 10px 0;
+    width: 100%;
+    display: block;
+}
+
+/* 3.5 Interactive Link Overhaul */
+.srd-container a:link, 
+.srd-container a:visited { 
+    text-decoration: none; 
+    color: #579eb6; /* Interactive elements color-matched to SRD blue */
+    font-weight: bold;
+}
+
+.srd-container a:hover { 
+    text-decoration: underline; 
+}
+
+/* Keeps spacing clean on breaks */
+.srd-container br {
+    margin-bottom: 4px;
 }
