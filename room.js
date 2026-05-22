@@ -463,6 +463,36 @@ function injectEngineStyles() {
             background: rgba(212, 175, 55, 0.2);
             border-color: var(--accent-gold);
         }
+        /* Send to bottom interactive styling button override */
+        .btn-send-bottom {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 2px;
+            line-height: 1;
+            opacity: 0.4;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+        .btn-send-bottom:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        /* Draggable Grid Component Visual Tracking Tweaks */
+        .draggable-row-cell {
+            cursor: grab;
+            user-select: none;
+        }
+        .draggable-row-cell:active {
+            cursor: grabbing;
+        }
+        .draggable-row-cell.is-dragging {
+            opacity: 0.35;
+            background: rgba(212, 175, 55, 0.05) !important;
+            border-top: 1px dashed var(--accent-gold);
+            border-bottom: 1px dashed var(--accent-gold);
+        }
     `;
     document.head.appendChild(styleTag);
 }
@@ -561,7 +591,6 @@ function renderDialogueTree(dialogueArray) {
 function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPositions) {
     if (!liveCreaturesArray) return '';
     
-    // Use our live tracked entries
     const sortedTracker = liveCreaturesArray;
     const rosterData = originalRosterArray || [];
     
@@ -569,12 +598,12 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
         <section class="room-section combat-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <h3 style="margin: 0;">⚔️ Combat & Initiative Tracker</h3>
-                <!-- MANUAL SORT TOOL ACTION BUTTON -->
                 <button type="button" class="btn-sort-tracker" onclick="sortTrackerByInitiative()">⚡ Sort Initiative</button>
             </div>
             
             <div class="tracker-box">
-                <div class="tracker-grid">
+                <!-- Added dragover listener to the container to handle general sorting mechanics -->
+                <div class="tracker-grid" ondragover="handleTrackerDragOver(event)">
                     <!-- HEADER ROW -->
                     <div class="tracker-header-cell"></div>
                     <div class="tracker-header-cell">Initiative</div>
@@ -585,20 +614,26 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                     ${sortedTracker.map((c, index) => {
                         const rowId = `row-${index}`;
                         return `
-                            <div class="tracker-cell" data-row-id="${rowId}">
-                                <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
+                            <!-- Drag Target Blocks -->
+                            <div class="tracker-cell draggable-row-cell" 
+                                 draggable="true" 
+                                 data-index="${index}"
+                                 ondragstart="handleTrackerDragStart(event, ${index})"
+                                 ondragend="handleTrackerDragEnd(event)">
+                                <!-- Swapped checkbox for a 'send to bottom' interactive button -->
+                                <button type="button" class="btn-send-bottom" title="Send to Bottom" onclick="sendCreatureToBottom(${index})">⬇️</button>
                             </div>
-                            <div class="tracker-cell init-col" data-row-id="${rowId}">
+                            <div class="tracker-cell init-col draggable-row-cell" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 Init ${c.initRoll}
                             </div>
-                            <div class="tracker-cell name-col" data-row-id="${rowId}">
+                            <div class="tracker-cell name-col draggable-row-cell" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 <span class="status-text flag-staggered">Staggered</span>
                                 <span class="status-text flag-dying">Dying</span>
                                 <span class="status-text flag-dead">Dead</span>
                                 ${c.name}
                             </div>
-                            <div class="tracker-cell" style="text-align: right;" data-row-id="${rowId}">
-                                <span class="hp-badge">
+                            <div class="tracker-cell draggable-row-cell" style="text-align: right;" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
+                                <span class="hp-badge" draggable="false" ondragstart="return false;">
                                     <input type="number" 
                                            class="hp-input" 
                                            value="${c.hp}" 
@@ -610,7 +645,7 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                         `;
                     }).join('')}
 
-                    <!-- QUICK ADD FORM ROW (Now pinned cleanly at the bottom) -->
+                    <!-- QUICK ADD FORM ROW (Non-draggable) -->
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
                         <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
                     </div>
@@ -656,6 +691,69 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
             ${setupPositions ? `<p class="setup-positions" style="margin-top:20px;"><strong>Setup Positions:</strong> ${setupPositions}</p>` : ''}
         </section>
     `;
+}
+
+// Local helper to track the active drag element state across cells
+let draggedIndex = null;
+
+function handleTrackerDragStart(e, index) {
+    draggedIndex = index;
+    e.dataTransfer.effectAllowed = 'move';
+    
+    // Highlight all cells belonging to this specific row group
+    document.querySelectorAll(`.draggable-row-cell[data-index="${index}"]`).forEach(cell => {
+        cell.classList.add('is-dragging');
+    });
+}
+
+function handleTrackerDragEnd(e) {
+    document.querySelectorAll('.draggable-row-cell').forEach(cell => {
+        cell.classList.remove('is-dragging');
+        cell.classList.remove('drag-over');
+    });
+    draggedIndex = null;
+}
+
+function handleTrackerDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    
+    // Find closest cell target underneath cursor element
+    const targetCell = e.target.closest('.draggable-row-cell');
+    if (!targetCell) return;
+    
+    const targetIndex = parseInt(targetCell.getAttribute('data-index'), 10);
+    if (targetIndex === draggedIndex) return;
+
+    // Execute state array indexing re-allocation manipulation
+    const creatures = window.dndEngineState.liveCreatures;
+    const movedItem = creatures.splice(draggedIndex, 1)[0];
+    creatures.splice(targetIndex, 0, movedItem);
+    
+    // Update live memory cursor tracking reference before template compilation
+    draggedIndex = targetIndex;
+
+    // Instantly redraw interface layers
+    renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
+}
+
+/**
+ * Strips target creature out of current array tracking layout, and pushes directly to tail.
+ */
+function sendCreatureToBottom(index) {
+    if (!window.dndEngineState || !window.dndEngineState.liveCreatures) return;
+    
+    const creatures = window.dndEngineState.liveCreatures;
+    if (creatures.length <= 1) return; // No point re-ordering a list of 1 element
+    
+    // Pull target creature item layout reference block out
+    const targetCreature = creatures.splice(index, 1)[0];
+    
+    // Push instantly onto the tail frame array boundary
+    creatures.push(targetCreature);
+    
+    // Redraw view layer state instantly
+    renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
 }
 
 /**
