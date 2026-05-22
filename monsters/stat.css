@@ -1,8 +1,4 @@
-/* ==========================================================================
-   AUTHENTIC D&D 3.5 MONSTER MANUAL / SRD PRINT LAYOUT TEMPLATE
-   ========================================================================== */
-
-/* Page Background Setup */
+/* Page Environment */
 body { 
     font-family: Verdana, Arial, sans-serif; 
     margin: 0;
@@ -12,7 +8,7 @@ body {
     justify-content: center;
 }
 
-/* The Printable Book Page Container */
+/* Base Parchment Containment */
 .srd-container {
     background-color: #fcf6eb; 
     color: #000000;            
@@ -22,70 +18,70 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     border: 1px solid #dcd1be;
     font-size: 9pt;            
-    line-height: 1.6; /* Higher line-height splits text lines apart naturally */
+    line-height: 1.5;
 }
 
-/* Main Character Header (Top String Transformation) */
-.srd-container h1, .srd-title-fallback { 
-    font-size: 18pt; 
-    color: #ffffff; 
-    background-color: #8b2323; 
-    padding: 6px 12px;
-    margin: -30px -30px 15px -30px; 
-    text-transform: uppercase;
+/* Master block rules: Replaces raw <hr/> tags with clean dynamic spacing */
+.srd-block {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 3px solid #8b2323; /* Crisp 3.5 Maroon line beneath sections */
+}
+
+/* 1. Header Banner Variant */
+.srd-header {
+    background-color: #8b2323;
+    color: #ffffff;
+    margin: -30px -30px 15px -30px;
+    padding: 15px 30px;
+    border-bottom: none;
+    line-height: 1.6;
+}
+.srd-header b {
+    color: #ffedb7 !important; /* Soft gold for headers */
+}
+
+/* General Bold styling across lower body */
+.srd-block b {
+    color: #000000;
     font-weight: bold;
-    letter-spacing: 0.1em;
 }
 
-/* Sub-headers inside abilities (if any get dropped in) */
-.srd-container h2, .srd-container h3, .srd-container h4 {
-    color: #579eb6; 
-    font-family: Verdana, sans-serif;
-    margin: 1.2em 0 0.6em 0;
+/* 2 & 3. Combat Blocks (Defenses and Offenses) */
+.srd-defenses, .srd-offense {
+    padding-left: 10px;
+    border-left: 3px solid #579eb6; /* Clean SRD Teal sidebar accents */
 }
 
-/* Uniform Bold Tags 
-   Every bold tag will now look identical and clean, regardless of where it sits. */
-.srd-container b {
-    color: #000000; 
-    font-weight: bold;
+/* 4. Core Attributes */
+.srd-stats {
+    line-height: 1.6;
 }
 
-/* 3.5 Thick Crimson Structural Breaks */
-.srd-container hr {
-    height: 3px; 
-    background-color: #8b2323; 
-    border: none;
-    margin: 18px 0; /* More spacing around horizontal rules creates structural breathing room */
-    width: 100%;
+/* 5. Special Abilities Block Transformation 
+   Transforms a massive wall of raw text into a clearly structured glossary list. */
+.srd-abilities {
+    border-bottom: none; /* Removes double borders at sheet bottom */
+    line-height: 1.6;
+}
+.srd-abilities br {
     display: block;
-}
-
-/* 3.5 Interactive Link Overhaul */
-.srd-container a:link, 
-.srd-container a:visited { 
-    text-decoration: none; 
-    color: #579eb6; 
-    font-weight: bold;
-}
-
-.srd-container a:hover { 
-    text-decoration: underline; 
-}
-
-/* Adds clean spacing whenever the tool hits a line break */
-.srd-container br {
     content: "";
-    margin-bottom: 4px;
-    display: block;
+    margin-bottom: 8px; /* Extra breathing room between separate abilities */
 }
 
-/* Structural Cleanup for the Bottom Software/Legal Footnote */
+/* Generates book-accurate hanging indentation for descriptive text entries */
+.srd-abilities b {
+    color: #8b2323; /* Highlight names of feats and abilities in maroon */
+    display: inline;
+}
+
+/* Minimalist cleanup for software attribution */
 .srd-container p {
     font-size: 7.5pt;
     line-height: 1.4;
     color: #8a8275;
     border-top: 1px dashed #dcd1be;
     padding-top: 12px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
