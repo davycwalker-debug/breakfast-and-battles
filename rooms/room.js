@@ -456,7 +456,7 @@ function injectEngineStyles() {
     const linkTag = document.createElement('link');
     linkTag.id = 'dnd-engine-core-styles';
     linkTag.rel = 'stylesheet';
-    linkTag.href = 'rooms/room.css';
+    linkTag.href = 'https://davycwalker-debug.github.io/breakfast-and-battles/rooms/room.css';
 
     document.head.appendChild(linkTag);
 }
