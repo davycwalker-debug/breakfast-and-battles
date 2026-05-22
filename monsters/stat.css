@@ -1,6 +1,10 @@
-/* Page Environment */
+/* ==========================================================================
+   THE ULTIMATE D&D 3.5 CORE STAT BLOCK OVERHAUL
+   ========================================================================== */
+
+/* Page Framework Setup */
 body { 
-    font-family: Verdana, Arial, sans-serif; 
+    font-family: "Verdana", "Arial", sans-serif; 
     margin: 0;
     padding: 40px 20px; 
     background-color: #2e2824; 
@@ -8,80 +12,112 @@ body {
     justify-content: center;
 }
 
-/* Base Parchment Containment */
+/* Parchment Page Frame */
 .srd-container {
     background-color: #fcf6eb; 
-    color: #000000;            
+    color: #1a1a1a;            
     max-width: 650px;
     width: 100%;
-    padding: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    padding: 35px 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     border: 1px solid #dcd1be;
     font-size: 9pt;            
-    line-height: 1.5;
+    line-height: 1.6;
+    box-sizing: border-box;
 }
 
-/* Master block rules: Replaces raw <hr/> tags with clean dynamic spacing */
+/* Master Component Block spacing */
 .srd-block {
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: 3px solid #8b2323; /* Crisp 3.5 Maroon line beneath sections */
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 3px solid #8b2323; 
 }
 
-/* 1. Header Banner Variant */
+/* 1. Header Block Overhaul */
 .srd-header {
     background-color: #8b2323;
     color: #ffffff;
-    margin: -30px -30px 15px -30px;
-    padding: 15px 30px;
+    margin: -35px -30px 20px -30px;
+    padding: 20px 30px;
     border-bottom: none;
-    line-height: 1.6;
+    font-size: 9.5pt;
+    line-height: 1.7;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Dynamically separates "TCHAD" and "CR 2" text strings natively */
+.srd-header {
+    font-weight: normal;
 }
 .srd-header b {
-    color: #ffedb7 !important; /* Soft gold for headers */
+    color: #ffedb7 !important; 
+    letter-spacing: 0.05em;
 }
 
-/* General Bold styling across lower body */
+/* Universal Bold categorization accenting */
 .srd-block b {
-    color: #000000;
+    color: #8b2323; /* Classic book-accurate maroon markers */
     font-weight: bold;
+    font-size: 9pt;
 }
 
-/* 2 & 3. Combat Blocks (Defenses and Offenses) */
+/* 2 & 3. Side-by-Side Combat Components (Defenses & Offenses) */
 .srd-defenses, .srd-offense {
-    padding-left: 10px;
-    border-left: 3px solid #579eb6; /* Clean SRD Teal sidebar accents */
+    padding: 10px 15px;
+    background-color: rgba(87, 158, 182, 0.04); /* Ultra-soft matching teal tint */
+    border-left: 4px solid #579eb6; 
+    border-bottom: none; /* Replaces heavy blocks with dynamic border rules */
+    margin-bottom: 12px;
+    border-radius: 0 4px 4px 0;
 }
 
-/* 4. Core Attributes */
+.srd-defenses b, .srd-offense b {
+    color: #2b5b6b; /* Accentuated dark teal combat sub-labels */
+}
+
+/* 4. Core Characteristics Block spacing fixes */
 .srd-stats {
-    line-height: 1.6;
+    line-height: 1.7;
+    padding-top: 8px;
 }
-
-/* 5. Special Abilities Block Transformation 
-   Transforms a massive wall of raw text into a clearly structured glossary list. */
-.srd-abilities {
-    border-bottom: none; /* Removes double borders at sheet bottom */
-    line-height: 1.6;
-}
-.srd-abilities br {
-    display: block;
-    content: "";
-    margin-bottom: 8px; /* Extra breathing room between separate abilities */
-}
-
-/* Generates book-accurate hanging indentation for descriptive text entries */
-.srd-abilities b {
-    color: #8b2323; /* Highlight names of feats and abilities in maroon */
+.srd-stats b {
+    color: #000000;
     display: inline;
 }
 
-/* Minimalist cleanup for software attribution */
+/* 5. The Ultimate Special Ability Feature Glossary 
+   Transforms the bottom area into cleanly indented book glossary entries. */
+.srd-abilities {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.srd-abilities br {
+    display: block;
+    content: "";
+    margin-bottom: 14px; /* Breaks separate items apart with beautiful padding */
+}
+
+/* Authentic book-style hanging indent formatting rule */
+.srd-abilities {
+    padding-left: 20px;
+    text-indent: -20px;
+}
+
+.srd-abilities b {
+    color: #8b2323;
+    font-size: 9.5pt;
+    letter-spacing: 0.02em;
+}
+
+/* License & Attribution Footnote cleanup */
 .srd-container p {
     font-size: 7.5pt;
-    line-height: 1.4;
+    line-height: 1.5;
     color: #8a8275;
     border-top: 1px dashed #dcd1be;
-    padding-top: 12px;
-    margin-top: 20px;
+    padding-top: 15px;
+    margin-top: 30px;
+    text-indent: 0;
 }
