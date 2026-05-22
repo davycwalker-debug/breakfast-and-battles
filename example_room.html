@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area 12: The Throne Room</title>
+    <title>Area 41: Hall of the Goblin Chief</title>
 </head>
 <body>
 
@@ -21,18 +21,18 @@
         const roomData = {
             title: "Area 12: The Throne Room",
             subtitle: "The Sunless Citadel - Kobold/Goblin Frontlines",
-            readAloud: "The chamber opens in a near-perfect circle, its 35-foot-wide floor rising to a tall, domed ceiling. At the center, a round shaft gapes downward, sixty feet deep, its walls slick with sickly white and gray vines that writhe faintly in the dim violet light spilling from below... [Truncated for layout example output clarity]",
+            readAloud: "The chamber opens in a near-perfect circle, its 35-foot-wide floor rising to a tall, domed ceiling. At the center, a round shaft gapes downward, sixty feet deep, its walls slick with sickly white and gray vines that writhe faintly in the dim violet light spilling from below. Four torches flicker along the chamber walls, casting long, wavering shadows that ripple across the cracked stone floor. Against the curve of the northwest wall sits a crudely carved throne of stone, its base doubled as a footstool by a battered iron chest. Next to it, a wide stone pot holds a small sapling, its twisted, briar-like branches dark and brittle, the green of life absent. Lounging across the throne is a striking figure. Barefoot and bare-chested, he lies sideways in the seat, dressed only in fur pants and a narrow armored mantle that barely covers the top of his chest. A long cloak drapes carelessly over one shoulder. His skin glows a deep red; his hands and feet end in sharp claws. He lifts his head lazily, revealing a broad, fang-lined grin, his eyes glinting with mischief. Beside him stands a small goblin, unassuming but alert, a tiny frog perched atop her head. She tilts her head to look at you, causing the frog to scramble and almost fall, but she reaches up and adjusts it with one hand without ever breaking her gaze. Other goblins and hobgoblins linger near the doors, and along the paths to the throne, their weapons at the ready, muscles coiled for the first move. Without warning, the larger goblinoid pushes himself up from the throne in a single fluid motion. His clawed hands stretch out as his grin widens, a playful, almost theatrical flourish. ’Ah! At last, you arrive,’ he calls, voice echoing across the dome. ‘I was so disappointed when Balsag stole that little dragon away… all that war, gone before it even began! Still,’ he leans forward, eyes gleaming, ‘perhaps you’ll make up for it. Let’s see if you can put up a proper struggle.’ His cloak flares as he shifts his weight, muscles coiling as if ready to spring. Around him, the other goblins and hobgoblins tense, weapons raised, waiting for the signal. The little goblin beside him slightly swivels her head, frog hopping lightly but remaining perched, tracking every movement in the room.",
             environment: {
-                dimensions: "35ft diameter circle, tall domed ceiling",
-                illumination: "Dim light (4 peripheral torches + violet shaft glow)",
+                dimensions: "This chamber is a 35ft diameter circle with a tall domed ceiling and a 15ft diameter hole in the center. The hole is an 8ft shaft.",
+                illumination: "Bright (4 peripheral torches + violet shaft glow)",
                 features: [
                     { name: "Central Shaft", desc: "15ft wide hole, drops 80ft. Coated in vines (DC 0 Climb). Falling deals 8d6 damage; DC 16 Reflex save can catch vines midway down." },
                     { name: "Throne", desc: "Crudely made stone seat in northwest corner." },
                     { name: "Stone Pot", desc: "Sits next to the throne, containing a twisted, dark sapling." }
                 ],
                 doors: [
-                    { location: "Northeast Corner", desc: "Standard wooden door, unlocked." },
-                    { location: "Southeast Corner", desc: "Standard wooden door, unlocked." }
+                    { location: "Northeast Corner", desc: "Standard stone door, unlocked." },
+                    { location: "Southeast Corner", desc: "Standard stone door, unlocked." }
                 ]
             },
             creatures: [
@@ -59,10 +59,9 @@
                 { name: "Poison Needle Trap", cr: "2", trigger: "Opening chest without bypass", reset: "None", searchDc: "21", disableDc: "20", effect: "Diluted Wyvern Poison: DC 15 Fort save or take 1d4 Con / 1d4 secondary Con. DC 16 Reflex save avoids completely." }
             ],
             treasure: {
-                carried: "Talgen Hurcele's signet ring (on Durnn's finger), Pegasus Cloak.",
+                carried: "Talgen Hurcele's signet ring (on Durnn's finger).",
                 containers: [
-                    { name: "Trapped Iron Footrest Chest", contents: "231 gp, two 30-gp onyx gems, 2 doses of antitoxin, arcane scroll of knock, potion of cat's grace." },
-                    { name: "Room Structural Hoard Base", contents: "Wyrmfang Amulet, Arcanist's Glove." }
+                    { name: "Trapped Iron Footrest Chest", contents: "231 gp, two 30-gp onyx gems, 2 doses of antitoxin, arcane scroll of knock, potion of cat's grace, Wyrmfang Amulet, Arcanist's Glove." }
                 ]
             },
             // This is where you can easily append infinite extra custom panels 
