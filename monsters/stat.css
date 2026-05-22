@@ -1,14 +1,16 @@
 /* ==========================================================================
-   AUTHENTIC 3.5 SRD FLAT MONSTER COMPENDIUM STYLE
+   AUTHENTIC 3.5 SRD FLAT MONSTER COMPENDIUM STYLE (CENTERED & FIXED FOOTER)
    ========================================================================== */
 
-/* Flat White Site Background Environment */
+/* Flat White Site Background Environment & Centering */
 html, body {
     background-color: #ffffff !important;
     color: #000000 !important;
     font-family: "Verdana", Arial, sans-serif;
-    margin: 30px;
-    margin-top: 20px;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center; /* Centers the sheet horizontally on wide screens */
 }
 
 /* Base Document Wrapper Container */
@@ -16,10 +18,10 @@ html, body {
     max-width: 700px;
     width: 100%;
     background-color: #ffffff;
+    box-sizing: border-box;
 }
 
-/* --- THE SECTION LINE DIVIDERS ---
-   Replicates the exact 4px deep crimson lines from the official d20 SRD site */
+/* --- THE SECTION LINE DIVIDERS --- */
 .srd-block {
     font-size: 8.5pt;
     line-height: 1.5;
@@ -28,8 +30,7 @@ html, body {
     border-bottom: 4px solid #8b2323; 
 }
 
-/* --- MONSTER SHEET TITLE ---
-   Styles the loose text container cleanly without scaling the 'Init' tag */
+/* --- MONSTER SHEET TITLE --- */
 .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
@@ -37,13 +38,12 @@ html, body {
     line-height: 1.5;
 }
 
-/* This fixes the first line text wrapping and gives TCHAD the massive, 
-   spaced-out 3.5 header font sizing dynamically */
+/* Formats "TCHAD CR 2" into the large, spaced-out 3.5 header font dynamically */
 .srd-header::first-line {
     font-size: 20pt;
     font-weight: bold;
     color: #1a1a1a;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     line-height: 1.2;
 }
 
@@ -65,14 +65,13 @@ html, body {
     text-decoration: underline; 
 }
 
-/* --- HANGING INTENT ABILITY PROFILES ---
-   Implements the official site's .stat-block class rule to clean up text walls */
+/* --- HANGING INTENT ABILITY PROFILES --- */
 .srd-abilities-block {
     font-size: 8.5pt;
     line-height: 1.6;
     display: block;
-    padding-left: 25px;    /* Offsets text container spacing */
-    text-indent: -25px;   /* Shifts the very first word back out to left edge */
+    padding-left: 25px;   
+    text-indent: -25px;   
 }
 
 /* Colorize the lower ability headers to the classic deep crimson accent */
@@ -86,4 +85,17 @@ html, body {
     display: block;
     content: "";
     margin-bottom: 8px;
+}
+
+/* --- LEGAL DISCLAIMER FOOTER ---
+   Explicitly isolates and shrinks the copyright paragraph back to a tiny footprint */
+.srd-container p {
+    font-size: 7.5pt !important;
+    line-height: 1.4 !important;
+    color: #666666 !important;
+    margin-top: 25px !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed #cbd4c5 !important;
+    text-indent: 0px !important; /* Prevents inheriting the hanging indent */
+    display: block !important;
 }
