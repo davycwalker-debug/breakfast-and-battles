@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area 41: Hall of the Goblin Chief</title>
+    <title>Area 4: The Whispering Ossuary</title>
 </head>
 <body>
 
@@ -19,55 +19,139 @@
     <script>
         // Data input object mapping out your exact campaign homework notes
         const roomData = {
-            title: "Area 12: The Throne Room",
-            subtitle: "The Sunless Citadel - Kobold/Goblin Frontlines",
-            readAloud: "The chamber opens in a near-perfect circle, its 35-foot-wide floor rising to a tall, domed ceiling. At the center, a round shaft gapes downward, sixty feet deep, its walls slick with sickly white and gray vines that writhe faintly in the dim violet light spilling from below. Four torches flicker along the chamber walls, casting long, wavering shadows that ripple across the cracked stone floor. Against the curve of the northwest wall sits a crudely carved throne of stone, its base doubled as a footstool by a battered iron chest. Next to it, a wide stone pot holds a small sapling, its twisted, briar-like branches dark and brittle, the green of life absent. Lounging across the throne is a striking figure. Barefoot and bare-chested, he lies sideways in the seat, dressed only in fur pants and a narrow armored mantle that barely covers the top of his chest. A long cloak drapes carelessly over one shoulder. His skin glows a deep red; his hands and feet end in sharp claws. He lifts his head lazily, revealing a broad, fang-lined grin, his eyes glinting with mischief. Beside him stands a small goblin, unassuming but alert, a tiny frog perched atop her head. She tilts her head to look at you, causing the frog to scramble and almost fall, but she reaches up and adjusts it with one hand without ever breaking her gaze. Other goblins and hobgoblins linger near the doors, and along the paths to the throne, their weapons at the ready, muscles coiled for the first move. Without warning, the larger goblinoid pushes himself up from the throne in a single fluid motion. His clawed hands stretch out as his grin widens, a playful, almost theatrical flourish. ’Ah! At last, you arrive,’ he calls, voice echoing across the dome. ‘I was so disappointed when Balsag stole that little dragon away… all that war, gone before it even began! Still,’ he leans forward, eyes gleaming, ‘perhaps you’ll make up for it. Let’s see if you can put up a proper struggle.’ His cloak flares as he shifts his weight, muscles coiling as if ready to spring. Around him, the other goblins and hobgoblins tense, weapons raised, waiting for the signal. The little goblin beside him slightly swivels her head, frog hopping lightly but remaining perched, tracking every movement in the room.",
-            environment: {
-                dimensions: "This chamber is a 35ft diameter circle with a tall domed ceiling and a 15ft diameter hole in the center. The hole is an 8ft shaft.",
-                illumination: "Bright (4 peripheral torches + violet shaft glow)",
-                features: [
-                    { name: "Central Shaft", desc: "15ft wide hole, drops 80ft. Coated in vines (DC 0 Climb). Falling deals 8d6 damage; DC 16 Reflex save can catch vines midway down." },
-                    { name: "Throne", desc: "Crudely made stone seat in northwest corner." },
-                    { name: "Stone Pot", desc: "Sits next to the throne, containing a twisted, dark sapling." }
-                ],
-                doors: [
-                    { location: "Northeast Corner", desc: "Standard stone door, unlocked." },
-                    { location: "Southeast Corner", desc: "Standard stone door, unlocked." }
-                ]
+          "title": "Area 4: The Whispering Ossuary",
+          "subtitle": "Dungeon Level 2 — Encounter CR 7",
+          "readAloud": "The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.",
+          "initialReadAloudChecks": [
+            {
+              "type": "Spot Check",
+              "dc": "17",
+              "success": "You notice the shallow liquid in the center isn't water—it has an oily sheen and clings to the stone like heavy grease.",
+              "failure": "The fluid appears to be ordinary, stagnant groundwater."
             },
-            creatures: [
-                { name: "Ees (Hobgoblin Rookie 1)", initRoll: 21, hp: 3, maxHp: 3, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Vanguard soldier defending the Southeastern checkpoint." },
-                { name: "Twig Blight", initRoll: 19, hp: 3, maxHp: 3, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Belak's plant-spy hiding inside the stone pottery box." },
-                { name: "Loss (Goblin Rookie 1)", initRoll: 16, hp: 8, maxHp: 8, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Guards the pathway leading up from the Northeast door." },
-                { name: "Osse (Goblin Rookie 2)", initRoll: 14, hp: 5, maxHp: 5, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Guards the pathway leading up from the Southeast door." },
-                { name: "Meahx (Goblin Rookie 3)", initRoll: 13, hp: 6, maxHp: 6, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Backup defense flanking the rookie hub line." },
-                { name: "Durnn", initRoll: 11, hp: 39, maxHp: 39, ac: "19 (20)", saves: "+6 / +9 / +2", type: "Med Humanoid", bio: "Hotheaded Doom Fist chief who mutinied against the Wyrmlord." },
-                { name: "Wrirlies (Hobgoblin Rookie 2)", initRoll: 11, hp: 7, maxHp: 7, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Stands guard centrally ready to run interference." },
-                { name: "Grenl", initRoll: 4, hp: 25, maxHp: 25, ac: "20", saves: "+5 / +6 / +5", type: "Small Humanoid", bio: "Tribal Shaman who sides purely with whoever has power." },
-                { name: "Cleaptith (Hobgoblin Rookie 3)", initRoll: 2, hp: 9, maxHp: 9, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Guards the Northeastern access structural threshold." }
+            {
+              "type": "Knowledge (Religion)",
+              "dc": "20",
+              "success": "The skull patterns match the profane funereal rites of Nerull, God of Death. This room is consecrated unholy ground.",
+              "failure": "You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin."
+            }
+          ],
+          "environment": {
+            "dimensions": "40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling",
+            "illumination": "Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.",
+            "features": [
+              {
+                "name": "Obsidian Pool",
+                "desc": "Acts as difficult terrain. Filled with unholy, flammable grease. Creatures standing inside take a -2 penalty on saving throws against negative energy."
+              },
+              {
+                "name": "Skull-Lined Walls",
+                "desc": "Provides a +2 circumstance bonus to Hide checks for Tiny or smaller creatures due to the deep, overlapping shadows."
+              }
             ],
-            setupPositions: "Durnn is seated on the throne. Grenl stands at his left. Twig Blight sits in the pot. Hobgoblins hold doors while goblins patrol the room pathways.",
-            tactics: {
-                initialRound: "Goblins and Twig Blight swarm to set up Flanking lines. Hobgoblins seek Sneak Attack damage and attempt to Bull Rush targets into the open shaft.",
-                individual: [
-                    { name: "Durnn", strategy: "Uses Landshark Leap. Applies a -4 attack modifier to deal nonlethal strikes to bloodied targets. Retains Spring Attack to hit and hide behind Grenl." },
-                    { name: "Grenl", strategy: "Casts Animalistic Power on Durnn, then isolates the arena with Silence (leaving her corner out). Buffs with Blade of Blood." }
-                ]
-            },
-            development: "If Durnn falls, Grenl triggers Close Wounds out-of-turn. If downed a second time, Durnn drops down the shaft using his Pegasus Cloak (Feather Fall). Grenl surrenders immediately.",
-            traps: [
-                { name: "Poison Needle Trap", cr: "2", trigger: "Opening chest without bypass", reset: "None", searchDc: "21", disableDc: "20", effect: "Diluted Wyvern Poison: DC 15 Fort save or take 1d4 Con / 1d4 secondary Con. DC 16 Reflex save avoids completely." }
-            ],
-            treasure: {
-                carried: "Talgen Hurcele's signet ring (on Durnn's finger).",
-                containers: [
-                    { name: "Trapped Iron Footrest Chest", contents: "231 gp, two 30-gp onyx gems, 2 doses of antitoxin, arcane scroll of knock, potion of cat's grace, Wyrmfang Amulet, Arcanist's Glove." }
-                ]
-            },
-            // This is where you can easily append infinite extra custom panels 
-            additionalSections: [
-                { heading: "📜 Lore Notes (DC 15 Knowledge)", content: "Characters tracking regional movements recognize Durnn's uniform colors as the splintered remain elements of the Doom Fist militia line." }
+            "doors": [
+              {
+                "location": "North Wall",
+                "desc": "Heavy iron-banded oak door (Locked, Open Lock DC 25, Break DC 23)."
+              },
+              {
+                "location": "South Wall",
+                "desc": "Open archway leading back to Area 3 (The Sunken Vestibule)."
+              }
             ]
+          },
+          "dialogueTree": [
+            {
+              "prompt": "If a player attempts to parley with the spirit before initiative or during a lull:",
+              "speaker": "The Bleak Wraith",
+              "response": "Mortals tread upon the marrow of the forgotten. Turn back, or join the choir of the silent."
+            },
+            {
+              "prompt": "Demanding passage through the locked North Door:",
+              "speaker": "The Bleak Wraith",
+              "response": "The key is carved from the memory of your first breath. Give it up, and the path opens."
+            }
+          ],
+          "creatures": [
+            {
+              "name": "The Bleak Wraith",
+              "initRoll": 21,
+              "hp": 44,
+              "maxHp": 44,
+              "ac": "15 (+2 Dex, +3 deflection), touch 15, flat-footed 13",
+              "saves": "Fort +2 / Ref +4 / Will +6",
+              "type": "Undead (Incorporeal)",
+              "bio": "A swirling manifestation of negative energy radiating an aura of unnatural chill."
+            },
+            {
+              "name": "Ossuary Skeletons (x3)",
+              "initRoll": 14,
+              "hp": 13,
+              "maxHp": 13,
+              "ac": "15 (+2 Dex, +3 natural)",
+              "saves": "Fort +0 / Ref +2 / Will +2",
+              "type": "Undead (Humanoid Skeleton)",
+              "bio": "Reanimated bone constructs pulling themselves free from the wall masonry."
+            }
+          ],
+          "setupPositions": "The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.",
+          "tactics": {
+            "initialRound": "The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.",
+            "individual": [
+              {
+                "name": "The Bleak Wraith",
+                "strategy": "Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength."
+              },
+              {
+                "name": "Ossuary Skeletons",
+                "strategy": "Form a defensive line around the obsidian pool, using Aid Another to boost the Wraith's AC or typing up martial characters."
+              }
+            ]
+          },
+          "development": "If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.",
+          "traps": [
+            {
+              "name": "Wall-Mounted Scythe Trap",
+              "cr": "4",
+              "trigger": "Pressure plate located in front of the obsidian pool (Search DC 22 to locate).",
+              "reset": "Manual (Requires a repair kit and 3 rounds of work).",
+              "searchDc": "22",
+              "disableDc": "20",
+              "effect": "+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line."
+            }
+          ],
+          "treasure": {
+            "carried": "The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).",
+            "containers": [
+              {
+                "name": "Bottom of the Obsidian Pool",
+                "contents": "A submerged iron lockbox holding 420 gp, an Onyx gemstone (worth 150 gp used for Animate Dead), and a +1 Heavy Steel Shield of Light."
+              }
+            ]
+          },
+          "specialEvents": [
+            {
+              "severity": "danger",
+              "title": "Unraveling the Consecration",
+              "trigger": "If a PC channels positive energy or casts Holy Word inside the room.",
+              "readAloud": "A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.",
+              "mechanics": [
+                {
+                  "type": "Will Save",
+                  "dc": "15",
+                  "success": "The creature resists the psychological horror of the wail.",
+                  "failure": "The creature is Shaken (-2 on attack rolls, saving throws, and skill checks) for 1d4 rounds."
+                }
+              ],
+              "outcome": "The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2."
+            }
+          ],
+          "additionalSections": [
+            {
+              "heading": "📜 Lore & Legends",
+              "content": "A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself."
+            }
+          ]
         };
 
         // Fire rendering execution
