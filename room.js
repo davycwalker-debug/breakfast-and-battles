@@ -186,6 +186,11 @@ function injectEngineStyles() {
             border-bottom: 1px solid var(--border-muted);
         }
         
+        /* Add this to center alignment across row actions cleanly */
+        .tracker-grid > div:nth-child(4n+1) {
+            text-align: center;
+        }
+        
         /* Remove bottom border on the very last grid row items */
         .tracker-grid > div:nth-last-child(-n+4) {
             border-bottom: none;
@@ -602,10 +607,9 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
             </div>
             
             <div class="tracker-box">
-                <!-- Added dragover listener to the container to handle general sorting mechanics -->
-                <div class="tracker-grid" ondragover="handleTrackerDragOver(event)">
-                    <!-- HEADER ROW -->
-                    <div class="tracker-header-cell"></div>
+                <div class="tracker-grid">
+                    <!-- HEADER ROW (FIXED: Added tracking descriptor label) -->
+                    <div class="tracker-header-cell" style="text-align: center; color: var(--accent-gold);">Turn Done</div>
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell" style="text-align: right;">Health</div>
@@ -614,14 +618,13 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                     ${sortedTracker.map((c, index) => {
                         const rowId = `row-${index}`;
                         return `
-                            <!-- Drag Target Blocks -->
                             <div class="tracker-cell draggable-row-cell" 
+                                 style="text-align: center;"
                                  draggable="true" 
                                  data-index="${index}"
                                  ondragstart="handleTrackerDragStart(event, ${index})"
                                  ondragend="handleTrackerDragEnd(event)">
-                                <!-- Swapped checkbox for a 'send to bottom' interactive button -->
-                                <button type="button" class="btn-send-bottom" title="Send to Bottom" onclick="sendCreatureToBottom(${index})">⬇️</button>
+                                <button type="button" class="btn-send-bottom" title="End Turn (Send to Bottom)" onclick="sendCreatureToBottom(${index})">⬇️</button>
                             </div>
                             <div class="tracker-cell init-col draggable-row-cell" draggable="true" data-index="${index}" ondragstart="handleTrackerDragStart(event, ${index})" ondragend="handleTrackerDragEnd(event)">
                                 Init ${c.initRoll}
@@ -645,8 +648,8 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                         `;
                     }).join('')}
 
-                    <!-- QUICK ADD FORM ROW (Non-draggable) -->
-                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
+                    <!-- QUICK ADD FORM ROW -->
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); text-align: center;">
                         <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
                     </div>
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
