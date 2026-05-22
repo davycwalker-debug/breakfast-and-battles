@@ -137,17 +137,26 @@ function injectEngineStyles() {
             padding: 8px;
             margin-bottom: 24px;
         }
-
+        
         .tracker-row {
             display: flex;
             align-items: center;
             padding: 10px 14px;
             border-bottom: 1px solid var(--border-muted);
+            gap: 12px; /* Added explicit gap to separate elements neatly */
+        }
+        
+        .init-badge {
+            min-width: 65px; /* Changed from static width to min-width to prevent truncation/wrapping */
+            white-space: nowrap; /* Forces "Init 15" to stay safely on one line */
+            font-weight: bold; 
+            color: var(--accent-gold); 
+            font-family: monospace; 
+            font-size: 1rem; 
         }
 
         .tracker-row:last-child { border-bottom: none; }
         .tracker-row input[type="checkbox"] { margin-right: 16px; transform: scale(1.15); cursor: pointer; }
-        .init-badge { width: 55px; font-weight: bold; color: var(--accent-gold); font-family: monospace; font-size: 1rem; }
         .creature-name { flex-grow: 1; font-weight: 600; }
         .hp-badge { background: var(--card-inner); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border-muted); font-size: 0.85rem; color: var(--text-muted); }
 
@@ -446,7 +455,8 @@ function renderTactics(tacticsObj, developmentText) {
     
     if (tacticsObj) {
         if (tacticsObj.initialRound) {
-            html += `p style="margin-bottom: 16px;"><strong>Initial Round / Trigger:</strong> ${tacticsObj.initialRound}</p>`;
+            // FIXED: Added missing '<' bracket to the paragraph tag
+            html += `<p style="margin-bottom: 16px;"><strong>Initial Round / Trigger:</strong> ${tacticsObj.initialRound}</p>`;
         }
         if (tacticsObj.individual && tacticsObj.individual.length) {
             html += `
