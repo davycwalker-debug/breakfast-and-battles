@@ -456,7 +456,7 @@ function injectEngineStyles() {
     const linkTag = document.createElement('link');
     linkTag.id = 'dnd-engine-core-styles';
     linkTag.rel = 'stylesheet';
-    linkTag.href = 'room.css';
+    linkTag.href = 'rooms/room.css';
 
     document.head.appendChild(linkTag);
 }
