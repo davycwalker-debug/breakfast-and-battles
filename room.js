@@ -179,6 +179,66 @@ function injectEngineStyles() {
             margin-top: 15px;
             border-radius: 4px;
         }
+
+        /* Dialogue Trees */
+        .dialogue-tree-container {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid #b3925c;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .dialogue-node {
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        .dialogue-node:last-child { border: none; margin: 0; padding: 0; }
+        .dialogue-prompt { color: #e0e0e0; font-size: 0.95em; font-style: italic; }
+        .dialogue-response { margin-top: 4px; color: #b3d9ff; }
+        .speaker-tag { color: #ffb366; font-weight: bold; font-style: normal; }
+        
+        /* Ability Check Cards */
+        .ability-checks-container {
+            margin: 15px 0;
+        }
+        .check-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .check-dc-badge {
+            background: #3a1a1c;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .check-dc { color: #ff4d4d; }
+        .check-branches { padding: 10px; font-size: 0.9em; }
+        .branch { margin-bottom: 6px; padding-left: 12px; }
+        .branch.success { border-left: 3px solid #4caf50; }
+        .branch.failure { border-left: 3px solid #f44336; margin-bottom: 0; }
+        
+        /* Special Event Cards */
+        .special-event-card {
+            border-radius: 8px;
+            padding: 16px;
+            margin: 25px 0;
+            background: rgba(138, 43, 226, 0.05);
+            border: 1px solid #8a2be2;
+        }
+        .special-event-card.danger {
+            background: rgba(178, 34, 34, 0.05);
+            border: 1px solid #b22222;
+        }
+        .event-header { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+        .event-icon { font-size: 1.5em; }
+        .event-title-group h4 { margin: 0; color: #fff; font-size: 1.1em; }
+        .event-trigger { font-size: 0.8em; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
     `;
     document.head.appendChild(styleTag);
 }
@@ -212,7 +272,26 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 2. Room Features & Environment
+    // 2. Inject structured Inline Ability Checks into the main ReadAloud segment if they exist
+    if (data.initialReadAloudChecks && data.initialReadAloudChecks.length) {
+        html += '<div class="ability-checks-container">';
+        data.initialReadAloudChecks.forEach(check => {
+            html += `
+                <div class="check-card">
+                    <div class="check-dc-badge">
+                        <span class="check-type">${check.type}</span>
+                        <span class="check-dc">DC ${check.dc}</span>
+                    </div>
+                    <div class="check-branches">
+                        <div class="branch success"><strong>Success:</strong> "${check.success}"</div>
+                        <div class="branch failure"><strong>Failure:</strong> "${check.failure}"</div>
+                    </div>
+                </div>`;
+        });
+        html += '</div>';
+    }
+
+    // 3. Room Features & Environment
     if (data.environment) {
         html += `
             <section class="room-section environment-section">
@@ -237,7 +316,26 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 3. Combat Tracker & Roster
+    // 4. Process natively handled Dialogue Trees
+    if (data.dialogueTree && data.dialogueTree.length) {
+        html += `<div class="dialogue-tree-container">
+                        <h3 class="section-title">💬 Dialogue Tree</h3>
+                        <div class="dialogue-branches">`;
+        
+        data.dialogueTree.forEach(node => {
+            html += `
+                <div class="dialogue-node">
+                    <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
+                    <div class="dialogue-response">
+                        <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
+                    </div>
+                </div>`;
+        });
+        
+        html += `</div></div>`;
+    }
+
+    // 5. Combat Tracker & Roster
     if (data.creatures && data.creatures.length) {
         const sortedTracker = [...data.creatures].sort((a, b) => b.initRoll - a.initRoll);
 
@@ -285,7 +383,7 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 4. Tactics & Development
+    // 6. Tactics & Development
     if (data.tactics || data.development) {
         html += `
             <section class="room-section tactics-section">
@@ -306,7 +404,7 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 5. Hazards & Traps
+    // 7. Hazards & Traps
     if (data.traps && data.traps.length) {
         html += `
             <section class="room-section traps-section">
@@ -328,7 +426,7 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 6. Treasure & Rewards
+    // 8. Treasure & Rewards
     if (data.treasure) {
         html += `
             <section class="room-section treasure-section">
@@ -344,7 +442,28 @@ function renderRoomTemplate(containerId, data) {
         `;
     }
 
-    // 7. Dynamic Open Sections
+    // 9. Process natively handled Special/Conditional Narrative Phases
+    if (data.specialEvents && data.specialEvents.length) {
+        data.specialEvents.forEach(evt => {
+            html += `
+                <div class="special-event-card ${evt.severity || 'info'}">
+                    <div class="event-header">
+                        <span class="event-icon">🔓</span>
+                        <div class="event-title-group">
+                            <h4>${evt.title}</h4>
+                            <span class="event-trigger">Trigger: ${evt.trigger}</span>
+                        </div>
+                    </div>
+                    <div class="event-body">
+                        <p class="read-aloud">"${evt.readAloud}"</p>
+                        ${evt.mechanics ? `<div class="event-mechanics">${renderInlineChecks(evt.mechanics)}</div>` : ''}
+                        ${evt.outcome ? `<div class="event-outcome"><strong>Outcome:</strong> ${evt.outcome}</div>` : ''}
+                    </div>
+                </div>`;
+        });
+    }
+
+    // 10. Dynamic Open Sections
     if (data.additionalSections && data.additionalSections.length) {
         data.additionalSections.forEach(sec => {
             html += `
