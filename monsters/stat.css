@@ -1,5 +1,5 @@
 /* ==========================================================================
-   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (FLUID & UNTOUCHED HTML)
+   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (PERFECT MONITOR SCALING)
    ========================================================================== */
 
 /* Flat White Site Background Environment & Centering */
@@ -8,7 +8,8 @@ html, body {
     color: #000000 !important;
     font-family: "Verdana", Arial, sans-serif;
     margin: 0;
-    padding: 5vw 20px; /* Fluid vertical padding based on screen size */
+    /* FIX: Removes the massive fluid top gap, keeping a clean, modest 20px frame */
+    padding: 20px; 
     display: flex;
     justify-content: center;
 }
@@ -23,36 +24,36 @@ html, body {
 
 /* --- THE SECTION LINE DIVIDERS --- */
 .srd-block {
-    font-size: 8.5pt;
+    font-size: 9pt; /* Slightly bumped base body text size for desktop clarity */
     line-height: 1.5;
     padding-bottom: 5px;
     margin-bottom: 5px;
     border-bottom: 4px solid #8b2323; 
 }
 
-/* --- MONSTER SHEET TITLE HERO LAB CLEANUP --- */
+/* --- MONSTER SHEET TITLE --- */
 .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
-    font-size: 8.5pt;
+    font-size: 9pt;
     line-height: 1.5;
 }
 
-/* The Real Fix: Fluid typography that recalculates perfectly on any screen.
-   clamp(minimum_size, preferred_fluid_size, maximum_size) */
+/* FIX: Uses a crisp, absolute desktop size max that smoothly auto-shrinks 
+   on mobile viewports without relying on raw, aggressive screen-width scaling */
 .srd-header::first-line {
-    font-size: clamp(14pt, 4.5vw, 20pt); 
+    font-size: clamp(15pt, 5.5% + 14pt, 22pt); 
     font-weight: bold;
     color: #000000;
-    letter-spacing: 0.2em;
-    line-height: 1.2;
+    letter-spacing: 0.22em;
+    line-height: 1.3;
 }
 
 /* Universal Bold label overrides to match standard site behavior */
 .srd-container b {
     color: #000000 !important;
     font-weight: bold;
-    font-size: 8.5pt !important;
+    font-size: 9pt !important; /* Matches the new slightly larger body text */
     display: inline;
 }
 
@@ -68,17 +69,16 @@ html, body {
 
 /* --- HANGING INTENT ABILITY PROFILES --- */
 .srd-abilities-block {
-    font-size: 8.5pt;
+    font-size: 9pt;
     line-height: 1.6;
     display: block;
-    /* Uses fluid percentages so the hanging indent scales cleanly on mobile */
-    padding-left: clamp(15px, 4vw, 25px);   
-    text-indent: clamp(-25px, -4vw, -15px);   
+    padding-left: 25px;   
+    text-indent: -25px;   
 }
 
 .srd-abilities-block b {
     color: #8b2323 !important;
-    font-size: 8.5pt !important;
+    font-size: 9pt !important;
 }
 
 .srd-abilities-block br {
