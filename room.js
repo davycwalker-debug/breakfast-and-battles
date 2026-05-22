@@ -23,7 +23,7 @@ function injectEngineStyles() {
     linkTag.id = 'dnd-engine-core-styles';
     linkTag.rel = 'stylesheet';
     linkTag.type = 'text/css';
-    linkTag.href = 'path/to/dnd-engine-core.css'; // Adjust this path relative to your app setup
+    linkTag.href = 'room.css'; // Adjust this path relative to your app setup
 
     document.head.appendChild(linkTag);
 }
