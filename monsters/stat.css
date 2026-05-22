@@ -22,7 +22,7 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     border: 1px solid #dcd1be;
     font-size: 9pt;            
-    line-height: 1.6; /* Increased slightly to dissolve the text wall further */
+    line-height: 1.6; /* Higher line-height splits text lines apart naturally */
 }
 
 /* Main Character Header (Top String Transformation) */
@@ -37,25 +37,18 @@ body {
     letter-spacing: 0.1em;
 }
 
-/* Sub-headers inside abilities */
+/* Sub-headers inside abilities (if any get dropped in) */
 .srd-container h2, .srd-container h3, .srd-container h4 {
     color: #579eb6; 
     font-family: Verdana, sans-serif;
     margin: 1.2em 0 0.6em 0;
 }
 
-/* The Core Stat Lines Styling */
+/* Uniform Bold Tags 
+   Every bold tag will now look identical and clean, regardless of where it sits. */
 .srd-container b {
-    color: #2b0d0d; /* Slightly deeper tint for operational titles */
+    color: #000000; 
     font-weight: bold;
-}
-
-/* Make block start labels (Init, AC, Speed, Abilities) punchier */
-.srd-container hr + b {
-    font-size: 9.5pt;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #8b2323;
 }
 
 /* 3.5 Thick Crimson Structural Breaks */
@@ -63,7 +56,7 @@ body {
     height: 3px; 
     background-color: #8b2323; 
     border: none;
-    margin: 14px 0; /* Expanded padding creates breathing space */
+    margin: 18px 0; /* More spacing around horizontal rules creates structural breathing room */
     width: 100%;
     display: block;
 }
@@ -80,9 +73,11 @@ body {
     text-decoration: underline; 
 }
 
-/* Keeps spacing clean on breaks */
+/* Adds clean spacing whenever the tool hits a line break */
 .srd-container br {
-    margin-bottom: 6px;
+    content: "";
+    margin-bottom: 4px;
+    display: block;
 }
 
 /* Structural Cleanup for the Bottom Software/Legal Footnote */
