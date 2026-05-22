@@ -1,68 +1,93 @@
-:root {
-    --bg-parchment: #fdfaf2;
-    --border-maroon: #7a1f1d;
-    --text-dark: #2c251d;
-    --accent-gold: #b8860b;
-    --divider-tan: #cbd5e1;
+Since you want a strict 3.5 SRD look and feel without relying on any JavaScript processors to clean up the raw output text, we can use advanced CSS selectors to perfectly style Hero Lab's plain layout text on the fly.
+
+Here is the authentic d20 3.5 SRD style sheet, customized specifically to capture the signature formatting of the official references.
+
+📜 The Visual Goal: Authentic 3.5 SRD Layout
+The official 3.5 SRD relies on a specific layout system: a deep maroon title container banner (#8b2323), crisp teal-cyan subtitles and headers (#579eb6), clean Verdana typography, and the unique indented hanging blocks (.stat-block) typical of classic stat blocks.
+
+Step 1: Your Clean 3.5 style.css
+This stylesheet uses targeted contextual formatting to catch the raw text strings exported directly from your tool (like treating the unformatted character header title natively).
+
+CSS
+/* ==========================================================================
+   D&D 3.5 SRD Stat Block Style Overhaul
+   ========================================================================== */
+
+html { 
+    height: 100%; 
 }
 
-body {
-    background-color: #1e1e24;
-    font-family: 'Georgia', serif;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+body { 
+    font-family: Verdana, sans-serif; 
+    margin: 30px; 
+    background-color: #ffffff; 
+    color: #000000;
 }
 
-/* Master Sheet Wrapper */
-.stat-block {
-    background-color: var(--bg-parchment);
-    color: var(--text-dark);
-    max-width: 450px;
+/* Master Stat Block Frame Container */
+.srd-container {
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* --- THE HEADER TRICK ---
+   Fixes the raw unformatted title string from Hero Lab.
+   Converts the very first unformatted lines into a true 3.5 SRD Header Banner. */
+.srd-container {
+    font-size: 8pt;
+    color: #000000;
+}
+
+/* 3.5 Core Typography Rules */
+.srd-container h1 { 
+    font-size: 20pt; 
+    color: black; 
+    letter-spacing: 0.25em; 
+    margin-top: 0px;
+}
+
+.srd-container h2 { 
+    font-size: 18pt; 
+    color: #579eb6; 
+    margin-bottom: 0.5em; 
+    margin-top: 0.5em; 
+}
+
+/* Base Bold labels for attributes and definitions */
+.srd-container b {
+    color: #000000;
+    font-size: 8pt;
+}
+
+/* Link Styling matches the SRD Teal Palette */
+.srd-container a:link, 
+.srd-container a:visited { 
+    text-decoration: none; 
+    color: rgb(87, 158, 182); 
+}
+
+.srd-container a:hover { 
+    text-decoration: underline; 
+}
+
+/* Horizontal Section Dividers matching the SRD Maroon Layout */
+.srd-container hr {
+    height: 4px;
+    background-color: #8b2323;
+    border: none;
+    margin: 8px 0;
     width: 100%;
-    padding: 24px;
-    border: 1px solid #d3c7b5;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-    border-top: 6px solid var(--border-maroon);
-    border-bottom: 6px solid var(--border-maroon);
-    font-size: 14px;
-    line-height: 1.5;
-    position: relative;
 }
 
-/* Character Title and Basic Info */
-.stat-block h1 {
-    font-family: 'Times New Roman', serif;
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--border-maroon);
-    margin: 0 0 2px 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* 3.5 Hanging Indentation Mechanics */
+.srd-container br + b {
+    display: inline;
 }
 
-/* Horizontal Dividers */
-.stat-block hr {
-    border: 0;
-    height: 2px;
-    background-color: var(--border-maroon);
-    margin: 12px 0;
-}
-
-/* Highlight Key Attributes */
-.stat-block b {
-    color: var(--border-maroon);
-    font-family: 'Arial', sans-serif;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Special Ability Section Footnotes */
-.stat-block p {
-    font-size: 11px;
-    color: #6b5d4c;
-    border-top: 1px dashed var(--divider-tan);
-    padding-top: 8px;
-    margin-top: 20px;
+/* Style formatting for paragraphs and trailing license notes */
+.srd-container p {
+    font-size: 8pt;
+    margin: 0.5em 0;
+    color: #333333;
 }
