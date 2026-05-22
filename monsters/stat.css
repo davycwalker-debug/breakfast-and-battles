@@ -1,5 +1,5 @@
 /* ==========================================================================
-   OFFICIAL 3.5 SYSTEM REFERENCE DOCUMENT (SRD) COMPREHENSIVE COMPENDIUM STYLE
+   AUTHENTIC 3.5 SRD FLAT MONSTER COMPENDIUM STYLE
    ========================================================================== */
 
 /* Flat White Site Background Environment */
@@ -8,47 +8,50 @@ html, body {
     color: #000000 !important;
     font-family: "Verdana", Arial, sans-serif;
     margin: 30px;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 /* Base Document Wrapper Container */
 .srd-container {
-    max-width: 750px;
+    max-width: 700px;
     width: 100%;
     background-color: #ffffff;
 }
 
 /* --- THE SECTION LINE DIVIDERS ---
-   Replicates the official 4px solid #8b2323 lines generated on the SRD site */
+   Replicates the exact 4px deep crimson lines from the official d20 SRD site */
 .srd-block {
-    font-size: 8pt;
+    font-size: 8.5pt;
     line-height: 1.5;
-    padding-bottom: 6px;
-    margin-bottom: 6px;
-    border-bottom: 4px solid #8b2323; /* Iconic crimson line break */
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 4px solid #8b2323; 
 }
 
 /* --- MONSTER SHEET TITLE ---
-   Implements the classic 20pt spaced-out title header rule */
+   Styles the loose text container cleanly without scaling the 'Init' tag */
 .srd-header {
     border-bottom: 4px solid #8b2323;
-    padding-bottom: 6px;
+    padding-bottom: 5px;
+    font-size: 8.5pt;
+    line-height: 1.5;
 }
-.srd-header b:first-of-type {
-    font-size: 20pt !important;
-    color: #000000 !important;
-    letter-spacing: 0.25em; /* Spaced out styling match */
+
+/* This fixes the first line text wrapping and gives TCHAD the massive, 
+   spaced-out 3.5 header font sizing dynamically */
+.srd-header::first-line {
+    font-size: 20pt;
     font-weight: bold;
-    display: inline-block;
-    margin-bottom: 6px;
-    font-family: "Verdana", sans-serif;
+    color: #1a1a1a;
+    letter-spacing: 0.2em;
+    line-height: 1.2;
 }
 
 /* Universal Bold label overrides to match standard site behavior */
 .srd-container b {
-    color: #000000;
+    color: #000000 !important;
     font-weight: bold;
-    font-size: 8pt;
+    font-size: 8.5pt !important; /* Locks all labels to uniform body size */
     display: inline;
 }
 
@@ -63,24 +66,24 @@ html, body {
 }
 
 /* --- HANGING INTENT ABILITY PROFILES ---
-   Implements the official site's .stat-block class rule to prevent walls of text */
+   Implements the official site's .stat-block class rule to clean up text walls */
 .srd-abilities-block {
-    font-size: 8pt;
+    font-size: 8.5pt;
     line-height: 1.6;
     display: block;
     padding-left: 25px;    /* Offsets text container spacing */
-    text-indent: -25px;   /* Shifts the very first word back out out to left edge */
+    text-indent: -25px;   /* Shifts the very first word back out to left edge */
 }
 
-/* Colorize the ability headers to the classic deep crimson accent */
+/* Colorize the lower ability headers to the classic deep crimson accent */
 .srd-abilities-block b {
-    color: #8b2323;
-    font-size: 8pt;
+    color: #8b2323 !important;
+    font-size: 8.5pt !important;
 }
 
 /* Ensures the line breaks within the glossary wrap beautifully */
 .srd-abilities-block br {
     display: block;
     content: "";
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
