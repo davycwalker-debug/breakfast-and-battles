@@ -447,6 +447,22 @@ function injectEngineStyles() {
             background: var(--accent-gold);
             color: var(--bg-color);
         }
+        /* Sort Control Interface Utility Button */
+        .btn-sort-tracker {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--accent-gold);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-sort-tracker:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-gold);
+        }
     `;
     document.head.appendChild(styleTag);
 }
@@ -545,13 +561,18 @@ function renderDialogueTree(dialogueArray) {
 function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPositions) {
     if (!liveCreaturesArray) return '';
     
-    // Sort our live tracked entries by rolling index order
-    const sortedTracker = [...liveCreaturesArray].sort((a, b) => b.initRoll - a.initRoll);
+    // Use our live tracked entries
+    const sortedTracker = liveCreaturesArray;
     const rosterData = originalRosterArray || [];
     
     return `
         <section class="room-section combat-section">
-            <h3>⚔️ Combat & Initiative Tracker</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0;">⚔️ Combat & Initiative Tracker</h3>
+                <!-- MANUAL SORT TOOL ACTION BUTTON -->
+                <button type="button" class="btn-sort-tracker" onclick="sortTrackerByInitiative()">⚡ Sort Initiative</button>
+            </div>
+            
             <div class="tracker-box">
                 <div class="tracker-grid">
                     <!-- HEADER ROW -->
@@ -559,22 +580,6 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell" style="text-align: right;">Health</div>
-                    
-                    <!-- QUICK ADD FORM ROW -->
-                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
-                        <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
-                    </div>
-                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
-                        <input type="number" id="new-init" class="tracker-input num-input" placeholder="Roll">
-                    </div>
-                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
-                        <input type="text" id="new-name" class="tracker-input" placeholder="Name or Minion group...">
-                    </div>
-                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color); display: flex; gap: 4px; align-items: center; justify-content: flex-end;">
-                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
-                        <span style="color: var(--text-muted);">/</span>
-                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
-                    </div>
                     
                     <!-- DATA ROWS -->
                     ${sortedTracker.map((c, index) => {
@@ -604,6 +609,22 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
                             </div>
                         `;
                     }).join('')}
+
+                    <!-- QUICK ADD FORM ROW (Now pinned cleanly at the bottom) -->
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
+                        <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
+                    </div>
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
+                        <input type="number" id="new-init" class="tracker-input num-input" placeholder="Roll">
+                    </div>
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
+                        <input type="text" id="new-name" class="tracker-input" placeholder="Name or Minion group...">
+                    </div>
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); display: flex; gap: 4px; align-items: center; justify-content: flex-end;">
+                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
+                        <span style="color: var(--text-muted);">/</span>
+                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
+                    </div>
                 </div>
             </div>
 
@@ -635,6 +656,22 @@ function renderCombatTracker(liveCreaturesArray, originalRosterArray, setupPosit
             ${setupPositions ? `<p class="setup-positions" style="margin-top:20px;"><strong>Setup Positions:</strong> ${setupPositions}</p>` : ''}
         </section>
     `;
+}
+
+/**
+ * Orders the active live tracker state array descending by initiative roll data.
+ */
+function sortTrackerByInitiative() {
+    if (!window.dndEngineState || !window.dndEngineState.liveCreatures) return;
+    
+    // Sort high numbers to low numbers
+    window.dndEngineState.liveCreatures.sort((a, b) => b.initRoll - a.initRoll);
+    
+    // Redraw screen view layer
+    renderRoomTemplate(
+        window.dndEngineState.currentContainerId, 
+        window.dndEngineState.rawBaselineData
+    );
 }
 
 /**
