@@ -243,6 +243,65 @@ function injectEngineStyles() {
     document.head.appendChild(styleTag);
 }
 
+function renderInlineChecks(mechanicsArray) {
+    if (!mechanicsArray || !mechanicsArray.length) return '';
+    
+    return mechanicsArray.map(check => `
+        <div class="check-card">
+            <div class="check-dc-badge">
+                <span class="check-type">${check.type}</span>
+                <span class="check-dc">DC ${check.dc}</span>
+            </div>
+            <div class="check-branches">
+                <div class="branch success"><strong>Success:</strong> "${check.success}"</div>
+                <div class="branch failure"><strong>Failure:</strong> "${check.failure}"</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderDialogueTree(dialogueArray) {
+    if (!dialogueArray || !dialogueArray.length) return '';
+    
+    let html = `<div class="dialogue-tree-container">
+                    <h3 class="section-title">💬 Dialogue Tree</h3>
+                    <div class="dialogue-branches">`;
+    
+    dialogueArray.forEach(node => {
+        html += `
+            <div class="dialogue-node">
+                <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
+                <div class="dialogue-response">
+                    <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
+                </div>
+            </div>`;
+    });
+    
+    html += `</div></div>`;
+    return html;
+}
+
+function renderSpecialEvent(eventObj) {
+    if (!eventObj) return '';
+    
+    let html = `
+        <div class="special-event-card ${eventObj.severity || 'info'}">
+            <div class="event-header">
+                <span class="event-icon">🔓</span>
+                <div class="event-title-group">
+                    <h4>${eventObj.title}</h4>
+                    <span class="event-trigger">Trigger: ${eventObj.trigger}</span>
+                </div>
+            </div>
+            <div class="event-body">
+                <p class="read-aloud">"${eventObj.readAloud}"</p>
+                ${eventObj.mechanics ? `<div class="event-mechanics">${renderInlineChecks(eventObj.mechanics)}</div>` : ''}
+                ${eventObj.outcome ? `<div class="event-outcome"><strong>Outcome:</strong> ${eventObj.outcome}</div>` : ''}
+            </div>
+        </div>`;
+    return html;
+}
+
 function renderRoomTemplate(containerId, data) {
     // Inject custom styling system to document head instantly
     injectEngineStyles();
@@ -273,22 +332,8 @@ function renderRoomTemplate(containerId, data) {
     }
 
     // 2. Inject structured Inline Ability Checks into the main ReadAloud segment if they exist
-    if (data.initialReadAloudChecks && data.initialReadAloudChecks.length) {
-        html += '<div class="ability-checks-container">';
-        data.initialReadAloudChecks.forEach(check => {
-            html += `
-                <div class="check-card">
-                    <div class="check-dc-badge">
-                        <span class="check-type">${check.type}</span>
-                        <span class="check-dc">DC ${check.dc}</span>
-                    </div>
-                    <div class="check-branches">
-                        <div class="branch success"><strong>Success:</strong> "${check.success}"</div>
-                        <div class="branch failure"><strong>Failure:</strong> "${check.failure}"</div>
-                    </div>
-                </div>`;
-        });
-        html += '</div>';
+    if (data.initialReadAloudChecks) {
+        html += renderInlineChecks(data.initialReadAloudChecks)
     }
 
     // 3. Room Features & Environment
@@ -317,22 +362,8 @@ function renderRoomTemplate(containerId, data) {
     }
 
     // 4. Process natively handled Dialogue Trees
-    if (data.dialogueTree && data.dialogueTree.length) {
-        html += `<div class="dialogue-tree-container">
-                        <h3 class="section-title">💬 Dialogue Tree</h3>
-                        <div class="dialogue-branches">`;
-        
-        data.dialogueTree.forEach(node => {
-            html += `
-                <div class="dialogue-node">
-                    <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
-                    <div class="dialogue-response">
-                        <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
-                    </div>
-                </div>`;
-        });
-        
-        html += `</div></div>`;
+    if (data.dialogueTree) {
+        html += renderDialogueTree(data.dialogueTree);
     }
 
     // 5. Combat Tracker & Roster
@@ -443,23 +474,9 @@ function renderRoomTemplate(containerId, data) {
     }
 
     // 9. Process natively handled Special/Conditional Narrative Phases
-    if (data.specialEvents && data.specialEvents.length) {
+    if (data.specialEvents) {
         data.specialEvents.forEach(evt => {
-            html += `
-                <div class="special-event-card ${evt.severity || 'info'}">
-                    <div class="event-header">
-                        <span class="event-icon">🔓</span>
-                        <div class="event-title-group">
-                            <h4>${evt.title}</h4>
-                            <span class="event-trigger">Trigger: ${evt.trigger}</span>
-                        </div>
-                    </div>
-                    <div class="event-body">
-                        <p class="read-aloud">"${evt.readAloud}"</p>
-                        ${evt.mechanics ? `<div class="event-mechanics">${renderInlineChecks(evt.mechanics)}</div>` : ''}
-                        ${evt.outcome ? `<div class="event-outcome"><strong>Outcome:</strong> ${evt.outcome}</div>` : ''}
-                    </div>
-                </div>`;
+            html += renderSpecialEvent(evt);
         });
     }
 
