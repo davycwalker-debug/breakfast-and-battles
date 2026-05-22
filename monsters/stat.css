@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DELUXE D&D 3.5 MONSTER COMPENDIUM STYLE (NO SOLID HEADER BARS)
+   DELUXE D&D 3.5 MONSTER COMPENDIUM STYLE (CORRECTED LINE WRAPPING)
    ========================================================================== */
 
 /* Page Background Environment */
@@ -33,7 +33,7 @@ body {
     border-bottom: 1px solid #cbd4c5; /* Soft grey-green separator lines */
 }
 
-/* 1. Refined Minimalist Header (Replaces the solid red box) */
+/* 1. Refined Minimalist Header (Corrected Wrapping) */
 .srd-header {
     background-color: transparent;
     color: #1a1a1a;
@@ -59,6 +59,7 @@ body {
     color: #4a5a6a; /* Muted slate blue for general stat tags */
     font-weight: bold;
     font-size: 9pt;
+    display: inline; /* Keeps labels inline with their modifiers */
 }
 
 /* 2 & 3. Balanced Combat Feature Panels (Defenses & Offenses) */
@@ -95,6 +96,8 @@ body {
     text-indent: -20px;
 }
 
+/* Creates clean, uniform spaces between individual abilities 
+   instead of changing the behavior of standard <br> tags everywhere */
 .srd-abilities br {
     display: block;
     content: "";
@@ -104,6 +107,7 @@ body {
 .srd-abilities b {
     color: #8b2323; /* Keeps ability titles matching the 3.5 red accents */
     font-size: 9.5pt;
+    display: inline;
 }
 
 /* Software Footer Footprint cleanup */
