@@ -3,6 +3,18 @@
  * Injects its own design system rules dynamically to keep HTML templates incredibly lean.
  */
 
+// Initialize live state from your baseline data payload
+let liveCreatureTracker = [];
+
+/**
+ * Initializes the live tracker array. Call this once when your engine boots up or loads data.
+ */
+function initCombatEngine(initialCreatures) {
+    liveCreatureTracker = [...initialCreatures];
+    // Trigger your main container render here
+    renderEngine(); 
+}
+
 function injectEngineStyles() {
     // Prevent duplicate style tags if rendering multiple encounters on one page
     if (document.getElementById('dnd-engine-core-styles')) return;
@@ -398,6 +410,43 @@ function injectEngineStyles() {
         .event-icon { font-size: 1.75em; line-height: 1; }
         .event-title-group h4 { margin: 0; color: #fff; font-size: 1.15em; text-transform: none; letter-spacing: normal; }
         .event-trigger { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 2px; }
+
+        /* Quick Add Entry Form Fields */
+        .tracker-input {
+            background: var(--card-inner);
+            border: 1px solid var(--border-muted);
+            border-radius: 4px;
+            color: var(--text-main);
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .tracker-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+        .tracker-input.num-input {
+            font-family: monospace;
+            text-align: center;
+        }
+        /* Quick Add Button */
+        .btn-add-combatant {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .btn-add-combatant:hover {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+        }
     `;
     document.head.appendChild(styleTag);
 }
@@ -493,10 +542,11 @@ function renderDialogueTree(dialogueArray) {
 /**
  * 5: Renders combat order matrix & detailed stats
  */
-function renderCombatTracker(creaturesArray, setupPositions) {
-    if (!creaturesArray || !creaturesArray.length) return '';
+function renderCombatTracker(unusedParam, setupPositions) {
+    // Read directly from our mutable live state array
+    if (!liveCreatureTracker) return '';
     
-    const sortedTracker = [...creaturesArray].sort((a, b) => b.initRoll - a.initRoll);
+    const sortedTracker = [...liveCreatureTracker].sort((a, b) => b.initRoll - a.initRoll);
     
     return `
         <section class="room-section combat-section">
@@ -508,6 +558,22 @@ function renderCombatTracker(creaturesArray, setupPositions) {
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell" style="text-align: right;">Health</div>
+                    
+                    <!-- QUICK ADD FORM ROW (Stays fixed at the top) -->
+                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
+                        <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
+                    </div>
+                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
+                        <input type="number" id="new-init" class="tracker-input num-input" placeholder="Roll">
+                    </div>
+                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color);">
+                        <input type="text" id="new-name" class="tracker-input" placeholder="Name or Minion group...">
+                    </div>
+                    <div class="tracker-cell" style="border-bottom: 2px solid var(--border-color); display: flex; gap: 4px; align-items: center; justify-content: flex-end;">
+                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
+                        <span style="color: var(--text-muted);">/</span>
+                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
+                    </div>
                     
                     <!-- DATA ROWS -->
                     ${sortedTracker.map((c, index) => {
@@ -553,13 +619,13 @@ function renderCombatTracker(creaturesArray, setupPositions) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${creaturesArray.map(c => `
+                        ${liveCreatureTracker.map(c => `
                             <tr>
                                 <td><strong>${c.name}</strong></td>
-                                <td><code class="stat-block">${c.ac}</code></td>
-                                <td><code class="stat-block">${c.saves}</code></td>
-                                <td>${c.type}</td>
-                                <td><em class="bio-text">${c.bio}</em></td>
+                                <td><code class="stat-block">${c.ac || '—'}</code></td>
+                                <td><code class="stat-block">${c.saves || '—'}</code></td>
+                                <td>${c.type || 'Custom'}</td>
+                                <td><em class="bio-text">${c.bio || 'Added during encounter.'}</em></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -593,6 +659,46 @@ function evaluateCreatureVitals(rowId, inputElement) {
             cell.classList.add('tracker-row-dead');
         }
     });
+}
+
+/**
+ * Captures the form inputs, updates the dynamic tracking array, and forces a re-render.
+ */
+function addNewCombatantEntry() {
+    const initEl = document.getElementById('new-init');
+    const nameEl = document.getElementById('new-name');
+    const hpEl = document.getElementById('new-hp');
+    const maxHpEl = document.getElementById('new-max-hp');
+    
+    // Validation: Require at least a name and baseline numeric data to safely render
+    if (!nameEl.value.trim() || initEl.value === '' || hpEl.value === '' || maxHpEl.value === '') {
+        alert('Please fill out all tracker properties (Initiative, Name, Current HP, and Max HP).');
+        return;
+    }
+    
+    // Construct the standard database object layout
+    const newCreature = {
+        name: nameEl.value.trim(),
+        initRoll: parseInt(initEl.value, 10),
+        hp: parseInt(hpEl.value, 10),
+        maxHp: parseInt(maxHpEl.value, 10),
+        ac: '—',
+        saves: '—',
+        type: 'Custom Entry',
+        bio: 'Dynamically injected into active combat loop.'
+    };
+    
+    // Push directly to live local context state
+    liveCreatureTracker.push(newCreature);
+    
+    // Re-render your engine interface container to instantly update the viewport
+    if (typeof renderEngine === 'function') {
+        renderEngine();
+    } else {
+        // Fallback: If you do not have a global wrapper rendering function, 
+        // you can manually overwrite your combat section element innerHTML here.
+        console.warn("Combatant added successfully. Ensure your global render wrapper triggers.");
+    }
 }
 
 /**
