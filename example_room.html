@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encounter Log Repository</title>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --card-color: #1a1a1e;
+            --border-color: #2d2d34;
+            --text-main: #e2e2e9;
+            --text-muted: #a1a1aa;
+            --accent-gold: #beada5;
+            --accent-red: #e63946;
+            --read-aloud-bg: #151813;
+            --read-aloud-border: #4f5d47;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dnd-room-wrapper {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        h3 {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+            margin-top: 24px;
+            font-size: 1.3rem;
+        }
+
+        .room-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 4px 0 0 0;
+        }
+
+        .section-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, var(--accent-gold), transparent);
+            margin: 20px 0;
+        }
+
+        /* Read aloud Box styling styling */
+        .read-aloud-box {
+            background-color: var(--read-aloud-bg);
+            border-left: 4px solid var(--read-aloud-border);
+            padding: 15px 20px;
+            border-radius: 4px;
+            font-style: italic;
+            color: #d1d5db;
+        }
+
+        /* Lists */
+        ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .env-meta-list {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            gap: 20px;
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* Trackers */
+        .tracker-box {
+            background: #0f0f11;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tracker-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #222;
+        }
+
+        .tracker-row:last-child { border-bottom: none; }
+        .tracker-row input[type="checkbox"] { margin-right: 12px; transform: scale(1.1); }
+        .init-badge { width: 45px; font-weight: bold; color: var(--text-muted); }
+        .creature-name { flex-grow: 1; }
+        .hp-badge { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Tables styling */
+        .table-responsive { overflow-x: auto; }
+        .roster-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .roster-table th, .roster-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .roster-table th {
+            background-color: rgba(255,255,255,0.02);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .stat-block {
+            background: #222;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Trap Cards */
+        .trap-card {
+            background: #221415;
+            border: 1px solid #4a1c1e;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .trap-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #5a282a;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .trap-cr { color: var(--accent-red); font-weight: bold; }
+        .trap-meta { list-style-type: none; padding-left: 0; }
+
+        .dc-block {
+            background: #3a1517;
+            padding: 1px 4px;
+            border-radius: 3px;
+            color: #ffb4b4;
+        }
+
+        .development-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed var(--border-color);
+            padding: 12px 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Render target container -->
+        <div id="encounter-output"></div>
+    </div>
+
+    <!-- Scripts Linkages -->
+    <script src="room-renderer.js"></script>
+    <script>
+        // Data input object mapping out your exact campaign homework notes
+        const roomData = {
+            title: "Area 12: The Throne Room",
+            subtitle: "The Sunless Citadel - Kobold/Goblin Frontlines",
+            readAloud: "The chamber opens in a near-perfect circle, its 35-foot-wide floor rising to a tall, domed ceiling. At the center, a round shaft gapes downward, sixty feet deep, its walls slick with sickly white and gray vines that writhe faintly in the dim violet light spilling from below... [Truncated for layout example output clarity]",
+            environment: {
+                dimensions: "35ft diameter circle, tall domed ceiling",
+                illumination: "Dim light (4 peripheral torches + violet shaft glow)",
+                features: [
+                    { name: "Central Shaft", desc: "15ft wide hole, drops 80ft. Coated in vines (DC 0 Climb). Falling deals 8d6 damage; DC 16 Reflex save can catch vines midway down." },
+                    { name: "Throne", desc: "Crudely made stone seat in northwest corner." },
+                    { name: "Stone Pot", desc: "Sits next to the throne, containing a twisted, dark sapling." }
+                ],
+                doors: [
+                    { location: "Northeast Corner", desc: "Standard wooden door, unlocked." },
+                    { location: "Southeast Corner", desc: "Standard wooden door, unlocked." }
+                ]
+            },
+            creatures: [
+                { name: "Ees (Hobgoblin Rookie 1)", initRoll: 21, hp: 3, maxHp: 3, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Vanguard soldier defending the Southeastern checkpoint." },
+                { name: "Twig Blight", initRoll: 19, hp: 3, maxHp: 3, ac: "15", saves: "+3 / +1 / +0", type: "Small Plant", bio: "Belak's plant-spy hiding inside the stone pottery box." },
+                { name: "Loss (Goblin Rookie 1)", initRoll: 16, hp: 8, maxHp: 8, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Guards the pathway leading up from the Northeast door." },
+                { name: "Osse (Goblin Rookie 2)", initRoll: 14, hp: 5, maxHp: 5, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Guards the pathway leading up from the Southeast door." },
+                { name: "Meahx (Goblin Rookie 3)", initRoll: 13, hp: 6, maxHp: 6, ac: "16", saves: "+4 / +4 / -1", type: "Small Humanoid", bio: "Backup defense flanking the rookie hub line." },
+                { name: "Durnn", initRoll: 11, hp: 39, maxHp: 39, ac: "19 (20)", saves: "+6 / +9 / +2", type: "Med Humanoid", bio: "Hotheaded Doom Fist chief who mutinied against the Wyrmlord." },
+                { name: "Wrirlies (Hobgoblin Rookie 2)", initRoll: 11, hp: 7, maxHp: 7, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Stands guard centrally ready to run interference." },
+                { name: "Grenl", initRoll: 4, hp: 25, maxHp: 25, ac: "20", saves: "+5 / +6 / +5", type: "Small Humanoid", bio: "Tribal Shaman who sides purely with whoever has power." },
+                { name: "Cleaptith (Hobgoblin Rookie 3)", initRoll: 2, hp: 9, maxHp: 9, ac: "15", saves: "+4 / +1 / -1", type: "Med Humanoid", bio: "Guards the Northeastern access structural threshold." }
+            ],
+            setupPositions: "Durnn is seated on the throne. Grenl stands at his left. Twig Blight sits in the pot. Hobgoblins hold doors while goblins patrol the room pathways.",
+            tactics: {
+                initialRound: "Goblins and Twig Blight swarm to set up Flanking lines. Hobgoblins seek Sneak Attack damage and attempt to Bull Rush targets into the open shaft.",
+                individual: [
+                    { name: "Durnn", strategy: "Uses Landshark Leap. Applies a -4 attack modifier to deal nonlethal strikes to bloodied targets. Retains Spring Attack to hit and hide behind Grenl." },
+                    { name: "Grenl", strategy: "Casts Animalistic Power on Durnn, then isolates the arena with Silence (leaving her corner out). Buffs with Blade of Blood." }
+                ]
+            },
+            development: "If Durnn falls, Grenl triggers Close Wounds out-of-turn. If downed a second time, Durnn drops down the shaft using his Pegasus Cloak (Feather Fall). Grenl surrenders immediately.",
+            traps: [
+                { name: "Poison Needle Trap", cr: "2", trigger: "Opening chest without bypass", reset: "None", searchDc: "21", disableDc: "20", effect: "Diluted Wyvern Poison: DC 15 Fort save or take 1d4 Con / 1d4 secondary Con. DC 16 Reflex save avoids completely." }
+            ],
+            treasure: {
+                carried: "Talgen Hurcele's signet ring (on Durnn's finger), Pegasus Cloak.",
+                containers: [
+                    { name: "Trapped Iron Footrest Chest", contents: "231 gp, two 30-gp onyx gems, 2 doses of antitoxin, arcane scroll of knock, potion of cat's grace." },
+                    { name: "Room Structural Hoard Base", contents: "Wyrmfang Amulet, Arcanist's Glove." }
+                ]
+            },
+            // This is where you can easily append infinite extra custom panels 
+            additionalSections: [
+                { heading: "📜 Lore Notes (DC 15 Knowledge)", content: "Characters tracking regional movements recognize Durnn's uniform colors as the splintered remain elements of the Doom Fist militia line." }
+            ]
+        };
+
+        // Command to execute engine drawing
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
