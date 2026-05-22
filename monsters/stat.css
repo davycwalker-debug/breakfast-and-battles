@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AUTHENTIC 3.5 SRD FLAT MONSTER COMPENDIUM STYLE (CENTERED & FIXED FOOTER)
+   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (FLUID & UNTOUCHED HTML)
    ========================================================================== */
 
 /* Flat White Site Background Environment & Centering */
@@ -8,9 +8,9 @@ html, body {
     color: #000000 !important;
     font-family: "Verdana", Arial, sans-serif;
     margin: 0;
-    padding: 40px 20px;
+    padding: 5vw 20px; /* Fluid vertical padding based on screen size */
     display: flex;
-    justify-content: center; /* Centers the sheet horizontally on wide screens */
+    justify-content: center;
 }
 
 /* Base Document Wrapper Container */
@@ -30,7 +30,7 @@ html, body {
     border-bottom: 4px solid #8b2323; 
 }
 
-/* --- MONSTER SHEET TITLE --- */
+/* --- MONSTER SHEET TITLE HERO LAB CLEANUP --- */
 .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
@@ -38,12 +38,13 @@ html, body {
     line-height: 1.5;
 }
 
-/* Formats "TCHAD CR 2" into the large, spaced-out 3.5 header font dynamically */
+/* The Real Fix: Fluid typography that recalculates perfectly on any screen.
+   clamp(minimum_size, preferred_fluid_size, maximum_size) */
 .srd-header::first-line {
-    font-size: 20pt;
+    font-size: clamp(14pt, 4.5vw, 20pt); 
     font-weight: bold;
-    color: #1a1a1a;
-    letter-spacing: 0.25em;
+    color: #000000;
+    letter-spacing: 0.2em;
     line-height: 1.2;
 }
 
@@ -51,7 +52,7 @@ html, body {
 .srd-container b {
     color: #000000 !important;
     font-weight: bold;
-    font-size: 8.5pt !important; /* Locks all labels to uniform body size */
+    font-size: 8.5pt !important;
     display: inline;
 }
 
@@ -70,25 +71,23 @@ html, body {
     font-size: 8.5pt;
     line-height: 1.6;
     display: block;
-    padding-left: 25px;   
-    text-indent: -25px;   
+    /* Uses fluid percentages so the hanging indent scales cleanly on mobile */
+    padding-left: clamp(15px, 4vw, 25px);   
+    text-indent: clamp(-25px, -4vw, -15px);   
 }
 
-/* Colorize the lower ability headers to the classic deep crimson accent */
 .srd-abilities-block b {
     color: #8b2323 !important;
     font-size: 8.5pt !important;
 }
 
-/* Ensures the line breaks within the glossary wrap beautifully */
 .srd-abilities-block br {
     display: block;
     content: "";
     margin-bottom: 8px;
 }
 
-/* --- LEGAL DISCLAIMER FOOTER ---
-   Explicitly isolates and shrinks the copyright paragraph back to a tiny footprint */
+/* --- LEGAL DISCLAIMER FOOTER --- */
 .srd-container p {
     font-size: 7.5pt !important;
     line-height: 1.4 !important;
@@ -96,6 +95,6 @@ html, body {
     margin-top: 25px !important;
     padding-top: 10px !important;
     border-top: 1px dashed #cbd4c5 !important;
-    text-indent: 0px !important; /* Prevents inheriting the hanging indent */
+    text-indent: 0px !important; 
     display: block !important;
 }
