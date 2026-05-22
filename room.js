@@ -134,25 +134,55 @@ function injectEngineStyles() {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 8px;
             margin-bottom: 24px;
             
-            /* NEW: This ensures long rows scroll horizontally instead of clipping or breaking layouts */
+            /* Enables clean horizontal scrolling for the entire grid block */
             overflow-x: auto;
             width: 100%;
             box-sizing: border-box;
         }
         
-        .tracker-row {
-            display: flex;
+        .tracker-grid {
+            display: grid;
+            /* 
+               1st col: Checkbox (auto)
+               2nd col: Init badge (max-content)
+               3rd col: Creature name (takes remaining space, min 200px to prevent squishing)
+               4th col: HP badge (max-content)
+            */
+            grid-template-columns: auto max-content minmax(200px, 1fr) max-content;
             align-items: center;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-muted);
-            gap: 12px;
-            
-            /* NEW: Ensures children elements don't crush down past their minimum sizes when scrolling */
-            min-width: max-content; 
+            gap: 0 16px; /* 0 vertical gap, 16px horizontal spacing */
+            min-width: max-content; /* Guarantees the columns never compress below their contents */
+            padding: 8px;
         }
+        
+        /* Header row specific styling */
+        .tracker-header-cell {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 14px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        /* Body row cell styling */
+        .tracker-cell {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-muted);
+        }
+        
+        /* Remove bottom border on the very last grid row items */
+        .tracker-grid > div:nth-last-child(-n+4) {
+            border-bottom: none;
+        }
+        
+        /* Align adjustments for specific cells */
+        .tracker-cell input[type="checkbox"] { transform: scale(1.15); cursor: pointer; margin: 0; }
+        .tracker-cell.init-col { font-weight: bold; color: var(--accent-gold); font-family: monospace; font-size: 1rem; white-space: nowrap; }
+        .tracker-cell.name-col { font-weight: 600; color: var(--text-main); }
         
         .init-badge {
             min-width: 65px; /* Changed from static width to min-width to prevent truncation/wrapping */
@@ -423,14 +453,29 @@ function renderCombatTracker(creaturesArray, setupPositions) {
         <section class="room-section combat-section">
             <h3>⚔️ Combat & Initiative Tracker</h3>
             <div class="tracker-box">
-                ${sortedTracker.map(c => `
-                    <div class="tracker-row">
-                        <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
-                        <span class="init-badge">Init ${c.initRoll}</span>
-                        <span class="creature-name">${c.name}</span>
-                        <span class="hp-badge">${c.hp} / ${c.maxHp} HP</span>
-                    </div>
-                `).join('')}
+                <div class="tracker-grid">
+                    <!-- HEADER ROW -->
+                    <div class="tracker-header-cell"></div> <!-- Empty space above checkboxes -->
+                    <div class="tracker-header-cell">Initiative</div>
+                    <div class="tracker-header-cell">Creature Name</div>
+                    <div class="tracker-header-cell" style="text-align: right;">Health</div>
+                    
+                    <!-- DATA ROWS -->
+                    ${sortedTracker.map(c => `
+                        <div class="tracker-cell">
+                            <input type="checkbox" id="check-${c.name.replace(/\s+/g, '-')}">
+                        </div>
+                        <div class="tracker-cell init-col">
+                            Init ${c.initRoll}
+                        </div>
+                        <div class="tracker-cell name-col">
+                            ${c.name}
+                        </div>
+                        <div class="tracker-cell" style="text-align: right;">
+                            <span class="hp-badge">${c.hp} / ${c.maxHp} HP</span>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
 
             <h3>👾 Creature Rosters & Stats</h3>
@@ -440,7 +485,7 @@ function renderCombatTracker(creaturesArray, setupPositions) {
                         <tr>
                             <th>Creature</th>
                             <th>AC</th>
-                            <th style="white-space: nowrap;">Saves (F/R/W)</th> <!-- Keeps the column wide enough for flat stat strings -->
+                            <th style="white-space: nowrap;">Saves (F/R/W)</th>
                             <th>Type / Subtype</th>
                             <th>Quick Bio</th>
                         </tr>
