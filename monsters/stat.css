@@ -1,5 +1,5 @@
 /* ==========================================================================
-   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (BULLETPROOF NO-HACK LAYOUT)
+   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (STRUCTURAL ARCHITECTURE)
    ========================================================================== */
 
 /* Flat White Site Background Environment & Centering */
@@ -30,32 +30,25 @@ html, body {
     border-bottom: 4px solid #8b2323; 
 }
 
-/* --- MONSTER SHEET TITLE --- 
-   THE ROOT FIX: We turn the block into a display grid. This forces the 
-   browser to structurally isolate the content before the first <br/> tag. */
+/* --- MONSTER SHEET TITLE --- */
 .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
     font-size: 9pt;
     line-height: 1.5;
-    display: grid;
-    grid-template-columns: 100%;
 }
 
-/* Replicates the official 20pt spaced-out title header rule cleanly on 
-   the actual first row of text, without leaking or breaking sub-lines. */
-.srd-header::first-line {
-    font-size: clamp(14pt, 4vw, 22pt); 
+/* THE DEFINITIVE FIX: Replicates the official 20pt spaced-out title header rule 
+   by targeting the explicit span element. It scales cleanly on mobile viewports 
+   without ever losing its formatting or splitting inline text like 'Init +0;' */
+.srd-title {
+    font-size: clamp(15pt, 4.5vw, 22pt); 
     font-weight: bold;
     color: #000000;
     letter-spacing: 0.22em;
     line-height: 1.4;
-}
-
-/* Targets the very first br tag inside the header to keep the title 
-   from overlapping its sub-text on narrow mobile viewports */
-.srd-header br:first-of-type {
-    margin-bottom: 4px;
+    display: inline-block;
+    padding-bottom: 4px;
 }
 
 /* Universal Bold label overrides to match standard site behavior */
