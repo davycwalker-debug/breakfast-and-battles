@@ -1,8 +1,8 @@
 /**
- * D&D 3.5 Dynamic Encounter & Initiative Tracker Engine
+ * D&D 3.5 Encounter & Initiative Tracking Engine
  */
 
-// Global State Management Vault
+// Global State Management Isolation Vault
 window.dndEngineState = window.dndEngineState || {
     initialized: false,
     liveCreatures: [],
@@ -13,7 +13,7 @@ window.dndEngineState = window.dndEngineState || {
 
 /**
  * Main Execution Entry Point
- * Initializes state storage structures and handles DOM tree rendering.
+ * Initializes state storage structures and executes DOM tree rendering.
  */
 function renderRoomTemplate(containerId, data) {
     injectEngineStyles();
@@ -42,7 +42,7 @@ function renderRoomTemplate(containerId, data) {
     if (data.readAloud) {
         htmlLines.push(`
             <section class="room-section read-aloud-section">
-                <h3>📜 Read-Aloud Text</h3>
+                <h3>Read-Aloud Narrative</h3>
                 ${renderReadAloudBox(data.readAloud)}
             </section>
         `);
@@ -85,7 +85,7 @@ function renderRoomTemplate(containerId, data) {
 }
 
 // =========================================================================
-// ISOLATED DATA COMPONENT UI GENERATORS
+// DATA COMPONENT INTERFACE GENERATORS
 // =========================================================================
 
 function renderReadAloudBox(text) {
@@ -97,7 +97,7 @@ function renderInlineChecks(mechanicsArray) {
     
     return mechanicsArray.map(check => `
         <div class="check-card">
-            ${check.prompt ? `<div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> ${check.prompt}</div>` : ''}
+            ${check.prompt ? `<div class="dialogue-prompt"><strong>Prompt:</strong> ${check.prompt}</div>` : ''}
             ${check.readAloud ? renderReadAloudBox(check.readAloud) : ''}
             <div class="check-dc-badge">
                 <span class="check-type">${check.type || 'Ability Check'}</span>
@@ -124,7 +124,7 @@ function renderEnvironment(envObj) {
 
     return `
         <section class="room-section environment-section">
-            <h3>🗺️ Room Features & Environment</h3>
+            <h3>Room Features & Environment</h3>
             <ul class="env-meta-list">
                 <li><strong>Dimensions:</strong> ${envObj.dimensions || 'N/A'}</li>
                 <li><strong>Illumination:</strong> ${envObj.illumination || 'N/A'}</li>
@@ -139,11 +139,11 @@ function renderDialogueTree(dialogueArray) {
     
     return `
         <div class="dialogue-tree-container">
-            <h3>💬 Dialogue Tree</h3>
+            <h3>Dialogue Options</h3>
             <div class="dialogue-branches">
                 ${dialogueArray.map(node => `
                     <div class="dialogue-node">
-                        <div class="dialogue-prompt"><strong>🗣️ Prompt:</strong> "${node.prompt}"</div>
+                        <div class="dialogue-prompt"><strong>Prompt:</strong> "${node.prompt}"</div>
                         <div class="dialogue-response">
                             <span class="speaker-tag">${node.speaker || 'NPC'}:</span> "${node.response}"
                         </div>
@@ -161,16 +161,16 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
     return `
         <section class="room-section combat-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="margin: 0;">⚔️ Combat & Initiative Tracker</h3>
-                <button type="button" class="btn-sort-tracker" onclick="sortTrackerByInitiative()">⚡ Sort Initiative</button>
+                <h3 style="margin: 0;">Combat & Initiative Tracker</h3>
+                <button type="button" class="btn-sort-tracker" onclick="sortTrackerByInitiative()">Sort Initiative</button>
             </div>
             
             <div class="tracker-box">
                 <div class="tracker-grid" ondragover="handleTrackerDragOver(event)">
-                    <div class="tracker-header-cell" style="text-align: center; color: var(--accent-gold);">Turn Done</div>
+                    <div class="tracker-header-cell" style="text-align: center; color: var(--accent-gold);">End Turn</div>
                     <div class="tracker-header-cell">Initiative</div>
                     <div class="tracker-header-cell">Creature Name</div>
-                    <div class="tracker-header-cell" style="text-align: right;">Health</div>
+                    <div class="tracker-header-cell" style="text-align: right;">Health Status</div>
                     
                     ${liveTracker.map((c, idx) => {
                         let statusClass = '';
@@ -180,15 +180,15 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
 
                         return `
                             <div class="tracker-cell draggable-row-cell ${statusClass}" style="text-align: center;" draggable="true" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
-                                <button type="button" class="btn-send-bottom" title="End Turn" onclick="sendCreatureToBottom(${idx})">⬇️</button>
+                                <button type="button" class="btn-send-bottom" title="End Turn" onclick="sendCreatureToBottom(${idx})">Next</button>
                             </div>
                             <div class="tracker-cell init-col draggable-row-cell ${statusClass}" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
-                                Init ${c.initRoll}
+                                Initiative ${c.initRoll}
                             </div>
                             <div class="tracker-cell name-col draggable-row-cell ${statusClass}" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
-                                <span class="status-text flag-staggered">Staggered</span>
-                                <span class="status-text flag-dying">Dying</span>
-                                <span class="status-text flag-dead">Dead</span>
+                                <span class="status-text flag-staggered">[Staggered] </span>
+                                <span class="status-text flag-dying">[Dying] </span>
+                                <span class="status-text flag-dead">[Dead] </span>
                                 ${c.name}
                             </div>
                             <div class="tracker-cell draggable-row-cell ${statusClass}" style="text-align: right;" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
@@ -200,9 +200,8 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                         `;
                     }).join('')}
 
-                    <!-- QUICK FORM ROW -->
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); text-align: center;">
-                        <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">+ Add</button>
+                        <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">Add</button>
                     </div>
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
                         <input type="number" id="new-init" class="tracker-input num-input" placeholder="Roll">
@@ -218,7 +217,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                 </div>
             </div>
 
-            <h3>👾 Creature Rosters & Stats</h3>
+            <h3>Creature Roster & Statistics</h3>
             <div class="table-responsive">
                 <table class="roster-table">
                     <thead>
@@ -251,7 +250,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
 function renderTactics(tacticsObj, developmentText) {
     if (!tacticsObj && !developmentText) return '';
     
-    let html = `<section class="room-section tactics-section"><h3>🧠 Tactics & Development</h3>`;
+    let html = `<section class="room-section tactics-section"><h3>Tactics & Development</h3>`;
     
     if (tacticsObj) {
         if (tacticsObj.initialRound) {
@@ -279,7 +278,7 @@ function renderTraps(trapsArray) {
     
     return `
         <section class="room-section traps-section">
-            <h3>⚠️ Hazards & Traps</h3>
+            <h3>Hazards & Traps</h3>
             ${trapsArray.map(t => `
                 <div class="trap-card">
                     <div class="trap-header">
@@ -302,7 +301,7 @@ function renderTreasure(treasureObj) {
     
     return `
         <section class="room-section treasure-section">
-            <h3>💰 Treasure & Rewards</h3>
+            <h3>Treasure & Rewards</h3>
             ${treasureObj.carried ? `<p style="margin-bottom: 16px;"><strong>Carried Gear:</strong> ${treasureObj.carried}</p>` : ''}
             ${treasureObj.containers?.length ? `
                 <h4>Hidden / Secured Wealth</h4>
@@ -320,7 +319,7 @@ function renderSpecialEvent(eventObj) {
     return `
         <div class="special-event-card ${eventObj.severity || 'info'}">
             <div class="event-header">
-                <span class="event-icon">${eventObj.severity === 'danger' ? '🚨' : '🔓'}</span>
+                <span class="event-icon">[Event Notification]</span>
                 <div class="event-title-group">
                     <h4>${eventObj.title}</h4>
                     <span class="event-trigger">Trigger: ${eventObj.trigger}</span>
@@ -336,7 +335,7 @@ function renderSpecialEvent(eventObj) {
 }
 
 // =========================================================================
-// RUNTIME ENGAGEMENT MUTATORS & ENGINE LOGIC
+// RUNTIME MUTATORS & ENGINE LOGIC
 // =========================================================================
 
 function handleTrackerDragStart(e, index) {
@@ -373,7 +372,7 @@ function handleTrackerDragOver(e) {
     
     window.dndEngineState.draggedIndex = targetIndex;
 
-    // Fast-refresh active view matrix layer
+    // Re-render interface context layer
     forceEngineRedraw();
 }
 
@@ -404,7 +403,7 @@ function updateCreatureHpInline(index, value) {
     
     creatures[index].hp = parsedHp;
     
-    // Direct DOM manipulation style updates (saves computing layout allocations)
+    // Direct DOM manipulation updates to bypass full layout computational cycles
     const cells = document.querySelectorAll(`.tracker-grid > [data-index="${index}"]`);
     cells.forEach(cell => {
         cell.classList.remove('tracker-row-staggered', 'tracker-row-dying', 'tracker-row-dead');
@@ -426,7 +425,7 @@ function addNewCombatantEntry() {
     const maxHpEl = document.getElementById('new-max-hp');
     
     if (!nameEl?.value.trim() || !initEl?.value || !hpEl?.value || !maxHpEl?.value) {
-        alert('Please fill out all tracker properties.');
+        alert('Please completely fill out all tracking structural properties.');
         return;
     }
     
@@ -441,7 +440,7 @@ function addNewCombatantEntry() {
 }
 
 /**
- * Isolated Cache Redraw Trigger
+ * Interface Re-render Pipeline Dispatcher
  */
 function forceEngineRedraw() {
     renderRoomTemplate(
