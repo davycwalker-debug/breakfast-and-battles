@@ -187,16 +187,16 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <button type="button" class="btn-send-bottom" title="End Turn" onclick="sendCreatureToBottom(${idx})">Next</button>
                             </div>
                             
-                            <div class="tracker-cell init-col ${statusClass}">
+                            <div class="tracker-cell init-col ${statusClass}" data-index="${idx}">
                                 Initiative ${c.initRoll}
                             </div>
-                            <div class="tracker-cell name-col ${statusClass}">
+                            <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
                                 <span class="status-text flag-staggered">[Staggered] </span>
                                 <span class="status-text flag-dying">[Dying] </span>
                                 <span class="status-text flag-dead">[Dead] </span>
                                 ${c.name}
                             </div>
-                            <div class="tracker-cell ${statusClass}" style="text-align: right;">
+                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right;">
                                 <span class="hp-badge" draggable="false">
                                     <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
                                     / ${c.maxHp} HP
