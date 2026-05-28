@@ -316,10 +316,13 @@ function renderTreasure(treasureObj) {
 function renderSpecialEvent(eventObj) {
     if (!eventObj) return '';
     
+    // Determine a clean, professional contextual label if needed, or leave empty for CSS styling
+    const severityLabel = eventObj.severity === 'danger' ? 'Critical' : 'Notice';
+    
     return `
         <div class="special-event-card ${eventObj.severity || 'info'}">
             <div class="event-header">
-                <span class="event-icon">[Event Notification]</span>
+                <span class="event-status-badge status-${eventObj.severity || 'info'}">${severityLabel}</span>
                 <div class="event-title-group">
                     <h4>${eventObj.title}</h4>
                     <span class="event-trigger">Trigger: ${eventObj.trigger}</span>
