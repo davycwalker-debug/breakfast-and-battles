@@ -343,28 +343,31 @@ li {
 }
 
 .btn-send-bottom {
-    background: transparent;
-    border: none;
+    background: var(--card-inner);
+    border: 1px solid var(--border-color);
+    color: var(--text-main); /* Forces the button text to be highly visible */
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 0.95rem;
-    padding: 2px;
-    line-height: 1;
-    opacity: 0.4;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    line-height: 1.2;
 }
 .btn-send-bottom:hover {
-    opacity: 1;
-    transform: scale(1.2);
+    background: var(--border-color);
+    color: var(--accent-gold);
 }
 
 /* Drag-and-Drop Elements */
-.draggable-row-cell {
+.tracker-drag-handle {
     cursor: grab;
     user-select: none;
+    text-align: center;
 }
-.draggable-row-cell:active {
+.tracker-drag-handle:active {
     cursor: grabbing;
 }
-.draggable-row-cell.is-dragging {
+.tracker-drag-handle.is-dragging {
     opacity: 0.35;
     background: color-mix(in srgb, var(--accent-gold) 5%, transparent) !important;
     border-top: 1px dashed var(--accent-gold);
