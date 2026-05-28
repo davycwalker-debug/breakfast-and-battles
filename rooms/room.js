@@ -179,19 +179,24 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                         else if (c.hp <= -10) statusClass = 'tracker-row-dead';
 
                         return `
-                            <div class="tracker-cell draggable-row-cell ${statusClass}" style="text-align: center;" draggable="true" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell tracker-drag-handle ${statusClass}" 
+                                 draggable="true" 
+                                 data-index="${idx}" 
+                                 ondragstart="handleTrackerDragStart(event, ${idx})" 
+                                 ondragend="handleTrackerDragEnd(event)">
                                 <button type="button" class="btn-send-bottom" title="End Turn" onclick="sendCreatureToBottom(${idx})">Next</button>
                             </div>
-                            <div class="tracker-cell init-col draggable-row-cell ${statusClass}" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
+                            
+                            <div class="tracker-cell init-col ${statusClass}">
                                 Initiative ${c.initRoll}
                             </div>
-                            <div class="tracker-cell name-col draggable-row-cell ${statusClass}" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell name-col ${statusClass}">
                                 <span class="status-text flag-staggered">[Staggered] </span>
                                 <span class="status-text flag-dying">[Dying] </span>
                                 <span class="status-text flag-dead">[Dead] </span>
                                 ${c.name}
                             </div>
-                            <div class="tracker-cell draggable-row-cell ${statusClass}" style="text-align: right;" data-index="${idx}" ondragstart="handleTrackerDragStart(event, ${idx})" ondragend="handleTrackerDragEnd(event)">
+                            <div class="tracker-cell ${statusClass}" style="text-align: right;">
                                 <span class="hp-badge" draggable="false">
                                     <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
                                     / ${c.maxHp} HP
@@ -345,13 +350,13 @@ function handleTrackerDragStart(e, index) {
     window.dndEngineState.draggedIndex = index;
     e.dataTransfer.effectAllowed = 'move';
     
-    document.querySelectorAll(`.draggable-row-cell[data-index="${index}"]`).forEach(cell => {
+    document.querySelectorAll(`.tracker-drag-handle[data-index="${index}"]`).forEach(cell => {
         cell.classList.add('is-dragging');
     });
 }
 
 function handleTrackerDragEnd(e) {
-    document.querySelectorAll('.draggable-row-cell').forEach(cell => {
+    document.querySelectorAll('.tracker-drag-handle').forEach(cell => {
         cell.classList.remove('is-dragging', 'drag-over');
     });
     window.dndEngineState.draggedIndex = null;
@@ -361,21 +366,18 @@ function handleTrackerDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     
-    const targetCell = e.target.closest('.draggable-row-cell');
+    const targetCell = e.target.closest('.tracker-drag-handle');
     if (!targetCell) return;
     
     const targetIndex = parseInt(targetCell.getAttribute('data-index'), 10);
     const originIndex = window.dndEngineState.draggedIndex;
     if (targetIndex === originIndex || originIndex === null) return;
 
-    // Array Index Splicing Logic
     const creatures = window.dndEngineState.liveCreatures;
     const movedItem = creatures.splice(originIndex, 1)[0];
     creatures.splice(targetIndex, 0, movedItem);
     
     window.dndEngineState.draggedIndex = targetIndex;
-
-    // Re-render interface context layer
     forceEngineRedraw();
 }
 
