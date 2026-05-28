@@ -1,102 +1,16 @@
-/* ==========================================================================
-   OFFICIAL 3.5 SRD MONSTER COMPENDIUM STYLE (STRUCTURAL ARCHITECTURE)
-   ========================================================================== */
+html, body { background-color: #ffffff; color: #000000; font-family: "Verdana", Arial, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+.srd-container { max-width: 700px; width: 100%; background-color: #ffffff; box-sizing: border-box; }
 
-/* Flat White Site Background Environment & Centering */
-html, body {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    font-family: "Verdana", Arial, sans-serif;
-    margin: 0;
-    padding: 20px; 
-    display: flex;
-    justify-content: center;
-}
+/* Master Block Rule */
+.srd-block { font-size: 9pt; line-height: 1.5; padding: 4px 0 5px 0; margin-bottom: 5px; border-bottom: 3px solid #8b2323; }
+.srd-header { border-bottom-width: 4px; padding-bottom: 6px; }
+.srd-title { font-size: clamp(14pt, 4.5vw, 19pt); font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; display: inline-block; padding-bottom: 4px; }
 
-/* Base Document Wrapper Container */
-.srd-container {
-    max-width: 700px;
-    width: 100%;
-    background-color: #ffffff;
-    box-sizing: border-box;
-}
+.srd-container b { color: #000000; font-weight: bold; font-size: 9pt; }
+.srd-sub { padding-left: 20px; color: #333333; display: inline-block; }
 
-/* --- THE SECTION LINE DIVIDERS --- */
-.srd-block {
-    font-size: 9pt; 
-    line-height: 1.5;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-    border-bottom: 4px solid #8b2323; 
-}
+/* The Magic Copy-Paste Layout: Automates hanging indents on raw text inside this block */
+.srd-abilities-area { font-size: 9pt; line-height: 1.6; padding-left: 25px; text-indent: -25px; border-bottom: none; }
+.srd-abilities-area b { color: #8b2323 !important; }
 
-/* --- MONSTER SHEET TITLE --- */
-.srd-header {
-    border-bottom: 4px solid #8b2323;
-    padding-bottom: 5px;
-    font-size: 9pt;
-    line-height: 1.5;
-}
-
-/* THE DEFINITIVE FIX: Replicates the official 20pt spaced-out title header rule 
-   by targeting the explicit span element. It scales cleanly on mobile viewports 
-   without ever losing its formatting or splitting inline text like 'Init +0;' */
-.srd-title {
-    font-size: clamp(15pt, 4.5vw, 22pt); 
-    font-weight: bold;
-    color: #000000;
-    letter-spacing: 0.22em;
-    line-height: 1.4;
-    display: inline-block;
-    padding-bottom: 4px;
-}
-
-/* Universal Bold label overrides to match standard site behavior */
-.srd-container b {
-    color: #000000 !important;
-    font-weight: bold;
-    font-size: 9pt !important; 
-    display: inline;
-}
-
-/* Special links formatting to match the reference site teal */
-.srd-container a:link, 
-.srd-container a:visited { 
-    text-decoration: none; 
-    color: rgb(87, 158, 182); 
-}
-.srd-container a:hover { 
-    text-decoration: underline; 
-}
-
-/* --- HANGING INTENT ABILITY PROFILES --- */
-.srd-abilities-block {
-    font-size: 9pt;
-    line-height: 1.6;
-    display: block;
-    padding-left: 25px;   
-    text-indent: -25px;   
-}
-
-.srd-abilities-block b {
-    color: #8b2323 !important;
-    font-size: 9pt !important;
-}
-
-.srd-abilities-block br {
-    display: block;
-    content: "";
-    margin-bottom: 8px;
-}
-
-/* --- LEGAL DISCLAIMER FOOTER --- */
-.srd-container p {
-    font-size: 7.5pt !important;
-    line-height: 1.4 !important;
-    color: #666666 !important;
-    margin-top: 25px !important;
-    padding-top: 10px !important;
-    border-top: 1px dashed #cbd4c5 !important;
-    text-indent: 0px !important; 
-    display: block !important;
-}
+.srd-footer { font-size: 7.5pt; line-height: 1.4; color: #666666; margin-top: 25px; padding-top: 10px; border-top: 1px dashed #cbd4c5; }
