@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area 48: Gallery</title>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Render target container -->
+        <div id="encounter-output"></div>
+    </div>
+
+    <!-- 1. Bring in your styling + script layout core engine -->
+    <script src="../room.js"></script>
+
+    <!-- 2. Simply feed your raw JSON values here -->
+    <script>
+        // Data input object mapping out your exact campaign homework notes
+        const roomData = {
+          "title": "Area 48: Gallery",
+          "subtitle": "Sunless Citadel Grove Level -- CL -1.17, XP 50",
+          "readAloud": `Clusters of glowing fungus cling to the walls and ceiling, their faint, nauseating light revealing glimpses of the stone beneath. 
+          Where the growth thins, intricate bas-relief carvings emerge; dragons in sweeping motion, raining fire down upon fleeing figures: humans, elves, dwarves, and others, all caught in moments of panic and ruin. 
+          The lower half of the chamber has been transformed. Soil and rich compost cover the floor, from which thin grasses and pale growths push upward in uneven patches. 
+          Along the western wall stands a simple wooden bench, its surface lined with basic gardening tools, worn but well-used.`,
+          "environment": {
+            "dimensions": "20 ft. x 60 ft. north chamber, 20ft. x 80 ft. south chamber, 10 ft. tall ceiling",
+            "illumination": "Dim (lit by luminescent fungus)",
+            "doors": [
+              {
+                "location": "South Chamber West Wall",
+                "desc": "Stone door leading to Area 47 (Belak's Goblin Common)."
+              },
+              {
+                "location": "South Chamber East Wall",
+                "desc": "Stone door leading to Area 50 (Arboretum B)."
+              },
+              {
+                "location": "South Chamber South Wall",
+                "desc": "Stone door leading to Area 49 (Arboretum A)."
+              },
+              {
+                "location": "South Chamber North Wall / North Chamber South Wall",
+                "desc": "Stone door leading between chambers."
+              },
+              {
+                "location": "North Chamber East Wall",
+                "desc": "Stone door leading to Area 51 (Arboretum C)."
+              },
+              {
+                "location": "North Chamber North Wall",
+                "desc": "Stone door leading to Area 52 (Arboretum D)."
+              }
+            ]
+          },
+          "creatures": [
+            {
+              "name": "Frogwart the Bugbear",
+              "initRoll": 21,
+              "hp": 25,
+              "maxHp": 25,
+              "ac": "17",
+              "saves": "Fort +2 / Ref +4 / Will +1",
+              "type": "Medium Humanoid (Goblinoid)",
+              "bio": "A bugbear who followed his brother Balsag but now has to work as a gardener."
+            }
+          ],
+          "setupPositions": `Frogwart begins by his bench.`,
+          "tactics": {
+            "initialRound": `Frogwart charges and calls his allies. Those in the Common can hear this, and come from each room in 1, 2, and 3 rounds respectively.`,
+            "individual": [
+              {
+                "name": "Frogwart",
+                "strategy": `Frogwart wants blood. He recognizes this isn't a fight he can win, so he's going to focus down the weakest person to try and kill them.`
+              }
+            ]
+          },
+          "treasure": {
+            "carried": "The bugbear gardener possesses one dose of special fertilizer devised by Belak that causes a normal plant to double in size over one month's time (30 gp value). 4d10 SP, 2d10 GP on the Bugbear.",
+          }
+        };
+
+        // Fire rendering execution
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
