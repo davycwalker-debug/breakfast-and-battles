@@ -21,7 +21,7 @@
         const roomData = {
           "title": "Area 4: The Whispering Ossuary",
           "subtitle": "Dungeon Level 2 — Encounter CR 7",
-          "readAloud": "The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.",
+          "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.`,
           "initialReadAloudChecks": [
             {
               "type": "Spot Check",
@@ -91,29 +91,29 @@
               "ac": "15 (+2 Dex, +3 natural)",
               "saves": "Fort +0 / Ref +2 / Will +2",
               "type": "Undead (Humanoid Skeleton)",
-              "bio": "Reanimated bone constructs pulling themselves free from the wall masonry."
+              "bio": `Reanimated bone constructs pulling themselves free from the wall masonry.`
             }
           ],
-          "setupPositions": "The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.",
+          "setupPositions": `The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.`,
           "tactics": {
-            "initialRound": "The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.",
+            "initialRound": `The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.`,
             "individual": [
               {
                 "name": "The Bleak Wraith",
-                "strategy": "Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength."
+                "strategy": `Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength.`
               },
               {
                 "name": "Ossuary Skeletons",
-                "strategy": "Form a defensive line around the obsidian pool, using Aid Another to boost the Wraith's AC or typing up martial characters."
+                "strategy": `Form a defensive line around the obsidian pool, using Aid Another to boost the Wraith's AC or typing up martial characters.`
               }
             ]
           },
-          "development": "If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.",
+          "development": `If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.`,
           "traps": [
             {
               "name": "Wall-Mounted Scythe Trap",
               "cr": "4",
-              "trigger": "Pressure plate located in front of the obsidian pool (Search DC 22 to locate).",
+              "trigger": "Pressure plate located in front of the obsidian pool (Search DC 22 to locate).`,
               "reset": "Manual (Requires a repair kit and 3 rounds of work).",
               "searchDc": "22",
               "disableDc": "20",
