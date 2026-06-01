@@ -532,10 +532,11 @@ li {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 12px 16px;
-    width: 280px;
+    width: 260px; /* Snugged slightly tighter since text is short */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
     z-index: 100;
     pointer-events: none;
+    white-space: normal; /* Ensures long names/monster types wrap beautifully */
     transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
 }
 
@@ -560,26 +561,15 @@ li {
 
 .tooltip-stats-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 16px;
+    margin-bottom: 4px;
 }
 
 .tooltip-stat {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
 }
 
 .tooltip-stat strong {
     color: var(--accent-gold);
-}
-
-.tooltip-bio {
-    font-size: 0.8rem;
-    font-style: italic;
-    color: var(--text-muted);
-    line-height: 1.4;
-    border-top: 1px dashed var(--border-muted);
-    padding-top: 6px;
-    margin-top: 6px;
-    white-space: normal; /* Permits biological text descriptions to warp beautifully */
 }
