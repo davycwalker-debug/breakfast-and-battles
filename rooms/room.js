@@ -186,11 +186,8 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                             <div class="tooltip-target">
                                 ${c.name}
                                 <div class="roster-tooltip">
-                                    <div class="tooltip-header">${stats.name}</div>
-                                    <div class="tooltip-stats-row">
-                                        <div class="tooltip-stat"><strong>AC:</strong> ${stats.ac}</div>
-                                        <div class="tooltip-stat"><strong>Saves:</strong> ${stats.saves}</div>
-                                    </div>
+                                    <div class="tooltip-stat"><strong>AC:</strong> ${stats.ac}</div>
+                                    <div class="tooltip-stat"><strong>Saves:</strong> ${stats.saves}</div>
                                     <div class="tooltip-stat"><strong>Type:</strong> ${stats.type}</div>
                                 </div>
                             </div>
