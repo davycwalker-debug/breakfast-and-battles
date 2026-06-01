@@ -178,6 +178,25 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                         else if (c.hp <= -1 && c.hp >= -9) statusClass = 'tracker-row-dying';
                         else if (c.hp <= -10) statusClass = 'tracker-row-dead';
 
+                        // Look up baseline roster stats matching this creature's name
+                        const stats = rosterData.find(r => r.name === c.name);
+                        
+                        // Construct the HTML tooltip block dynamically if data exists
+                        const nameDisplay = stats ? `
+                            <div class="tooltip-target">
+                                ${c.name}
+                                <div class="roster-tooltip">
+                                    <div class="tooltip-header">${stats.name}</div>
+                                    <div class="tooltip-stats-row">
+                                        <div class="tooltip-stat"><strong>AC:</strong> ${stats.ac}</div>
+                                        <div class="tooltip-stat"><strong>Saves:</strong> ${stats.saves}</div>
+                                    </div>
+                                    <div class="tooltip-stat" style="margin-bottom: 4px;"><strong>Type:</strong> ${stats.type}</div>
+                                    ${stats.bio ? `<div class="tooltip-bio">${stats.bio}</div>` : ''}
+                                </div>
+                            </div>
+                        ` : `<span>${c.name}</span>`;
+
                         return `
                             <div class="tracker-cell tracker-drag-handle ${statusClass}" 
                                  draggable="true" 
@@ -194,7 +213,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <span class="status-text flag-staggered">[Staggered] </span>
                                 <span class="status-text flag-dying">[Dying] </span>
                                 <span class="status-text flag-dead">[Dead] </span>
-                                ${c.name}
+                                ${nameDisplay}
                             </div>
                             <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right;">
                                 <span class="hp-badge" draggable="false">
@@ -221,32 +240,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     </div>
                 </div>
             </div>
-
-            <h3>Creature Roster & Statistics</h3>
-            <div class="table-responsive">
-                <table class="roster-table">
-                    <thead>
-                        <tr>
-                            <th>Creature</th>
-                            <th>AC</th>
-                            <th style="white-space: nowrap;">Saves (F/R/W)</th>
-                            <th>Type / Subtype</th>
-                            <th>Quick Bio</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rosterData.map(c => `
-                            <tr>
-                                <td><strong>${c.name}</strong></td>
-                                <td><code class="stat-block">${c.ac}</code></td>
-                                <td><code class="stat-block">${c.saves}</code></td>
-                                <td>${c.type}</td>
-                                <td><em class="bio-text">${c.bio || ''}</em></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
+            
             ${positions ? `<p class="setup-positions" style="margin-top:20px;"><strong>Setup Positions:</strong> ${positions}</p>` : ''}
         </section>
     `;
