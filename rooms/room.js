@@ -26,11 +26,32 @@ function renderRoomTemplate(containerId, data) {
             ...JSON.parse(JSON.stringify(c)),
             subdual: c.subdual || 0 
         })) : [];
+
+        window.dndEngineState.xpMultiplierText = data.multiplierDefault !== undefined ? String(data.multiplierDefault) : "1.0";
+        const multStr = window.dndEngineState.xpMultiplierText.trim();
+        if (multStr.includes('/')) {
+            const parts = multStr.split('/');
+            const n = parseFloat(parts[0]);
+            const d = parseFloat(parts[1]);
+            window.dndEngineState.xpMultiplier = (!isNaN(n) && !isNaN(d) && d !== 0) ? (n / d) : 1.0;
+        } else {
+            const parsed = parseFloat(multStr);
+            window.dndEngineState.xpMultiplier = !isNaN(parsed) ? parsed : 1.0;
+        }
         
         window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
+
+        if (data.partyDefaults && Array.isArray(data.partyDefaults)) {
+            const loops = Math.min(data.partyDefaults.length, 6); // Cap at 6 slots max
+            for (let i = 0; i < loops; i++) {
+                const incoming = data.partyDefaults[i];
+                if (incoming) {
+                    window.dndEngineState.partySlots[i].count = incoming.count !== undefined ? incoming.count : '';
+                    window.dndEngineState.partySlots[i].ecl = incoming.ecl !== undefined ? incoming.ecl : '';
+                }
+            }
+        }
         
-        window.dndEngineState.xpMultiplier = 1.0;
-    
         window.dndEngineState.currentContainerId = containerId;
         window.dndEngineState.rawBaselineData = data;
         window.dndEngineState.initialized = true;
