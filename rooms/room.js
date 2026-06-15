@@ -619,44 +619,48 @@ function mEven(x) {
  * @param {number} y - The individual Creature Challenge Rating (CR).
  */
 function mExperience(x, y) {
-    // If CR is fractional (e.g., 0.33 or 0.5), force it to 1 per D&D 3.5 raw rules for table lookups
-    if (y > 0 && y < 1) y = 1;
-
+    // x = PClevel y = monsterlevel
     var iReturn = 0;
     if (x < 3) x = 3;
     if ((x <= 6) && (y <= 1)) iReturn = 300 * y;
     else if (y < 1) iReturn = 0;
+      
+    // This formula looks nice, but 3.5 doesn't follow a smooth formula like 3.0 did.
+    else iReturn = 6.25 * x * ( Math.pow(2,mEven(7- (x-y) ) /2) ) * ( 11-(x-y) - mEven(7-(x-y)) );
     
-    else iReturn = 6.25 * x * (Math.pow(2, mEven(7 - (x - y)) / 2)) * (11 - (x - y) - mEven(7 - (x - y)));
-
+    // Below catches places where the formula fails for 3.5.
     if ((y == 4) || (y == 6) || (y == 8) || (y == 10) || (y == 12) || 
-        (y == 14) || (y == 16) || (y == 18) || (y == 20)) {
-        if (x <= 3) iReturn = 1350 * Math.pow(2, (y - 4) / 2);
-        else if (x == 5 && y >= 6) iReturn = 2250 * Math.pow(2, (y - 6) / 2);
-        else if (x == 7 && y >= 8) iReturn = 3150 * Math.pow(2, (y - 8) / 2);
-        else if (x == 9 && y >= 10) iReturn = 4050 * Math.pow(2, (y - 10) / 2);
-        else if (x == 11 && y >= 12) iReturn = 4950 * Math.pow(2, (y - 12) / 2);
-        else if (x == 13 && y >= 14) iReturn = 5850 * Math.pow(2, (y - 14) / 2);
-        else if (x == 15 && y >= 16) iReturn = 6750 * Math.pow(2, (y - 16) / 2);
-        else if (x == 17 && y >= 18) iReturn = 7650 * Math.pow(2, (y - 18) / 2);
-        else if (x == 19 && y >= 20) iReturn = 8550 * Math.pow(2, (y - 20) / 2);
+        (y == 14) ||(y == 16) ||(y == 18) ||(y == 20)) {
+        if (x <= 3) iReturn = 1350 * Math.pow(2,(y-4)/2);
+        else if (x == 5 && y >= 6) iReturn = 2250 * Math.pow(2,(y-6)/2);
+        else if (x == 7 && y >= 8) iReturn = 3150 * Math.pow(2,(y-8)/2);
+        else if (x == 9 && y >= 10) iReturn = 4050 * Math.pow(2,(y-10)/2);
+        else if (x == 11 && y >= 12) iReturn = 4950 * Math.pow(2,(y-12)/2);
+        else if (x == 13 && y >= 14) iReturn = 5850 * Math.pow(2,(y-14)/2);
+        else if (x == 15 && y >= 16) iReturn = 6750 * Math.pow(2,(y-16)/2);
+        else if (x == 17 && y >= 18) iReturn = 7650 * Math.pow(2,(y-18)/2);
+        else if (x == 19 && y >= 20) iReturn = 8550 * Math.pow(2,(y-20)/2);
     }
-    if ((y == 7) || (y == 9) || (y == 11) || (y == 13) || (y == 15) || 
-        (y == 17) || (y == 19)) {
-        if (x == 6) iReturn = 2700 * Math.pow(2, (y - 7) / 2);
-        if (x == 8 && y >= 9) iReturn = 3600 * Math.pow(2, (y - 9) / 2);
-        if (x == 10 && y >= 11) iReturn = 4500 * Math.pow(2, (y - 11) / 2);
-        if (x == 12 && y >= 13) iReturn = 5400 * Math.pow(2, (y - 13) / 2);
-        if (x == 14 && y >= 15) iReturn = 6300 * Math.pow(2, (y - 15) / 2);
-        if (x == 16 && y >= 17) iReturn = 7200 * Math.pow(2, (y - 17) / 2);
-        if (x == 18 && y >= 19) iReturn = 8100 * Math.pow(2, (y - 19) / 2);
+    if ((y == 7) || (y == 9) || (y == 11) || (y == 13) || (y == 15) || (y == 17) ||(y == 19)) {
+        if (x == 6) iReturn = 2700 * Math.pow(2,(y-7)/2);
+        if (x == 8 && y >= 9) iReturn = 3600 * Math.pow(2,(y-9)/2);
+        if (x == 10 && y >= 11) iReturn = 4500 * Math.pow(2,(y-11)/2);
+        if (x == 12 && y >= 13) iReturn = 5400 * Math.pow(2,(y-13)/2);
+        if (x == 14 && y >= 15) iReturn = 6300 * Math.pow(2,(y-15)/2);
+        if (x == 16 && y >= 17) iReturn = 7200 * Math.pow(2,(y-17)/2);
+        if (x == 18 && y >= 19) iReturn = 8100 * Math.pow(2,(y-19)/2);
     }
-    
-    if (y > 20) iReturn = 2 * mExperience(x, y - 2);
-
+      
+    if (y > 20) iReturn = 2 * mExperience(x, y-2);
+    // recursion should end this in short order.
+    // This method is clean, and ensures any errors in the above
+    // formulas for 3.5 are accounted for.
+      
+    // Finally we correct for out of bounds entries, doing this last to cut space on the
+    // above formulas.
     if (x - y > 7) iReturn = 0;
     else if (y - x > 7) iReturn = 0;
-
+    
     return iReturn;
 }
 
