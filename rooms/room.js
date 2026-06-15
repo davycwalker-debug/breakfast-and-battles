@@ -33,15 +33,26 @@ function renderRoomTemplate(containerId, data) {
     if (!container) return console.error(`Target container element ID "${containerId}" was not found.`);
 
     // 2. Fragment Assembly Matrix
+    let displaySubtitle = data.subtitle || '';
+    if (data.creatures && Array.isArray(data.creatures)) {
+        const totalCr = data.creatures.reduce((sum, c) => sum + (Number(c.cr) || 0), 0);
+        const clString = totalCr.toFixed(2); 
+        if (displaySubtitle) {
+            displaySubtitle += `, CL ${clString}`;
+        } else {
+            displaySubtitle = `CL ${clString}`;
+        }
+    }
+
     let htmlLines = [
         `<div class="dnd-room-wrapper">`,
         `  <header class="room-header">`,
         `      <h1>${data.title || 'Encounter Area'}</h1>`,
-        `      ${data.subtitle ? `<p class="room-subtitle">${data.subtitle}</p>` : ''}`,
+        `      ${displaySubtitle ? `<p class="room-subtitle">${displaySubtitle}</p>` : ''}`,
         `  </header>`,
         `  <hr class="section-divider">`
     ];
-
+    
     if (data.readAloud) {
         htmlLines.push(`
             <section class="room-section read-aloud-section">
