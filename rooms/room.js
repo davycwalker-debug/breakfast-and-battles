@@ -202,8 +202,10 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <button type="button" class="btn-send-bottom" title="End Turn" onclick="sendCreatureToBottom(${idx})">Next</button>
                             </div>
                             
-                            <div class="tracker-cell init-col ${statusClass}" data-index="${idx}">
-                                Initiative ${c.initRoll}
+                            <div class="tracker-cell init-col ${statusClass}" data-index="${idx}" style="display: flex; align-items: center; gap: 8px;">
+                                <button type="button" class="btn-send-bottom" style="color: var(--accent-red); padding: 2px 6px; font-weight: bold;" title="Remove Combatant" onclick="removeCombatantEntry(${idx})">×</button>
+                                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">Init</span>
+                                <input type="number" class="hp-input" style="width: 40px; text-align: left; background: transparent; font-family: monospace; font-size: 1rem; font-weight: bold; color: var(--accent-gold);" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
                             </div>
                             <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
                                 <span class="status-text flag-staggered">[Staggered] </span>
@@ -431,6 +433,25 @@ function addNewCombatantEntry() {
         maxHp: parseInt(maxHpEl.value, 10)
     });
     
+    forceEngineRedraw();
+}
+
+function updateCreatureInitiativeInline(index, value) {
+    const creatures = window.dndEngineState.liveCreatures;
+    if (!creatures) return;
+
+    const parsedInit = parseInt(value, 10);
+    if (isNaN(parsedInit)) return;
+
+    // Direct memory mutation without forcing redrawing cycles immediately
+    creatures[index].initRoll = parsedInit;
+}
+
+function removeCombatantEntry(index) {
+    const creatures = window.dndEngineState.liveCreatures;
+    if (!creatures) return;
+
+    creatures.splice(index, 1);
     forceEngineRedraw();
 }
 
