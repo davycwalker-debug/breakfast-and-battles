@@ -8,7 +8,9 @@ window.dndEngineState = window.dndEngineState || {
     liveCreatures: [],
     currentContainerId: '',
     rawBaselineData: null,
-    draggedIndex: null
+    draggedIndex: null,
+    xpMultiplierText: "1.0",
+    xpMultiplier: 1.0
 };
 
 /**
@@ -94,12 +96,12 @@ function renderRoomTemplate(containerId, data) {
         `         ${displaySubtitle ? `<p class="room-subtitle">${displaySubtitle}</p>` : '<div></div>'}`,
         `         <div class="multiplier-wrapper">`,
         `             <label class="multiplier-label">Multiplier:</label>`,
-        `             <input type="number" step="0.05" min="0" `,
-        `                    id="input-xp-multiplier" data-focus-key="xp-multiplier" `,
-        `                    class="tracker-input multiplier-input" `,
-        `                    placeholder="1.0" `,
-        `                    value="${window.dndEngineState.xpMultiplier}" `,
-        `                    oninput="updateXpMultiplier(this.value)">`,
+        `          <input type="text" `,
+        `                 id="input-xp-multiplier" data-focus-key="xp-multiplier" `, 
+        `                 class="tracker-input multiplier-input" `, 
+        `                 placeholder="1.0" `, 
+        `                 value="${window.dndEngineState.xpMultiplierText}" `,
+        `                 oninput="updateXpMultiplier(this.value)">`,
         `         </div>`,
         `      </div>`,
         
@@ -446,6 +448,45 @@ function renderSpecialEvent(eventObj) {
     `;
 }
 
+/**
+ * Renders the interactive Party ECL configuration matrix panel.
+ */
+function renderPartyEclMatrix(slots) {
+    let rowsHtml = slots.map((slot, index) => `
+        <div class="party-matrix-row">
+            <div class="matrix-cell-num">#${index + 1}</div>
+            <div class="matrix-input-group">
+                <label>Count:</label>
+                <input type="number" 
+                       data-focus-key="matrix-count-${index}"
+                       class="tracker-input matrix-input num-input" 
+                       placeholder="0" 
+                       value="${slot.count}" 
+                       oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
+            </div>
+            <div class="matrix-input-group">
+                <label>ECL:</label>
+                <input type="number" 
+                       data-focus-key="matrix-ecl-${index}"
+                       class="tracker-input matrix-input num-input" 
+                       placeholder="1" 
+                       value="${slot.ecl}" 
+                       oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
+            </div>
+        </div>
+    `).join('');
+
+    return `
+        <section class="room-section party-matrix-section">
+            <div class="matrix-header-title">Active Adventuring Party Configuration</div>
+            <div class="party-matrix-grid">
+                ${rowsHtml}
+            </div>
+        </section>
+        <hr class="section-divider">
+    `;
+}
+
 // =========================================================================
 // RUNTIME MUTATORS & ENGINE LOGIC
 // =========================================================================
@@ -567,50 +608,36 @@ function removeCombatantEntry(index) {
     forceEngineRedraw();
 }
 
-/**
- * Renders the interactive Party ECL configuration matrix panel.
- */
-function renderPartyEclMatrix(slots) {
-    let rowsHtml = slots.map((slot, index) => `
-        <div class="party-matrix-row">
-            <div class="matrix-cell-num">#${index + 1}</div>
-            <div class="matrix-input-group">
-                <label>Count:</label>
-                <input type="number" 
-                       data-focus-key="matrix-count-${index}"
-                       class="tracker-input matrix-input num-input" 
-                       placeholder="0" 
-                       value="${slot.count}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
-            </div>
-            <div class="matrix-input-group">
-                <label>ECL:</label>
-                <input type="number" 
-                       data-focus-key="matrix-ecl-${index}"
-                       class="tracker-input matrix-input num-input" 
-                       placeholder="1" 
-                       value="${slot.ecl}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
-            </div>
-        </div>
-    `).join('');
-
-    return `
-        <section class="room-section party-matrix-section">
-            <div class="matrix-header-title">Active Adventuring Party Configuration</div>
-            <div class="party-matrix-grid">
-                ${rowsHtml}
-            </div>
-        </section>
-        <hr class="section-divider">
-    `;
-}
-
 function updatePartyMatrixSlot(index, field, value) {
     if (window.dndEngineState && window.dndEngineState.partySlots[index]) {
         window.dndEngineState.partySlots[index][field] = value;
         renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
     }
+}
+
+function updateXpMultiplier(value) {
+    // 1. Keep whatever string text the user typed alive in the UI state
+    window.dndEngineState.xpMultiplierText = value;
+
+    // 2. Clear out whitespaces
+    const rawStr = value.trim();
+
+    // 3. Evaluate fractions ("1/2") or standard decimal floats ("1.25")
+    if (rawStr.includes('/')) {
+        const parts = rawStr.split('/');
+        const num = parseFloat(parts[0]);
+        const den = parseFloat(parts[1]);
+        
+        // Use the evaluated fraction if it's ready; otherwise default calculation to 1
+        window.dndEngineState.xpMultiplier = (!isNaN(num) && !isNaN(den) && den !== 0) ? (num / den) : 1.0;
+    } else {
+        const parsed = parseFloat(rawStr);
+        // Use the float value if valid; otherwise default calculation to 1
+        window.dndEngineState.xpMultiplier = !isNaN(parsed) ? parsed : 1.0;
+    }
+
+    // 4. Fire the calculation render update stack immediately
+    forceEngineRedraw();
 }
 
 function calculatePowerLevel(crValue) {
@@ -703,16 +730,6 @@ function mExperience(x, y) {
     else if (y - x > 7) iReturn = 0;
     
     return iReturn;
-}
-
-function updateXpMultiplier(value) {
-    if (window.dndEngineState) {
-        // Enforces accurate floating-point decimal conversion 
-        window.dndEngineState.xpMultiplier = parseFloat(value) || 0;
-        
-        // Re-run the layout builder engine
-        renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
-    }
 }
 
 /**
