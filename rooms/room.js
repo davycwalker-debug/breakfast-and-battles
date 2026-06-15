@@ -95,6 +95,7 @@ function renderRoomTemplate(containerId, data) {
         `         <div class="multiplier-wrapper">`,
         `             <label class="multiplier-label">Multiplier:</label>`,
         `             <input type="number" step="0.05" min="0" `,
+        `                    id="input-xp-multiplier" data-focus-key="xp-multiplier" `,
         `                    class="tracker-input multiplier-input" `,
         `                    placeholder="1.0" `,
         `                    value="${window.dndEngineState.xpMultiplier}" `,
@@ -153,50 +154,31 @@ function renderRoomTemplate(containerId, data) {
     // --- FOCUS PRESERVATION SYSTEM ---
     // 1. Capture the unique identifiers of what you are currently typing in
     const activeEl = document.activeElement;
-    let cachedId = activeEl ? activeEl.id : null;
-    let cachedSelectionStart = activeEl ? activeEl.selectionStart : null;
-    
-    // If it doesn't have an ID (like matrix inputs), look for context markers
-    let inputContextMarker = null;
-    if (activeEl && !cachedId) {
-        if (activeEl.closest('.party-matrix-row')) {
-            const rowIndex = activeEl.closest('.party-matrix-row').innerHTML; 
-            // Better yet, use attributes if available, or track index via row:
-            const allRows = Array.from(document.querySelectorAll('.party-matrix-row'));
-            const rowIndexNum = allRows.indexOf(activeEl.closest('.party-matrix-row'));
-            const isEcl = activeEl.parentNode.innerHTML.includes('ECL:');
-            inputContextMarker = { type: 'matrix', index: rowIndexNum, field: isEcl ? 'ecl' : 'count' };
-        } else if (activeEl.closest('.tracker-cell')) {
-            const allInputs = Array.from(document.querySelectorAll('.tracker-grid input'));
-            inputContextMarker = { type: 'grid', index: allInputs.indexOf(activeEl) };
+    let savedFocusKey = null;
+    let savedSelectionStart = null;
+
+    if (activeEl && activeEl.hasAttribute('data-focus-key')) {
+        savedFocusKey = activeEl.getAttribute('data-focus-key');
+        try {
+            savedSelectionStart = activeEl.selectionStart;
+        } catch(e) {
+            savedSelectionStart = null;
         }
     }
 
     // 2. Safely swap out the inner HTML content matrix
     container.innerHTML = htmlLines.join('\n');
 
-    // 3. Re-locate and seamlessly place focus back where it was
-    if (cachedId) {
-        const restoreEl = document.getElementById(cachedId);
+    // 3. Re-locate and restore focus cleanly via our unique tracking token keys
+    if (savedFocusKey) {
+        const restoreEl = container.querySelector(`[data-focus-key="${savedFocusKey}"]`);
         if (restoreEl) {
             restoreEl.focus();
-            if (cachedSelectionStart !== null) restoreEl.setSelectionRange(cachedSelectionStart, cachedSelectionStart);
-        }
-    } else if (inputContextMarker) {
-        if (inputContextMarker.type === 'matrix' && inputContextMarker.index !== -1) {
-            const TargetRow = document.querySelectorAll('.party-matrix-row')[inputContextMarker.index];
-            if (TargetRow) {
-                const targetInput = TargetRow.querySelectorAll('input')[inputContextMarker.field === 'ecl' ? 1 : 0];
-                if (targetInput) {
-                    targetInput.focus();
-                    // Prevent cursor jump to start of text input element
-                    const valLen = targetInput.value.length;
-                    targetInput.setSelectionRange(valLen, valLen);
-                }
+            if (savedSelectionStart !== null && (restoreEl.type === 'text' || restoreEl.type === 'search')) {
+                try {
+                    restoreEl.setSelectionRange(savedSelectionStart, savedSelectionStart);
+                } catch(e) {}
             }
-        } else if (inputContextMarker.type === 'grid' && inputContextMarker.index !== -1) {
-            const targetInput = document.querySelectorAll('.tracker-grid input')[inputContextMarker.index];
-            if (targetInput) targetInput.focus();
         }
     }
 }
@@ -330,7 +312,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                             <div class="tracker-cell init-col ${statusClass}" data-index="${idx}" style="display: flex; align-items: center; gap: 8px;">
                                 <button type="button" class="btn-send-bottom" style="color: var(--accent-red); padding: 2px 6px; font-weight: bold;" title="Remove Combatant" onclick="removeCombatantEntry(${idx})">×</button>
                                 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">Init</span>
-                                <input type="number" class="hp-input" style="width: 40px; text-align: left; background: transparent; font-family: monospace; font-size: 1rem; font-weight: bold; color: var(--accent-gold);" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
+                                <input type="number" data-focus-key="creature-init-${idx}" class="hp-input" style="width: 40px; text-align: left; background: transparent; font-family: monospace; font-size: 1rem; font-weight: bold; color: var(--accent-gold);" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
                             </div>
                             <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
                                 <span class="status-text flag-staggered">[Staggered] </span>
@@ -342,12 +324,12 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                             
                             <div class="tracker-cell hp-col ${statusClass}" data-index="${idx}">
                                 <span class="hp-badge" draggable="false">
-                                    <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
+                                    <input type="number" data-focus-key="creature-hp-${idx}" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
                                     <span style="color: var(--text-muted);">/ ${c.maxHp} HP</span>
                                 </span>
                                 <span style="color: var(--text-muted); font-weight: normal; margin: 0 4px;">|</span>
                                 <span class="subdual-badge" draggable="false" style="font-size: 0.85rem; color: var(--text-muted);">
-                                    Sub: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 22px; font-size: 0.9rem; text-align: center; color: #e67e22; background: transparent;" oninput="updateCreatureSubdualInline(${idx}, this.value)">
+                                    Sub: <input type="number" data-focus-key="creature-sub-${idx}" class="hp-input" value="${c.subdual}" style="width: 38px; height: 22px; font-size: 0.9rem; text-align: center; color: #e67e22; background: transparent;" oninput="updateCreatureSubdualInline(${idx}, this.value)">
                                 </span>
                             </div>
                         `;
@@ -357,19 +339,19 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                         <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">Add</button>
                     </div>
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
-                        <input type="number" id="new-init" class="tracker-input num-input" placeholder="Roll">
+                        <input type="number" id="new-init" data-focus-key="new-init-input" class="tracker-input num-input" placeholder="Roll">
                     </div>
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
-                        <input type="text" id="new-name" class="tracker-input" placeholder="Name/Group...">
+                        <input type="text" id="new-name" data-focus-key="new-name-input" class="tracker-input" placeholder="Name/Group...">
                     </div>
                     
                     <div class="tracker-cell hp-col" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
-                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
+                        <input type="number" id="new-hp" data-focus-key="new-hp-input" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
                         <span style="color: var(--text-muted); margin: 0 2px;">/</span>
-                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
+                        <input type="number" id="new-max-hp" data-focus-key="new-max-hp-input" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
                         <span style="color: var(--text-muted); margin: 0 4px;">|</span>
                         <span style="font-size: 0.85rem; color: var(--text-muted);">
-                            Sub: <input type="number" id="new-subdual" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
+                            Sub: <input type="number" id="new-subdual" data-focus-key="new-subdual-input" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
                         </span>
                     </div>
                 </div>
@@ -535,7 +517,7 @@ function updateCreatureHpInline(index, value) {
     if (isNaN(parsedHp)) return;
     
     creatures[index].hp = parsedHp;
-    forceEngineRedraw(); // Re-render to safely update dynamic subdual interaction classes
+    forceEngineRedraw();
 }
 
 function updateCreatureSubdualInline(index, value) {
@@ -579,8 +561,8 @@ function updateCreatureInitiativeInline(index, value) {
     const parsedInit = parseInt(value, 10);
     if (isNaN(parsedInit)) return;
 
-    // Direct memory mutation without forcing redrawing cycles immediately
     creatures[index].initRoll = parsedInit;
+    forceEngineRedraw();
 }
 
 function removeCombatantEntry(index) {
@@ -601,6 +583,7 @@ function renderPartyEclMatrix(slots) {
             <div class="matrix-input-group">
                 <label>Count:</label>
                 <input type="number" 
+                       data-focus-key="matrix-count-${index}"
                        class="tracker-input matrix-input num-input" 
                        placeholder="0" 
                        value="${slot.count}" 
@@ -609,6 +592,7 @@ function renderPartyEclMatrix(slots) {
             <div class="matrix-input-group">
                 <label>ECL:</label>
                 <input type="number" 
+                       data-focus-key="matrix-ecl-${index}"
                        class="tracker-input matrix-input num-input" 
                        placeholder="1" 
                        value="${slot.ecl}" 
