@@ -22,8 +22,11 @@ function renderRoomTemplate(containerId, data) {
     if (!window.dndEngineState.initialized || window.dndEngineState.currentContainerId !== containerId) {
         window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
             ...JSON.parse(JSON.stringify(c)),
-            subdual: c.subdual || 0 // Always default to 0 on initial load
+            subdual: c.subdual || 0 
         })) : [];
+        
+        window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
+    
         window.dndEngineState.currentContainerId = containerId;
         window.dndEngineState.rawBaselineData = data;
         window.dndEngineState.initialized = true;
@@ -52,6 +55,8 @@ function renderRoomTemplate(containerId, data) {
         `  </header>`,
         `  <hr class="section-divider">`
     ];
+
+    htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots));
     
     if (data.readAloud) {
         htmlLines.push(`
@@ -486,6 +491,52 @@ function removeCombatantEntry(index) {
 
     creatures.splice(index, 1);
     forceEngineRedraw();
+}
+
+/**
+ * Renders the interactive Party ECL configuration matrix panel.
+ */
+function renderPartyEclMatrix(slots) {
+    let rowsHtml = slots.map((slot, index) => `
+        <div class="party-matrix-row">
+            <div class="matrix-cell-num">#${index + 1}</div>
+            <div class="matrix-input-group">
+                <label>Count:</label>
+                <input type="number" 
+                       class="tracker-input matrix-input num-input" 
+                       placeholder="0" 
+                       value="${slot.count}" 
+                       oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
+            </div>
+            <div class="matrix-input-group">
+                <label>ECL:</label>
+                <input type="number" 
+                       class="tracker-input matrix-input num-input" 
+                       placeholder="1" 
+                       value="${slot.ecl}" 
+                       oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
+            </div>
+        </div>
+    `).join('');
+
+    return `
+        <section class="room-section party-matrix-section">
+            <div class="matrix-header-title">Active Adventuring Party Configuration</div>
+            <div class="party-matrix-grid">
+                ${rowsHtml}
+            </div>
+        </section>
+        <hr class="section-divider">
+    `;
+}
+
+/**
+ * Capture input values in real-time so they persist through turn/state redraws.
+ */
+function updatePartyMatrixSlot(index, field, value) {
+    if (window.dndEngineState && window.dndEngineState.partySlots[index]) {
+        window.dndEngineState.partySlots[index][field] = value;
+    }
 }
 
 /**
