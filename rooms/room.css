@@ -589,7 +589,7 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX (NO MEDIA QUERIES & FLUID SCALING)
+   7. PARTY MATRIX (MAX 3 COLUMNS, NO MEDIA QUERIES)
    ========================================================================== */
 
 .party-matrix-section {
@@ -611,7 +611,9 @@ li {
 
 .party-matrix-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    max-width: 850px; 
+    
     gap: 10px;
 }
 
@@ -624,7 +626,7 @@ li {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
 }
 
 .matrix-cell-num {
@@ -644,7 +646,7 @@ li {
 }
 
 .matrix-input-group label {
-    font-size: 0.65rem;
+    font-size: 0.65rem; 
     color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 600;
@@ -656,7 +658,7 @@ li {
     border: 1px solid var(--border-muted);
     color: var(--text-main);
     
-    width: 42px;
+    width: 42px; 
     min-width: 42px;
     
     text-align: center;
