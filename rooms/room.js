@@ -74,7 +74,7 @@ function renderRoomTemplate(containerId, data) {
         const totalCr = totalEl - totalPartyEl;
         const clString = totalCr.toFixed(2); 
     
-        const metrics = `CL ${clString}, XP ${xpString}`;
+        const metrics = `-- CL ${clString}, XP ${xpString}`;
         if (displaySubtitle) {
             displaySubtitle += `, ${metrics}`;
         } else {
