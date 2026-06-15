@@ -250,11 +250,11 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     </div>
                     
                     <div class="tracker-cell hp-col" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
-                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 50px;">
+                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 75px;">
                         <span style="color: var(--text-muted); margin: 0 2px;">/</span>
-                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 50px;">
+                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 75px;">
                         <span style="color: var(--text-muted); margin: 0 4px;">|</span>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">
+                        <span style="color: var(--text-muted);">
                             Sub: <input type="number" id="new-subdual" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
                         </span>
                     </div>
