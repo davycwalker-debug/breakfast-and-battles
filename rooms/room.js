@@ -26,6 +26,8 @@ function renderRoomTemplate(containerId, data) {
         })) : [];
         
         window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
+        
+        window.dndEngineState.xpMultiplier = 1.0;
     
         window.dndEngineState.currentContainerId = containerId;
         window.dndEngineState.rawBaselineData = data;
@@ -67,7 +69,8 @@ function renderRoomTemplate(containerId, data) {
             }, 0);
         }
         const averageXp = dynamicXpAward > 0 ? (dynamicXpAward / totalPartyCount) : 0;
-        const xpString = Math.round(averageXp);
+        const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
+        const xpString = Math.round(averageXp * activeMultiplier);
         
         const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
     
@@ -86,11 +89,22 @@ function renderRoomTemplate(containerId, data) {
         `<div class="dnd-room-wrapper">`,
         `  <header class="room-header">`,
         `      <h1>${data.title || 'Encounter Area'}</h1>`,
-        `      ${displaySubtitle ? `<p class="room-subtitle">${displaySubtitle}</p>` : ''}`,
+        
+        `      <div class="header-subtitle-row">`,
+        `         ${displaySubtitle ? `<p class="room-subtitle">${displaySubtitle}</p>` : '<div></div>'}`,
+        `         <div class="multiplier-wrapper">`,
+        `             <label class="multiplier-label">Multiplier:</label>`,
+        `             <input type="number" step="0.05" min="0" `,
+        `                    class="tracker-input multiplier-input" `,
+        `                    placeholder="1.0" `,
+        `                    value="${window.dndEngineState.xpMultiplier}" `,
+        `                    oninput="updateXpMultiplier(this.value)">`,
+        `         </div>`,
+        `      </div>`,
+        
         `  </header>`,
         `  <hr class="section-divider">`
     ];
-
     htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots));
     
     if (data.readAloud) {
@@ -662,6 +676,16 @@ function mExperience(x, y) {
     else if (y - x > 7) iReturn = 0;
     
     return iReturn;
+}
+
+function updateXpMultiplier(value) {
+    if (window.dndEngineState) {
+        // Enforces accurate floating-point decimal conversion 
+        window.dndEngineState.xpMultiplier = parseFloat(value) || 0;
+        
+        // Re-run the layout builder engine
+        renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
+    }
 }
 
 /**
