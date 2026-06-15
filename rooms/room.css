@@ -596,15 +596,21 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX (TOKEN-OPTIMIZED)
+   7. PARTY MATRIX (RESPONSIVE & MOBILE-FIRST)
    ========================================================================== */
 
 .party-matrix-section {
     background: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 20px;
+    padding: 16px; /* Reduced slightly for mobile edge-breathing room */
     margin-bottom: 24px;
+}
+
+@media (min-width: 600px) {
+    .party-matrix-section {
+        padding: 20px; /* Restores your full padding on larger screens */
+    }
 }
 
 .matrix-header-title {
@@ -616,16 +622,24 @@ li {
     font-weight: 700;
 }
 
+/* Mobile Default: One clean, non-cramped vertical column */
 .party-matrix-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr; 
     gap: 12px;
 }
 
-/* Fallback breakpoint for smaller tablet viewport scales */
-@media (max-width: 900px) {
+/* Tablet Breakpoint: Switches smoothly to 2 columns if space allows */
+@media (min-width: 768px) {
     .party-matrix-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop Breakpoint: Spreads into 3 columns on full screens */
+@media (min-width: 1100px) {
+    .party-matrix-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -633,7 +647,7 @@ li {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
-    padding: 8px 14px;
+    padding: 10px 14px; /* Added slight padding for finger-tap targets */
     display: flex;
     align-items: center;
     gap: 12px;
@@ -662,18 +676,23 @@ li {
     letter-spacing: 0.02em;
 }
 
-/* Inheriting your global .tracker-input features cleanly */
+/* Optimized Inputs: Guaranteed never to shrink past touch legibility targets */
 .matrix-input {
     background: var(--bg-color) !important;
     border: 1px solid var(--border-muted) !important;
     color: var(--text-main) !important;
     width: 100% !important;
-    max-width: 50px;
+    
+    /* --- THE MOBILE FIXES --- */
+    min-width: 50px;   /* Guarantees the boxes never shrink into nothingness */
+    max-width: 65px;   /* Allows slightly more typing room for double digits */
+    
     text-align: center;
-    padding: 4px 2px;
+    padding: 6px 4px;  /* Better padding height for mobile keyboard selection */
     height: auto;
     font-family: monospace;
     font-weight: bold;
+    border-radius: 4px;
 }
 
 .matrix-input:focus {
@@ -681,7 +700,7 @@ li {
     border-color: var(--accent-gold) !important;
 }
 
-/* Clean compatibility to hide native browser arrow spinners */
+/* Keep arrow spinners stripped out across mobile browsers */
 .matrix-input::-webkit-outer-spin-button,
 .matrix-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
