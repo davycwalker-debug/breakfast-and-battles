@@ -38,14 +38,16 @@ function renderRoomTemplate(containerId, data) {
     // 2. Fragment Assembly Matrix
     let displaySubtitle = data.subtitle || '';
     if (data.creatures && Array.isArray(data.creatures)) {
-        // 1. Creature Calculations
+        // 1. Creature CL calculation
         const totalCr = data.creatures.reduce((sum, c) => sum + (Number(c.cr) || 0), 0);
         const clString = totalCr.toFixed(2); 
 
+        // 2. Creature EL calculation (Sum PL first, then convert to EL)
         const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
-        const plString = totalPl.toFixed(2);
+        const totalEl = calculateEncounterLevel(totalPl);
+        const elString = totalEl.toFixed(2); // Formats to 2 decimal places
 
-        // 2. Party Calculations (Reads live state from your inputs)
+        // 3. Party PL Calculation (Reads live state from your inputs)
         let totalPartyPl = 0;
         if (window.dndEngineState && window.dndEngineState.partySlots) {
             totalPartyPl = window.dndEngineState.partySlots.reduce((sum, slot) => {
@@ -54,8 +56,8 @@ function renderRoomTemplate(containerId, data) {
         }
         const partyPlString = totalPartyPl.toFixed(2);
 
-        // 3. Append all metrics cleanly
-        const metrics = `CL ${clString}, PL ${plString}, Party PL ${partyPlString}`;
+        // 4. Append all metrics cleanly into the template subtitle layout
+        const metrics = `CL ${clString}, EL ${elString}, Party PL ${partyPlString}`;
         if (displaySubtitle) {
             displaySubtitle += `, ${metrics}`;
         } else {
@@ -567,6 +569,15 @@ function calculatePartyPowerLevel(countValue, eclValue) {
     const ecl = Number(eclValue) || 0;
     if (!count || !ecl) return 0;
     return calculatePowerLevel(ecl) * count;
+}
+
+function calculateEncounterLevel(plValue) {
+    const pl = Number(plValue) || 0;
+    if (pl < 2) {
+        return pl;
+    } else {
+        return 2 * (Math.log(pl) / Math.log(2));
+    }
 }
 
 /**
