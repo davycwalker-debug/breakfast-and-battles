@@ -222,7 +222,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                             <div class="tracker-cell init-col ${statusClass}" data-index="${idx}" style="display: flex; align-items: center; gap: 8px;">
                                 <button type="button" class="btn-send-bottom" style="color: var(--accent-red); padding: 2px 6px; font-weight: bold;" title="Remove Combatant" onclick="removeCombatantEntry(${idx})">×</button>
                                 <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;">Init</span>
-                                <input type="number" class="hp-input" style="width: 40px; text-align: left; background: transparent; font-family: monospace; font-size: 1rem; font-weight: bold; color: var(--accent-gold);" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
+                                <input type="number" class="hp-input" style="width: 40px; text-align: left; background: transparent; font-family: monospace; font-size: 1rem; font-weight: bold; color: var(--accent-gold);" value="${c.initRoll}" onchange="updateCreatureInitiativeInline(${idx}, this.value)">
                             </div>
                             <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
                                 <span class="status-text flag-staggered">[Staggered] </span>
@@ -233,11 +233,11 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                             </div>
                             <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; justify-content: center;">
                                 <span class="hp-badge" draggable="false">
-                                    <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
+                                    <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" onchange="updateCreatureHpInline(${idx}, this.value)">
                                     / ${c.maxHp} HP
                                 </span>
                                 <span class="subdual-badge" draggable="false" style="font-size: 0.75rem; color: var(--text-muted);">
-                                    Subdual: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 18px; font-size: 0.75rem; color: #ffaa44;" oninput="updateCreatureSubdualInline(${idx}, this.value)">
+                                    Subdual: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 18px; font-size: 0.75rem; color: #ffaa44;" onchange="updateCreatureSubdualInline(${idx}, this.value)">
                                 </span>
                             </div>
                         `;
