@@ -680,3 +680,65 @@ li {
 .matrix-input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* ==========================================================================
+   8. COMPACT HEADER METRIC CONTROLS
+   ========================================================================== */
+
+.header-subtitle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.multiplier-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-inner);
+    border: 1px solid var(--border-muted);
+    padding: 4px 10px;
+    border-radius: 6px;
+    user-select: none;
+}
+
+.multiplier-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.multiplier-input {
+    background: var(--bg-color);
+    border: 1px solid var(--border-muted);
+    color: var(--accent-gold);
+    width: 54px;
+    min-width: 54px;
+    text-align: center;
+    padding: 2px 4px;
+    height: 24px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.multiplier-input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+}
+
+/* Strips native increment arrows across modern layout browsers */
+.multiplier-input::-webkit-outer-spin-button,
+.multiplier-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.multiplier-input[type=number] {
+    -moz-appearance: textfield;
+}
