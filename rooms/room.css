@@ -596,24 +596,24 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX
+   7. PARTY MATRIX (TOKEN-OPTIMIZED)
    ========================================================================== */
 
 .party-matrix-section {
-    background: #0f0f12;
-    border: 1px solid #1f1f24;
-    border-radius: 6px;
-    padding: 16px;
-    margin-bottom: 8px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
 }
 
 .matrix-header-title {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #a3a3a8;
+    color: var(--text-muted);
     margin-bottom: 14px;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .party-matrix-grid {
@@ -630,19 +630,20 @@ li {
 }
 
 .party-matrix-row {
-    background: #141417;
-    border: 1px solid #222227;
-    border-radius: 4px;
-    padding: 8px 12px;
+    background: var(--card-inner);
+    border: 1px solid var(--border-muted);
+    border-radius: 6px;
+    padding: 8px 14px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .matrix-cell-num {
-    font-size: 0.75rem;
-    color: #62626a;
-    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+    font-family: monospace;
+    font-weight: 700;
     min-width: 20px;
 }
 
@@ -655,14 +656,37 @@ li {
 
 .matrix-input-group label {
     font-size: 0.7rem;
-    color: #88888e;
+    color: var(--text-muted);
     text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
+/* Inheriting your global .tracker-input features cleanly */
 .matrix-input {
+    background: var(--bg-color) !important;
+    border: 1px solid var(--border-muted) !important;
+    color: var(--text-main) !important;
     width: 100% !important;
-    max-width: 55px;
+    max-width: 50px;
     text-align: center;
     padding: 4px 2px;
     height: auto;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.matrix-input:focus {
+    outline: none;
+    border-color: var(--accent-gold) !important;
+}
+
+/* Clean compatibility to hide native browser arrow spinners */
+.matrix-input::-webkit-outer-spin-button,
+.matrix-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.matrix-input[type=number] {
+    -moz-appearance: textfield;
 }
