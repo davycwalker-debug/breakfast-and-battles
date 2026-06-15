@@ -38,12 +38,19 @@ function renderRoomTemplate(containerId, data) {
     // 2. Fragment Assembly Matrix
     let displaySubtitle = data.subtitle || '';
     if (data.creatures && Array.isArray(data.creatures)) {
+        // 1. Sum up total CR
         const totalCr = data.creatures.reduce((sum, c) => sum + (Number(c.cr) || 0), 0);
         const clString = totalCr.toFixed(2); 
+
+        // 2. Sum up total Power Level using your new helper function
+        const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
+        const plString = totalPl.toFixed(2);
+
+        // 3. Append them cleanly to the subtitle string
         if (displaySubtitle) {
-            displaySubtitle += `, CL ${clString}`;
+            displaySubtitle += `, CL ${clString}, PL ${plString}`;
         } else {
-            displaySubtitle = `CL ${clString}`;
+            displaySubtitle = `CL ${clString}, PL ${plString}`;
         }
     }
 
@@ -536,6 +543,15 @@ function renderPartyEclMatrix(slots) {
 function updatePartyMatrixSlot(index, field, value) {
     if (window.dndEngineState && window.dndEngineState.partySlots[index]) {
         window.dndEngineState.partySlots[index][field] = value;
+    }
+}
+
+function calculatePowerLevel(crValue) {
+    const cr = Number(crValue) || 0;
+    if (cr < 2) {
+        return cr;
+    } else {
+        return Math.pow(2, cr / 2);
     }
 }
 
