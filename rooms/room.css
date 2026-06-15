@@ -242,9 +242,13 @@ li {
 .tracker-cell.tracker-row-staggered .status-text.flag-staggered { display: inline-block; background: #5c4014; color: #ffca3a; }
 .tracker-cell.tracker-row-dying .status-text.flag-dying { display: inline-block; background: #5c1414; color: #ff5a60; }
 .tracker-cell.tracker-row-dead .status-text.flag-dead { display: inline-block; background: #2b2b36; color: #9494a1; }
+.tracker-cell.tracker-row-unconscious .status-text.flag-unconscious { display: inline-block; background: #5c3314; color: #e67e22; }
 
 .tracker-cell.tracker-row-staggered.name-col,
 .tracker-cell.tracker-row-staggered .tooltip-target { color: #ffca3a; }
+
+.tracker-cell.tracker-row-unconscious.name-col,
+.tracker-cell.tracker-row-unconscious .tooltip-target { color: #e67e22; }
 
 .tracker-cell.tracker-row-dying.name-col,
 .tracker-cell.tracker-row-dying .tooltip-target { color: var(--accent-red); }
