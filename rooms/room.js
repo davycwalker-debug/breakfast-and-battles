@@ -176,29 +176,23 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     <div class="tracker-header-cell" style="text-align: right;">Health Status</div>
                     
                     ${liveTracker.map((c, idx) => {
-                        // Initialize subdual tracking safely if it isn't set yet
                         if (c.subdual === undefined) c.subdual = 0;
 
                         let statusClass = '';
-                        
-                        // 3.5 Rule Matrix: Check lethal break points first
                         if (c.hp <= -1 && c.hp >= -9) {
                             statusClass = 'tracker-row-dying';
                         } else if (c.hp <= -10) {
                             statusClass = 'tracker-row-dead';
                         } else if (c.hp >= 0) {
-                            // Subdual damage rules apply if creature isn't lethal-dying/dead
                             if (c.subdual > c.hp) {
-                                statusClass = 'tracker-row-unconscious'; // New state
+                                statusClass = 'tracker-row-unconscious';
                             } else if (c.subdual === c.hp || c.hp === 0) {
                                 statusClass = 'tracker-row-staggered';
                             }
                         }
 
-                        // Look up baseline roster stats matching this creature's name
                         const stats = rosterData.find(r => r.name === c.name);
                         
-                        // Construct the HTML tooltip block dynamically if data exists
                         const nameDisplay = stats ? `
                             <div class="tooltip-target">
                                 ${c.name}
@@ -231,8 +225,9 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <span class="status-text flag-unconscious">[Unconscious] </span>
                                 ${nameDisplay}
                             </div>
-                            <div class="tracker-cell ${statusClass}" data-index="${idx}">
-                                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: 100%; height: 100%;">
+                            
+                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="padding-top: 0; padding-bottom: 0; display: flex; align-items: center; justify-content: flex-end;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
                                     <span class="hp-badge" draggable="false" style="display: flex; align-items: center; gap: 4px;">
                                         <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" onchange="updateCreatureHpInline(${idx}, this.value)">
                                         <span style="color: var(--text-muted);">/ ${c.maxHp} HP</span>
@@ -255,14 +250,17 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
                         <input type="text" id="new-name" class="tracker-input" placeholder="Name/Group...">
                     </div>
-                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); display: flex; gap: 6px; align-items: center; justify-content: flex-end;">
-                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 50px;">
-                        <span style="color: var(--text-muted);">/</span>
-                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 50px;">
-                        <span style="color: var(--text-muted); margin: 0 2px;">|</span>
-                        <span style="font-size: 0.75rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
-                            Sub: <input type="number" id="new-subdual" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
-                        </span>
+                    
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); padding-top: 0; padding-bottom: 0; display: flex; align-items: center; justify-content: flex-end;">
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 50px;">
+                            <span style="color: var(--text-muted);">/</span>
+                            <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 50px;">
+                            <span style="color: var(--text-muted); margin: 0 2px;">|</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+                                Sub: <input type="number" id="new-subdual" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
