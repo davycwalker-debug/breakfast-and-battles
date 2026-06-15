@@ -70,7 +70,7 @@ function renderRoomTemplate(containerId, data) {
         }
         const averageXp = dynamicXpAward > 0 ? (dynamicXpAward / totalPartyCount) : 0;
         const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
-        const xpString = Math.round(averageXp * activeMultiplier);
+        const xpString = Math.ceil(averageXp * activeMultiplier);
         
         const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
     
