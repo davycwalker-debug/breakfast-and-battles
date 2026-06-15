@@ -159,10 +159,10 @@ li {
 .tracker-grid {
     display: grid;
     /* Track Layout: Button/Handle | Init | Name & Tooltip | HP / Actions */
-    grid-template-columns: auto max-content minmax(200px, 1fr) max-content;
+    grid-template-columns: 50px 80px minmax(0, 1fr) auto;
     align-items: center;
     gap: 0 16px;
-    min-width: max-content;
+    width: 100%;
     padding: 8px;
 }
 
@@ -181,10 +181,23 @@ li {
     border-bottom: 1px solid var(--border-muted);
 }
 
+/* Ensure the final structural health columns stack perfectly right-aligned */
+.tracker-grid > div:nth-child(4n) {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right;
+}
+
+/* Ensure the utility handle/checkbox column stays anchored and centered */
 .tracker-grid > div:nth-child(4n+1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
+/* Clean border removals for footer add row */
 .tracker-grid > div:nth-last-child(-n+4) {
     border-bottom: none;
 }
