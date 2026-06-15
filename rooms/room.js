@@ -29,14 +29,20 @@ function renderRoomTemplate(containerId, data) {
 
         window.dndEngineState.xpMultiplierText = data.multiplierDefault !== undefined ? String(data.multiplierDefault) : "1.0";
         const multStr = window.dndEngineState.xpMultiplierText.trim();
-        if (multStr.includes('/')) {
-            const parts = multStr.split('/');
-            const n = parseFloat(parts[0]);
-            const d = parseFloat(parts[1]);
-            window.dndEngineState.xpMultiplier = (!isNaN(n) && !isNaN(d) && d !== 0) ? (n / d) : 1.0;
+        
+        // Matches an exact pattern: optional spaces, digits, a slash, and digits (e.g., "1/2" or " 2 / 3 ")
+        const fractionMatch = multStr.match(/^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/);
+
+        if (fractionMatch) {
+            const n = parseFloat(fractionMatch[1]);
+            const d = parseFloat(fractionMatch[2]);
+            if (d !== 0) window.dndEngineState.xpMultiplier = n / d;
         } else {
             const parsed = parseFloat(multStr);
-            window.dndEngineState.xpMultiplier = !isNaN(parsed) ? parsed : 1.0;
+            // Only update the mathematical multiplier if it resolves to a clean, usable float
+            if (!isNaN(parsed)) {
+                window.dndEngineState.xpMultiplier = parsed;
+            }
         }
         
         window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
@@ -644,18 +650,25 @@ function updateXpMultiplier(value) {
     // 2. Clear out whitespaces
     const rawStr = value.trim();
 
-    // 3. Evaluate fractions ("1/2") or standard decimal floats ("1.25")
-    if (rawStr.includes('/')) {
-        const parts = rawStr.split('/');
-        const num = parseFloat(parts[0]);
-        const den = parseFloat(parts[1]);
+    // 3. Match an exact fraction pattern (e.g., "1/2", " 2 / 3 ", or decimals like "1.5/2")
+    const fractionMatch = rawStr.match(/^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/);
+
+    if (fractionMatch) {
+        const num = parseFloat(fractionMatch[1]);
+        const den = parseFloat(fractionMatch[2]);
         
-        // Use the evaluated fraction if it's ready; otherwise default calculation to 1
-        window.dndEngineState.xpMultiplier = (!isNaN(num) && !isNaN(den) && den !== 0) ? (num / den) : 1.0;
+        // Only update calculations if the denominator isn't zero
+        if (den !== 0) {
+            window.dndEngineState.xpMultiplier = num / den;
+        }
     } else {
         const parsed = parseFloat(rawStr);
-        // Use the float value if valid; otherwise default calculation to 1
-        window.dndEngineState.xpMultiplier = !isNaN(parsed) ? parsed : 1.0;
+        // Only update if it resolves to a clean, usable standard float decimal or integer
+        if (!isNaN(parsed)) {
+            window.dndEngineState.xpMultiplier = parsed;
+        }
+        // If it fails both (like "1/" or "1.2."), it skips modifying window.dndEngineState.xpMultiplier,
+        // which perfectly preserves the last working calculation state!
     }
 
     // 4. Fire the calculation render update stack immediately
