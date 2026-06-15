@@ -36,6 +36,7 @@ function renderRoomTemplate(containerId, data) {
     if (!container) return console.error(`Target container element ID "${containerId}" was not found.`);
 
     // 2. Fragment Assembly Matrix
+    // --- CALCULATE CL, EL, & PARTY EL BEFORE RENDERING THE SUBTITLE ---
     let displaySubtitle = data.subtitle || '';
     if (data.creatures && Array.isArray(data.creatures)) {
         // 1. Creature CL calculation
@@ -45,19 +46,20 @@ function renderRoomTemplate(containerId, data) {
         // 2. Creature EL calculation (Sum PL first, then convert to EL)
         const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
         const totalEl = calculateEncounterLevel(totalPl);
-        const elString = totalEl.toFixed(2); // Formats to 2 decimal places
+        const elString = totalEl.toFixed(2);
 
-        // 3. Party PL Calculation (Reads live state from your inputs)
+        // 3. Party EL Calculation (Sum Party PL from inputs, then convert to Party EL)
         let totalPartyPl = 0;
         if (window.dndEngineState && window.dndEngineState.partySlots) {
             totalPartyPl = window.dndEngineState.partySlots.reduce((sum, slot) => {
                 return sum + calculatePartyPowerLevel(slot.count, slot.ecl);
             }, 0);
         }
-        const partyPlString = totalPartyPl.toFixed(2);
+        const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
+        const partyElString = totalPartyEl.toFixed(2);
 
         // 4. Append all metrics cleanly into the template subtitle layout
-        const metrics = `CL ${clString}, EL ${elString}, Party PL ${partyPlString}`;
+        const metrics = `CL ${clString}, EL ${elString}, Party EL ${partyElString}`;
         if (displaySubtitle) {
             displaySubtitle += `, ${metrics}`;
         } else {
@@ -578,6 +580,12 @@ function calculateEncounterLevel(plValue) {
     } else {
         return 2 * (Math.log(pl) / Math.log(2));
     }
+}
+
+function calculatePartyEncounterLevel(partyPlValue) {
+    const rawPartyPl = Number(partyPlValue) || 0;
+    const normalizedPl = rawPartyPl / 4; 
+    return calculateEncounterLevel(normalizedPl);
 }
 
 /**
