@@ -98,7 +98,7 @@ function renderRoomTemplate(containerId, data) {
         `                    class="tracker-input multiplier-input" `,
         `                    placeholder="1.0" `,
         `                    value="${window.dndEngineState.xpMultiplier}" `,
-        `                    oninput="updateXpMultiplier(this.value)">`,
+        `                    onchange="updateXpMultiplier(this.value)">`,
         `         </div>`,
         `      </div>`,
         
