@@ -57,16 +57,23 @@ function renderRoomTemplate(containerId, data) {
                 return sum + calculatePartyPowerLevel(slot.count, slot.ecl);
             }, 0);
         }
-        
+
         const averagePartyLevel = totalPartyCount > 0 ? (totalPartyECL / totalPartyCount) : 0;
-        const levelString = averagePartyLevel.toFixed(2); 
+
+        let dynamicXpAward = 0;
+        if (averagePartyLevel > 0) {
+            dynamicXpAward = data.creatures.reduce((sum, creature) => {
+                return sum + mExperience(averagePartyLevel, Number(creature.cr) || 0);
+            }, 0);
+        }
+        const xpString = Math.round(dynamicXpAward);
         
         const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
     
         const totalCr = totalEl - totalPartyEl;
         const clString = totalCr.toFixed(2); 
     
-        const metrics = `CL ${clString}, Average Level ${levelString}`;
+        const metrics = `CL ${clString}, XP ${xpString}`;
         if (displaySubtitle) {
             displaySubtitle += `, ${metrics}`;
         } else {
@@ -595,16 +602,62 @@ function calculatePartyEncounterLevel(partyPlValue) {
     return calculateEncounterLevel(normalizedPl);
 }
 
-function calculatePartyAverageLevel(
+/**
+ * Aligns numbers to the nearest matching even boundary used by the legacy XP grid math.
+ */
+function mEven(x) {
+    var iReturn = 2 * parseInt(x / 2);
+    if (x < iReturn) iReturn += -2;
+    else if (x > iReturn) iReturn += 2;
+    return iReturn;
+}
 
-var iPartyTotal = iParty1Number + iParty2Number + iParty3Number + iParty4Number + iParty5Number + iParty6Number;
-  iCount += iParty1Number * iParty1Level;
-  iCount += iParty2Number * iParty2Level;
-  iCount += iParty3Number * iParty3Level;
-  iCount += iParty4Number * iParty4Level;
-  iCount += iParty5Number * iParty5Level;
-  iCount += iParty6Number * iParty6Level;
-  var iPartyAverageLevel = iCount / iPartyTotal;
+/**
+ * Calculates D&D 3.5 Edition individual XP award per character for a single creature matchup.
+ * @param {number} x - The Weighted Average Party Level (ECL).
+ * @param {number} y - The individual Creature Challenge Rating (CR).
+ */
+function mExperience(x, y) {
+    // If CR is fractional (e.g., 0.33 or 0.5), force it to 1 per D&D 3.5 raw rules for table lookups
+    if (y > 0 && y < 1) y = 1;
+
+    var iReturn = 0;
+    if (x < 3) x = 3;
+    if ((x <= 6) && (y <= 1)) iReturn = 300 * y;
+    else if (y < 1) iReturn = 0;
+    
+    else iReturn = 6.25 * x * (Math.pow(2, mEven(7 - (x - y)) / 2)) * (11 - (x - y) - mEven(7 - (x - y)));
+
+    if ((y == 4) || (y == 6) || (y == 8) || (y == 10) || (y == 12) || 
+        (y == 14) || (y == 16) || (y == 18) || (y == 20)) {
+        if (x <= 3) iReturn = 1350 * Math.pow(2, (y - 4) / 2);
+        else if (x == 5 && y >= 6) iReturn = 2250 * Math.pow(2, (y - 6) / 2);
+        else if (x == 7 && y >= 8) iReturn = 3150 * Math.pow(2, (y - 8) / 2);
+        else if (x == 9 && y >= 10) iReturn = 4050 * Math.pow(2, (y - 10) / 2);
+        else if (x == 11 && y >= 12) iReturn = 4950 * Math.pow(2, (y - 12) / 2);
+        else if (x == 13 && y >= 14) iReturn = 5850 * Math.pow(2, (y - 14) / 2);
+        else if (x == 15 && y >= 16) iReturn = 6750 * Math.pow(2, (y - 16) / 2);
+        else if (x == 17 && y >= 18) iReturn = 7650 * Math.pow(2, (y - 18) / 2);
+        else if (x == 19 && y >= 20) iReturn = 8550 * Math.pow(2, (y - 20) / 2);
+    }
+    if ((y == 7) || (y == 9) || (y == 11) || (y == 13) || (y == 15) || 
+        (y == 17) || (y == 19)) {
+        if (x == 6) iReturn = 2700 * Math.pow(2, (y - 7) / 2);
+        if (x == 8 && y >= 9) iReturn = 3600 * Math.pow(2, (y - 9) / 2);
+        if (x == 10 && y >= 11) iReturn = 4500 * Math.pow(2, (y - 11) / 2);
+        if (x == 12 && y >= 13) iReturn = 5400 * Math.pow(2, (y - 13) / 2);
+        if (x == 14 && y >= 15) iReturn = 6300 * Math.pow(2, (y - 15) / 2);
+        if (x == 16 && y >= 17) iReturn = 7200 * Math.pow(2, (y - 17) / 2);
+        if (x == 18 && y >= 19) iReturn = 8100 * Math.pow(2, (y - 19) / 2);
+    }
+    
+    if (y > 20) iReturn = 2 * mExperience(x, y - 2);
+
+    if (x - y > 7) iReturn = 0;
+    else if (y - x > 7) iReturn = 0;
+
+    return iReturn;
+}
 
 /**
  * Interface Re-render Pipeline Dispatcher
