@@ -594,3 +594,75 @@ li {
 .tooltip-stat strong {
     color: var(--accent-gold);
 }
+
+/* ==========================================================================
+   7. PARTY MATRIX
+   ========================================================================== */
+
+.party-matrix-section {
+    background: #0f0f12;
+    border: 1px solid #1f1f24;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.matrix-header-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #a3a3a8;
+    margin-bottom: 14px;
+    font-weight: bold;
+}
+
+.party-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+/* Fallback breakpoint for smaller tablet viewport scales */
+@media (max-width: 900px) {
+    .party-matrix-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.party-matrix-row {
+    background: #141417;
+    border: 1px solid #222227;
+    border-radius: 4px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.matrix-cell-num {
+    font-size: 0.75rem;
+    color: #62626a;
+    font-weight: bold;
+    min-width: 20px;
+}
+
+.matrix-input-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.matrix-input-group label {
+    font-size: 0.7rem;
+    color: #88888e;
+    text-transform: uppercase;
+}
+
+.matrix-input {
+    width: 100% !important;
+    max-width: 55px;
+    text-align: center;
+    padding: 4px 2px;
+    height: auto;
+}
