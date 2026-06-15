@@ -613,7 +613,6 @@ li {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
     max-width: 850px; 
-    
     gap: 10px;
 }
 
@@ -657,10 +656,8 @@ li {
     background: var(--bg-color);
     border: 1px solid var(--border-muted);
     color: var(--text-main);
-    
     width: 42px; 
     min-width: 42px;
-    
     text-align: center;
     padding: 4px 2px;
     height: 24px;
