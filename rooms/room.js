@@ -66,7 +66,8 @@ function renderRoomTemplate(containerId, data) {
                 return sum + mExperience(averagePartyLevel, Number(creature.cr) || 0);
             }, 0);
         }
-        const xpString = Math.round(dynamicXpAward);
+        const averageXp = dynamicXpAward > 0 ? (dynamicXpAward / totalPartyCount) : 0;
+        const xpString = Math.round(averageXp);
         
         const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
     
