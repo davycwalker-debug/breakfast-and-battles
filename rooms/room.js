@@ -155,49 +155,24 @@ function renderRoomTemplate(containerId, data) {
     // 1. Capture the unique identifiers of what you are currently typing in
     const activeEl = document.activeElement;
     let savedFocusKey = null;
-    let savedSelectionStart = null;
 
     if (activeEl && activeEl.hasAttribute('data-focus-key')) {
         savedFocusKey = activeEl.getAttribute('data-focus-key');
-        try {
-            // If it's a number field, we read selectionStart by temporarily treating it as text
-            if (activeEl.type === 'number') {
-                savedSelectionStart = activeEl.value.length; // Fallback to end of line if selectionStart fails
-                savedSelectionStart = activeEl.selectionStart;
-            } else {
-                savedSelectionStart = activeEl.selectionStart;
-            }
-        } catch(e) {
-            savedSelectionStart = activeEl.value ? activeEl.value.length : null;
-        }
     }
 
     // 2. Safely swap out the inner HTML content matrix
     container.innerHTML = htmlLines.join('\n');
 
-    // 3. Re-locate and restore focus cleanly via our unique tracking token keys
+    // 3. Re-locate and restore focus cleanly to the end of the line
     if (savedFocusKey) {
         const restoreEl = container.querySelector(`[data-focus-key="${savedFocusKey}"]`);
         if (restoreEl) {
             restoreEl.focus();
-            if (savedSelectionStart !== null) {
-                try {
-                    // Modern trick: Temporarily switch type to text to force the cursor placement, then snap back
-                    const originalType = restoreEl.type;
-                    if (originalType === 'number') restoreEl.type = 'text';
-                    
-                    restoreEl.setSelectionRange(savedSelectionStart, savedSelectionStart);
-                    
-                    if (originalType === 'number') restoreEl.type = 'number';
-                } catch(e) {
-                    // Fallback baseline handling if type switching hiccups
-                    if (restoreEl.value) {
-                        const val = restoreEl.value;
-                        restoreEl.value = '';
-                        restoreEl.value = val;
-                    }
-                }
-            }
+            
+            // Cache the value, clear it, and put it back.
+            const tempVal = restoreEl.value;
+            restoreEl.value = '';
+            restoreEl.value = tempVal;
         }
     }
 }
