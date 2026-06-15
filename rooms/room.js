@@ -39,25 +39,34 @@ function renderRoomTemplate(containerId, data) {
     let displaySubtitle = data.subtitle || '';
     if (data.creatures && Array.isArray(data.creatures)) {
         
-        // 1. Creature EL calculation (Sum PL first, then convert to EL)
         const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
         const totalEl = calculateEncounterLevel(totalPl);
-
-        // 2. Party EL Calculation (Sum Party PL from inputs, then convert to Party EL)
+    
+        let totalPartyCount = 0;
+        let totalPartyECL = 0;
         let totalPartyPl = 0;
+        
         if (window.dndEngineState && window.dndEngineState.partySlots) {
+            totalPartyCount = window.dndEngineState.partySlots.reduce((sum, slot) => sum + (Number(slot.count) || 0), 0);
+            
+            totalPartyECL = window.dndEngineState.partySlots.reduce((sum, slot) => {
+                return sum + ((Number(slot.count) || 0) * (Number(slot.ecl) || 0));
+            }, 0);
+            
             totalPartyPl = window.dndEngineState.partySlots.reduce((sum, slot) => {
                 return sum + calculatePartyPowerLevel(slot.count, slot.ecl);
             }, 0);
         }
+        
+        const averagePartyLevel = totalPartyCount > 0 ? (totalPartyECL / totalPartyCount) : 0;
+        const levelString = averagePartyLevel.toFixed(2); 
+        
         const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
-
-        // 3. Creature CL calculation
+    
         const totalCr = totalEl - totalPartyEl;
         const clString = totalCr.toFixed(2); 
-
-        // 4. Append all metrics cleanly into the template subtitle layout
-        const metrics = `CL ${clString}`;
+    
+        const metrics = `CL ${clString}, Average Level ${levelString}`;
         if (displaySubtitle) {
             displaySubtitle += `, ${metrics}`;
         } else {
@@ -585,6 +594,17 @@ function calculatePartyEncounterLevel(partyPlValue) {
     const normalizedPl = rawPartyPl / 4; 
     return calculateEncounterLevel(normalizedPl);
 }
+
+function calculatePartyAverageLevel(
+
+var iPartyTotal = iParty1Number + iParty2Number + iParty3Number + iParty4Number + iParty5Number + iParty6Number;
+  iCount += iParty1Number * iParty1Level;
+  iCount += iParty2Number * iParty2Level;
+  iCount += iParty3Number * iParty3Level;
+  iCount += iParty4Number * iParty4Level;
+  iCount += iParty5Number * iParty5Level;
+  iCount += iParty6Number * iParty6Level;
+  var iPartyAverageLevel = iCount / iPartyTotal;
 
 /**
  * Interface Re-render Pipeline Dispatcher
