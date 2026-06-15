@@ -159,7 +159,7 @@ li {
 .tracker-grid {
     display: grid;
     /* Explicit widths lock columns down across the entire row engine */
-    grid-template-columns: 100px 125px minmax(200px, 1fr) max-content;
+    grid-template-columns: 100px 125px minmax(200px, 1fr) minmax(280px, max-content);
     align-items: stretch; /* Stretches cells to equal heights per row line */
     gap: 0 16px;
     width: 100%;
