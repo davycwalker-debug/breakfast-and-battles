@@ -20,7 +20,10 @@ function renderRoomTemplate(containerId, data) {
 
     // 1. Structural State Cache Synchronization
     if (!window.dndEngineState.initialized || window.dndEngineState.currentContainerId !== containerId) {
-        window.dndEngineState.liveCreatures = data.creatures ? JSON.parse(JSON.stringify(data.creatures)) : [];
+        window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
+            ...JSON.parse(JSON.stringify(c)),
+            subdual: c.subdual || 0 // Always default to 0 on initial load
+        })) : [];
         window.dndEngineState.currentContainerId = containerId;
         window.dndEngineState.rawBaselineData = data;
         window.dndEngineState.initialized = true;
@@ -173,10 +176,24 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     <div class="tracker-header-cell" style="text-align: right;">Health Status</div>
                     
                     ${liveTracker.map((c, idx) => {
+                        // Initialize subdual tracking safely if it isn't set yet
+                        if (c.subdual === undefined) c.subdual = 0;
+
                         let statusClass = '';
-                        if (c.hp === 0) statusClass = 'tracker-row-staggered';
-                        else if (c.hp <= -1 && c.hp >= -9) statusClass = 'tracker-row-dying';
-                        else if (c.hp <= -10) statusClass = 'tracker-row-dead';
+                        
+                        // 3.5 Rule Matrix: Check lethal break points first
+                        if (c.hp <= -1 && c.hp >= -9) {
+                            statusClass = 'tracker-row-dying';
+                        } else if (c.hp <= -10) {
+                            statusClass = 'tracker-row-dead';
+                        } else if (c.hp >= 0) {
+                            // Subdual damage rules apply if creature isn't lethal-dying/dead
+                            if (c.subdual > c.hp) {
+                                statusClass = 'tracker-row-unconscious'; // New state
+                            } else if (c.subdual === c.hp || c.hp === 0) {
+                                statusClass = 'tracker-row-staggered';
+                            }
+                        }
 
                         // Look up baseline roster stats matching this creature's name
                         const stats = rosterData.find(r => r.name === c.name);
@@ -211,12 +228,16 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <span class="status-text flag-staggered">[Staggered] </span>
                                 <span class="status-text flag-dying">[Dying] </span>
                                 <span class="status-text flag-dead">[Dead] </span>
+                                <span class="status-text flag-unconscious">[Unconscious] </span>
                                 ${nameDisplay}
                             </div>
-                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right;">
+                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; justify-content: center;">
                                 <span class="hp-badge" draggable="false">
                                     <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
                                     / ${c.maxHp} HP
+                                </span>
+                                <span class="subdual-badge" draggable="false" style="font-size: 0.75rem; color: var(--text-muted);">
+                                    Subdual: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 18px; font-size: 0.75rem; color: #ffaa44;" oninput="updateCreatureSubdualInline(${idx}, this.value)">
                                 </span>
                             </div>
                         `;
@@ -399,20 +420,18 @@ function updateCreatureHpInline(index, value) {
     if (isNaN(parsedHp)) return;
     
     creatures[index].hp = parsedHp;
-    
-    // Direct DOM manipulation updates to bypass full layout computational cycles
-    const cells = document.querySelectorAll(`.tracker-grid > [data-index="${index}"]`);
-    cells.forEach(cell => {
-        cell.classList.remove('tracker-row-staggered', 'tracker-row-dying', 'tracker-row-dead');
-        
-        if (parsedHp === 0) {
-            cell.classList.add('tracker-row-staggered');
-        } else if (parsedHp <= -1 && parsedHp >= -9) {
-            cell.classList.add('tracker-row-dying');
-        } else if (parsedHp <= -10) {
-            cell.classList.add('tracker-row-dead');
-        }
-    });
+    forceEngineRedraw(); // Re-render to safely update dynamic subdual interaction classes
+}
+
+function updateCreatureSubdualInline(index, value) {
+    const creatures = window.dndEngineState.liveCreatures;
+    if (!creatures) return;
+
+    const parsedSubdual = parseInt(value, 10);
+    if (isNaN(parsedSubdual)) return;
+
+    creatures[index].subdual = parsedSubdual;
+    forceEngineRedraw(); // Re-render to evaluate staggered vs unconscious thresholds
 }
 
 function addNewCombatantEntry() {
@@ -430,7 +449,8 @@ function addNewCombatantEntry() {
         name: nameEl.value.trim(),
         initRoll: parseInt(initEl.value, 10),
         hp: parseInt(hpEl.value, 10),
-        maxHp: parseInt(maxHpEl.value, 10)
+        maxHp: parseInt(maxHpEl.value, 10),
+        subdual: 0
     });
     
     forceEngineRedraw();
