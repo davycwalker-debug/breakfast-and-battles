@@ -231,13 +231,14 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                                 <span class="status-text flag-unconscious">[Unconscious] </span>
                                 ${nameDisplay}
                             </div>
-                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; justify-content: center;">
-                                <span class="hp-badge" draggable="false">
+                            <div class="tracker-cell ${statusClass}" data-index="${idx}" style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                                <span class="hp-badge" draggable="false" style="display: flex; align-items: center; gap: 4px;">
                                     <input type="number" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" onchange="updateCreatureHpInline(${idx}, this.value)">
-                                    / ${c.maxHp} HP
+                                    <span style="color: var(--text-muted);">/ ${c.maxHp} HP</span>
                                 </span>
-                                <span class="subdual-badge" draggable="false" style="font-size: 0.75rem; color: var(--text-muted);">
-                                    Subdual: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 18px; font-size: 0.75rem; color: #ffaa44;" onchange="updateCreatureSubdualInline(${idx}, this.value)">
+                                <span style="color: var(--text-muted); font-weight: normal; margin: 0 2px;">|</span>
+                                <span class="subdual-badge" draggable="false" style="display: flex; align-items: center; gap: 4px; font-size: 0.85rem; color: var(--text-muted);">
+                                    Sub: <input type="number" class="hp-input" value="${c.subdual}" style="width: 38px; height: 22px; font-size: 0.9rem; text-align: center; color: #e67e22; background: transparent;" onchange="updateCreatureSubdualInline(${idx}, this.value)">
                                 </span>
                             </div>
                         `;
@@ -252,10 +253,14 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01);">
                         <input type="text" id="new-name" class="tracker-input" placeholder="Name/Group...">
                     </div>
-                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); display: flex; gap: 4px; align-items: center; justify-content: flex-end;">
-                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 60px;">
+                    <div class="tracker-cell" style="border-top: 2px solid var(--border-color); background: rgba(255,255,255,0.01); display: flex; gap: 6px; align-items: center; justify-content: flex-end;">
+                        <input type="number" id="new-hp" class="tracker-input num-input" placeholder="HP" style="width: 50px;">
                         <span style="color: var(--text-muted);">/</span>
-                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 60px;">
+                        <input type="number" id="new-max-hp" class="tracker-input num-input" placeholder="Max" style="width: 50px;">
+                        <span style="color: var(--text-muted); margin: 0 2px;">|</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+                            Sub: <input type="number" id="new-subdual" class="tracker-input num-input" placeholder="0" style="width: 38px; color: #e67e22;" value="0">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -439,6 +444,7 @@ function addNewCombatantEntry() {
     const nameEl = document.getElementById('new-name');
     const hpEl = document.getElementById('new-hp');
     const maxHpEl = document.getElementById('new-max-hp');
+    const subdualEl = document.getElementById('new-subdual');
     
     if (!nameEl?.value.trim() || !initEl?.value || !hpEl?.value || !maxHpEl?.value) {
         alert('Please completely fill out all tracking structural properties.');
@@ -450,7 +456,7 @@ function addNewCombatantEntry() {
         initRoll: parseInt(initEl.value, 10),
         hp: parseInt(hpEl.value, 10),
         maxHp: parseInt(maxHpEl.value, 10),
-        subdual: 0
+        subdual: subdualEl?.value ? parseInt(subdualEl.value, 10) : 0
     });
     
     forceEngineRedraw();
