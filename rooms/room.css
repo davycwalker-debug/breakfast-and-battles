@@ -40,7 +40,6 @@ body {
     margin: 0 auto;
 }
 
-/* Unified Typography Reset */
 h1, h2, h3, h4 {
     color: var(--text-main);
     font-weight: 700;
@@ -158,9 +157,8 @@ li {
 
 .tracker-grid {
     display: grid;
-    /* Explicit widths lock columns down across the entire row engine */
     grid-template-columns: 100px 125px minmax(200px, 1fr) max-content;
-    align-items: stretch; /* Stretches cells to equal heights per row line */
+    align-items: stretch;
     gap: 0 16px;
     width: 100%;
     padding: 8px;
@@ -176,7 +174,6 @@ li {
     border-bottom: 2px solid var(--border-color);
 }
 
-/* Every cell is now a unified flex wrapper with a locked layout alignment */
 .tracker-cell {
     padding: 12px 14px;
     border-bottom: 1px solid var(--border-muted);
@@ -185,7 +182,6 @@ li {
     min-height: 48px;
 }
 
-/* Target column individual content distribution */
 .tracker-grid > div:nth-child(4n+1) {
     justify-content: center;
     text-align: center;
@@ -243,7 +239,6 @@ li {
     gap: 4px;
 }
 
-/* State Engine Filters */
 .status-text {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -457,7 +452,6 @@ li {
     border: 1px solid #6e272a;
 }
 
-/* Dialogue Trees */
 .dialogue-tree-container {
     background: var(--card-inner);
     border-left: 4px solid var(--accent-gold);
@@ -478,7 +472,6 @@ li {
 .dialogue-response { color: #b3d9ff; padding-left: 8px; }
 .speaker-tag { color: #ffb366; font-weight: bold; }
 
-/* Ability Check Cards */
 .ability-checks-container {
     margin: 20px 0;
 }
@@ -596,21 +589,15 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX (RESPONSIVE & MOBILE-FIRST)
+   7. PARTY MATRIX (NO MEDIA QUERIES & FLUID SCALING)
    ========================================================================== */
 
 .party-matrix-section {
     background: var(--bg-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 16px; /* Reduced slightly for mobile edge-breathing room */
+    padding: clamp(12px, 3vw, 20px); 
     margin-bottom: 24px;
-}
-
-@media (min-width: 600px) {
-    .party-matrix-section {
-        padding: 20px; /* Restores your full padding on larger screens */
-    }
 }
 
 .matrix-header-title {
@@ -622,85 +609,70 @@ li {
     font-weight: 700;
 }
 
-/* Mobile Default: One clean, non-cramped vertical column */
 .party-matrix-grid {
     display: grid;
-    grid-template-columns: 1fr; 
-    gap: 12px;
-}
-
-/* Tablet Breakpoint: Switches smoothly to 2 columns if space allows */
-@media (min-width: 768px) {
-    .party-matrix-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Desktop Breakpoint: Spreads into 3 columns on full screens */
-@media (min-width: 1100px) {
-    .party-matrix-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
 }
 
 .party-matrix-row {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
-    padding: 10px 14px; /* Added slight padding for finger-tap targets */
+    padding: 8px 10px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .matrix-cell-num {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--accent-gold);
     font-family: monospace;
     font-weight: 700;
-    min-width: 20px;
+    min-width: 15px;
 }
 
 .matrix-input-group {
     display: flex;
     align-items: center;
-    gap: 6px;
-    flex: 1;
+    gap: 4px;
+    flex: 1 1 auto; 
+    justify-content: flex-end;
 }
 
 .matrix-input-group label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.02em;
 }
 
-/* Optimized Inputs: Guaranteed never to shrink past touch legibility targets */
 .matrix-input {
-    background: var(--bg-color) !important;
-    border: 1px solid var(--border-muted) !important;
-    color: var(--text-main) !important;
-    width: 100% !important;
+    background: var(--bg-color);
+    border: 1px solid var(--border-muted);
+    color: var(--text-main);
     
-    /* --- THE MOBILE FIXES --- */
-    min-width: 50px;   /* Guarantees the boxes never shrink into nothingness */
-    max-width: 65px;   /* Allows slightly more typing room for double digits */
+    width: 42px;
+    min-width: 42px;
     
     text-align: center;
-    padding: 6px 4px;  /* Better padding height for mobile keyboard selection */
-    height: auto;
+    padding: 4px 2px;
+    height: 24px;
     font-family: monospace;
     font-weight: bold;
+    font-size: 0.8rem;
     border-radius: 4px;
 }
 
 .matrix-input:focus {
     outline: none;
-    border-color: var(--accent-gold) !important;
+    border-color: var(--accent-gold);
 }
 
-/* Keep arrow spinners stripped out across mobile browsers */
 .matrix-input::-webkit-outer-spin-button,
 .matrix-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
