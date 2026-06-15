@@ -160,9 +160,15 @@ function renderRoomTemplate(containerId, data) {
     if (activeEl && activeEl.hasAttribute('data-focus-key')) {
         savedFocusKey = activeEl.getAttribute('data-focus-key');
         try {
-            savedSelectionStart = activeEl.selectionStart;
+            // If it's a number field, we read selectionStart by temporarily treating it as text
+            if (activeEl.type === 'number') {
+                savedSelectionStart = activeEl.value.length; // Fallback to end of line if selectionStart fails
+                savedSelectionStart = activeEl.selectionStart;
+            } else {
+                savedSelectionStart = activeEl.selectionStart;
+            }
         } catch(e) {
-            savedSelectionStart = null;
+            savedSelectionStart = activeEl.value ? activeEl.value.length : null;
         }
     }
 
@@ -174,10 +180,23 @@ function renderRoomTemplate(containerId, data) {
         const restoreEl = container.querySelector(`[data-focus-key="${savedFocusKey}"]`);
         if (restoreEl) {
             restoreEl.focus();
-            if (savedSelectionStart !== null && (restoreEl.type === 'text' || restoreEl.type === 'search')) {
+            if (savedSelectionStart !== null) {
                 try {
+                    // Modern trick: Temporarily switch type to text to force the cursor placement, then snap back
+                    const originalType = restoreEl.type;
+                    if (originalType === 'number') restoreEl.type = 'text';
+                    
                     restoreEl.setSelectionRange(savedSelectionStart, savedSelectionStart);
-                } catch(e) {}
+                    
+                    if (originalType === 'number') restoreEl.type = 'number';
+                } catch(e) {
+                    // Fallback baseline handling if type switching hiccups
+                    if (restoreEl.value) {
+                        const val = restoreEl.value;
+                        restoreEl.value = '';
+                        restoreEl.value = val;
+                    }
+                }
             }
         }
     }
