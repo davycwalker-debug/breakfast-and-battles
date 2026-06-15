@@ -62,6 +62,11 @@ function renderRoomTemplate(containerId, data) {
             }, 0);
         }
 
+        const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
+    
+        const totalCr = totalEl - totalPartyEl;
+        const clString = totalCr.toFixed(2); 
+
         const averagePartyLevel = totalPartyCount > 0 ? (totalPartyECL / totalPartyCount) : 0;
 
         let dynamicXpAward = 0;
@@ -71,14 +76,10 @@ function renderRoomTemplate(containerId, data) {
             }, 0);
         }
         const averageXp = dynamicXpAward > 0 ? (dynamicXpAward / totalPartyCount) : 0;
+        const adjustedXp = totalCr > 6 ? averageXp / 10 : averageXp;
         const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
-        const xpString = Math.ceil(averageXp * activeMultiplier);
+        const xpString = Math.ceil(adjustedXp * activeMultiplier);
         
-        const totalPartyEl = calculatePartyEncounterLevel(totalPartyPl);
-    
-        const totalCr = totalEl - totalPartyEl;
-        const clString = totalCr.toFixed(2); 
-    
         const metrics = `CL ${clString}, XP ${xpString}`;
         if (displaySubtitle) {
             displaySubtitle += `-- ${metrics}`;
