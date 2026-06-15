@@ -522,7 +522,7 @@ function renderPartyEclMatrix(slots) {
                        class="tracker-input matrix-input num-input" 
                        placeholder="0" 
                        value="${slot.count}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
+                       onchange="updatePartyMatrixSlot(${index}, 'count', this.value)">
             </div>
             <div class="matrix-input-group">
                 <label>ECL:</label>
@@ -530,7 +530,7 @@ function renderPartyEclMatrix(slots) {
                        class="tracker-input matrix-input num-input" 
                        placeholder="1" 
                        value="${slot.ecl}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
+                       onchange="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
             </div>
         </div>
     `).join('');
