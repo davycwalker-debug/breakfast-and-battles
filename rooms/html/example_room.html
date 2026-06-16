@@ -15,13 +15,36 @@
         import '../interactions.js';
         
         const roomData = {
+          // ==========================================
+          // CORE HEADER INFO
+          // ==========================================
+          
+          /* [string] Main headline displayed at the very top of the interface. */
           "title": `Area 4: The Whispering Ossuary`,
+          
+          /* [string] Subordinate label attached to the header title. 
+             Note: The rendering engine automatically appends Calculated Combat Level (CL) 
+             and Experience Points (XP) metrics to this string dynamically. */
           "subtitle": `Dungeon Level 2`,
+          
+          /* [string] (Optional) Explicit baseline target identifier for CSV database lookups 
+             (multiplier.csv, party.csv, creatures.csv). If omitted, the engine falls back to using 'title'. */
+          "location": `Area 4: The Whispering Ossuary`,
+
+          // ==========================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==========================================
+          
+          /* [string] (Optional) Block text displayed inside a styled box for DM flavor descriptions. */
           "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.`,
+          
+          /* [array of objects] (Optional) Quick-reference skill/saving throws rolled immediately upon entry. 
+             Renders an integrated card layout pairing a custom prompt with discrete branches. */
           "initialReadAloudChecks": [
             {
-              "type": `Spot Check`,
-              "dc": `17`,
+              "type": `Spot Check`, // Type of check or save to display on the badge
+              "dc": `17`,           // Difficulty Class value string
+              "prompt": `Looking closely at the surface tension of the center pool...`, // (Optional) Additional contextual prompt
               "success": `You notice the shallow liquid in the center isn't water—it has an oily sheen and clings to the stone like heavy grease.`,
               "failure": `The fluid appears to be ordinary, stagnant groundwater.`
             },
@@ -32,10 +55,17 @@
               "failure": `You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin.`
             }
           ],
+
+          // ==========================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==========================================
+          
+          /* [object] (Optional) Structural layouts, illumination characteristics, maps, and portals. */
           "environment": {
-            "dimensions": `40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling`,
-            "illumination": `Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.`,
-            "features": [
+            "dimensions": `40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling`, // Overall spatial size
+            "illumination": `Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.`, // Light status
+            
+            "features": [ // [array of objects] Map points, environmental hazards, or objects of note
               {
                 "name": `Obsidian Pool`,
                 "desc": `Acts as difficult terrain. Filled with unholy, flammable grease. Creatures standing inside take a -2 penalty on saving throws against negative energy.`
@@ -45,7 +75,8 @@
                 "desc": `Provides a +2 circumstance bonus to Hide checks for Tiny or smaller creatures due to the deep, overlapping shadows.`
               }
             ],
-            "doors": [
+            
+            "doors": [ // [array of objects] Transitions, safety checks, or exit paths out of the area
               {
                 "location": `North Wall`,
                 "desc": `Heavy iron-banded oak door (Locked, Open Lock DC 25, Break DC 23).`
@@ -56,10 +87,16 @@
               }
             ]
           },
+
+          // ==========================================
+          // DIALOGUE OPTIONS
+          // ==========================================
+          
+          /* [array of objects] (Optional) Interaction framework for conversational branches or cues. */
           "dialogueTree": [
             {
               "prompt": `If a player attempts to parley with the spirit before initiative or during a lull:`,
-              "speaker": `The Bleak Wraith`,
+              "speaker": `The Bleak Wraith`, // Name tag prefix for spoken response
               "response": `Mortals tread upon the marrow of the forgotten. Turn back, or join the choir of the silent.`
             },
             {
@@ -68,32 +105,57 @@
               "response": `The key is carved from the memory of your first breath. Give it up, and the path opens.`
             }
           ],
+
+          // ==========================================
+          // COMBATANTS & COMBAT ENGINE DATA
+          // ==========================================
+          
+          /* [array of objects] Main participant data mapped to interactive tracker grids. 
+             If creatures.csv contains matching rows under this room name, those entries override this block. */
           "creatures": [
             {
-              "name": `The Bleak Wraith`,
-              "initRoll": 21,
-              "hp": 44,
-              "maxHp": 44,
+              "name": `The Bleak Wraith`,             // Name/group identification string
+              "initRoll": 21,                          // [number] Initial order placement sorting metric
+              "hp": 44,                                // [number] Current running tracking health pools
+              "maxHp": 44,                             // [number] Static reference threshold
+              "subdual": 0,                            // [number] (Optional) Stagger/unconscious tracing baseline
+              "notes": `Hovering 5 feet over the unholy grease pool.`, // (Optional) Initial tracking annotations
+              
+              // --- Hover Tooltip System Sub-Properties ---
+              // Providing these properties activates an interactive popup panel on hover.
               "ac": `15 (+2 Dex, +3 deflection), touch 15, flat-footed 13`,
               "saves": `Fort +2 / Ref +4 / Will +6`,
               "type": `Undead (Incorporeal)`,
-              "cr": 5
+              "cr": 5,                                 // [number/string] Used directly in dynamic Party XP matrix calculations
+              "link": `https://www.d20srd.org/srd/monsters/wraith.htm` // (Optional) Outbound hyperlink reference target
             },
             {
               "name": `Ossuary Skeletons (x3)`,
               "initRoll": 14,
               "hp": 13,
               "maxHp": 13,
+              "subdual": 0,
+              "notes": `Stealth bonus active while within wall masonry shadows.`,
               "ac": `15 (+2 Dex, +3 natural)`,
               "saves": `Fort +0 / Ref +2 / Will +2`,
               "type": `Undead (Humanoid Skeleton)`,
-              "cr": 2
+              "cr": 2,
+              "link": `https://www.d20srd.org/srd/monsters/skeleton.htm`
             }
           ],
+          
+          /* [string] (Optional) Text positioning instruction displayed at the bottom of the combat card tracker. */
           "setupPositions": `The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.`,
+
+          // ==========================================
+          // STRATEGY & BEHAVIOR
+          // ==========================================
+          
+          /* [object] (Optional) Breakdown of enemy operations, battle phases, and target priorities. */
           "tactics": {
-            "initialRound": `The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.`,
-            "individual": [
+            "initialRound": `The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.`, // Trigger thresholds
+            
+            "individual": [ // [array of objects] Specialized assignment loops for specific room threats
               {
                 "name": `The Bleak Wraith`,
                 "strategy": `Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength.`
@@ -104,34 +166,57 @@
               }
             ]
           },
+          
+          /* [string] (Optional) Moral limits, flight conditions, reinforcements, or consequences of victory. */
           "development": `If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.`,
+
+          // ==========================================
+          // HAZARDS, TRAPS & COMPLICATION CARDS
+          // ==========================================
+          
+          /* [array of objects] (Optional) Passive defenses or localized architectural threats. */
           "traps": [
             {
               "name": `Wall-Mounted Scythe Trap`,
-              "cr": `4`,
+              "cr": `4`,                  // Challenge Rating of the hazard
               "trigger": `Pressure plate located in front of the obsidian pool (Search DC 22 to locate).`,
               "reset": `Manual (Requires a repair kit and 3 rounds of work).`,
-              "searchDc": `22`,
-              "disableDc": `20`,
-              "effect": `+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line.`
+              "searchDc": `22`,           // Rogue searching skill target
+              "disableDc": `20`,          // Disable Device manual skill check barrier
+              "effect": `+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line.` // Damage payload
             }
           ],
+
+          // ==========================================
+          // REWARDS, LOOT & CONTAINER ARRAYS
+          // ==========================================
+          
+          /* [object] (Optional) Assets acquired upon subduing or navigating the chamber room successfully. */
           "treasure": {
-            "carried": `The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).`,
-            "containers": [
+            "carried": `The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).`, // Direct equipment items
+            
+            "containers": [ // [array of objects] Locked stashes, secret tiles, loose piles, or hidden items
               {
                 "name": `Bottom of the Obsidian Pool`,
                 "contents": `A submerged iron lockbox holding 420 gp, an Onyx gemstone (worth 150 gp used for Animate Dead), and a +1 Heavy Steel Shield of Light.`
               }
             ]
           },
+
+          // ==========================================
+          // SPECIAL DYNAMIC TRIGGER CARDS
+          // ==========================================
+          
+          /* [array of objects] (Optional) Mid-encounter events that change the room state. 
+             Renders an alert card container styled with severity tags ('info', 'warning', or 'danger'). */
           "specialEvents": [
             {
-              "severity": `danger`,
+              "severity": `danger`, // Theme engine styles: 'info' (Blue), 'warning' (Orange), or 'danger' (Red)
               "title": `Unraveling the Consecration`,
               "trigger": `If a PC channels positive energy or casts Holy Word inside the room.`,
               "readAloud": `A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.`,
-              "mechanics": [
+              
+              "mechanics": [ // [array of objects] Supporting mechanical challenges inside the special event card
                 {
                   "type": `Will Save`,
                   "dc": `15`,
@@ -142,14 +227,22 @@
               "outcome": `The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2.`
             }
           ],
+
+          // ==========================================
+          // CUSTOM EXTENSION BLOCKS
+          // ==========================================
+          
+          /* [array of objects] (Optional) Open-ended structural extensions. 
+             Renders completely independent, customized blocks using raw HTML content. */
           "additionalSections": [
             {
-              "heading": `📜 Lore & Legends`,
-              "content": `A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself.`
+              "heading": `📜 Lore & Legends`, // Heading title block text line
+              "content": `A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself.` // Interior block text markup
             }
           ]
         };
 
+        // Render orchestration run target
         renderRoomTemplate('encounter-output', roomData);
     </script>
 </body>
