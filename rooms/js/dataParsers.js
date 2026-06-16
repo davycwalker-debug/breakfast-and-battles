@@ -131,3 +131,20 @@ export function mExperience(x, y) {
     
     return iReturn;
 }
+
+export function parseChallengeRating(rawCr) {
+    let crValue = 0;
+    const cleanCr = String(rawCr || "").trim();
+    
+    if (cleanCr.includes('/')) {
+        const parts = cleanCr.split('/');
+        const num = parseFloat(parts[0]);
+        const den = parseFloat(parts[1]);
+        crValue = den !== 0 ? num / den : 0;
+    } else {
+        crValue = parseFloat(cleanCr);
+        if (isNaN(crValue)) crValue = 0;
+    }
+    
+    return crValue;
+}
