@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 4: The Archer's Gallery</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==========================================
+          // CORE HEADER INFO
+          // ==========================================
+          
+          "title": `Area 4: The Archer's Gallery`,
+
+          // ==========================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==========================================
+          
+          "readAloud": `The secret door slides aside to reveal a narrow passage descending a flight of stairs before opening into a small, cold stone chamber. 
+          Shafts of bright light cut through the dark, dust-moted air from a series of vertical arrow slits.<br><br>
+          Three exceptionally massive, heavily muscled orcs occupy the room. 
+          They wear clean, well-oiled armor and sit around a low stone slab stacked with cooked meats, talking in low, rumbling voices.`,
+          
+          "initialReadAloudChecks": [
+            {
+              "type": `Sense Motive`,
+              "dc": `14`,
+              "prompt": `Observing the guards' posture from the shadows of the stairway...`,
+              "success": `These aren't low-ranking grunts pulling a miserable shift. They lounge with the smug, dangerous confidence of warriors who believe no one would dare challenge them.`,
+              "failure": `They look like large, well-equipped orc veterans who are currently relaxed.`
+            }
+          ],
+
+          "environment": {
+            "dimensions": `20 ft. x 25 ft. room, 15 ft. ceiling.`, 
+            "illumination": `Dim light from the arrow slits mixed with heavy shadows.`, 
+            
+            "features": [
+              {
+                "name": `The Arrow Slits`,
+                "desc": `These narrow openings command the entire external approach to Area 1 and Area 2. 
+                Creatures firing through them enjoy Improved Cover (+8 AC, +4 to Reflex saves, improved evasion, and a +10 bonus on Hide checks).`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `South Wall`,
+                "desc": `A stone door leading down to Area 3 (The Rift Hall). From this side, the operating mechanism is entirely obvious and requires no check to open.`
+              },
+              {
+                "location": `Northeast Wall (Secret)`,
+                "desc": `A well-crafted stone door (DC 23 Search check) leading to Area 14 (Bunkroom). 
+                The occupants are completely oblivious to this hidden structural passage and never utilize it.`
+              }
+            ]
+          },
+
+          "setupPositions": `The three orcs start grouped closely around the stone slab in the center of the room. 
+          If an alarm was explicitly raised in Area 1 or 2, they are already tracking the arrow slits with bows drawn, 
+          but they remain positioned to quickly wheel around and face the secret stairs if the door opens.`,
+          
+          "development": `These orcs are Ulfe's personal inner circle—loyal sycophants who have secured a cozy, high-status post by backing the chief. 
+          Because of this, they are terrified of looking weak or losing their standing. 
+          They fight with savage desperation to protect the entrance to the inner chambers.<br><br>
+          If the party eliminates these archers and subsequently withdraws from the mountain to rest, the vacancy is heavily corrected. 
+          They are replaced by three fresh orcs from Area 14, and Burdug herself (Area 9) moves up to oversee the defense, adding strategic spellcasting to the crossfire.`,
+
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp and heavy iron medallions carved with the symbol of Bahgtru.`
+          },
+
+          "specialEvents": [
+            {
+              "title": `Overheard Arrogance`,
+              "trigger": `If a PC approaches stealthily down the passage or listens through the secret plate before opening the door.`,
+              "readAloud": `Through the thick stone door, the deep, guttural voices of the guards filter through, heavy with self-satisfied boasting.`,
+              "mechanics": [
+                {
+                  "type": `Listen Check`,
+                  "dc": `14`,
+                  "success": `You manage to filter out the stone-muffled acoustics and catch their conversation.<br><br>
+                  <strong>Mug:</strong> "...tellin' you, Burdug's cronies are losing their minds with those charcoal charts. 
+                  One of 'em tried to tell me yesterday that our patrol rotations were 'unoptimized.' I told her to say it to Ulfe's face."<br><br>
+                  <strong>Gorzk:</strong> "They're just mad because they don't have the chief's ear. 
+                  They spend all day measuring roots and tracking water supplies, and the Great Ulfe still breaks a dwarf's spine just by looking at him. 
+                  True strength doesn't need a ledger."<br><br>
+                  <strong>Vrak:</strong> "Exactly. When the next raiding party forms, Ulfe puts us right at the top because we're the biggest. 
+                  Let 'em draw their little chalk lines on the cave walls."`,
+                  "failure": `You hear deep, rumbling orc laughter and the heavy thud of meat being dropped onto stone, but the words are too muffled to discern.`
+                }
+              ]
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

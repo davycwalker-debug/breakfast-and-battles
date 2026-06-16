@@ -15,15 +15,7 @@
         import '../../js/interactions.js';
         
         const roomData = {
-          // ==========================================
-          // CORE HEADER INFO
-          // ==========================================
-          
           "title": `Area 1: The End of the Trail`,
-
-          // ==========================================
-          // NARRATIVE & INITIAL ABILITY CHECKS
-          // ==========================================
           
           "readAloud": `The mountain path climbs up one last, steep switchback toward a bare shoulder of rock. 
           The hillside rises sharply on your right, while a precipitous drop on your left offers a spectacular view of the jagged canyon floor far below. <br><br>
@@ -45,14 +37,22 @@
               "failure": `They look like standard, albeit exceptionally lazy, sentries.`
             }
           ],
-
-          // ==========================================
-          // ENVIRONMENT & ARCHITECTURE
-          // ==========================================
           
           "environment": {
             "dimensions": `95 ft. x 10 ft. path opening up to a 35 ft. x 30 ft. ledge.`, 
             "illumination": `Sunlight.`, 
+
+            "features": [
+              {
+                "name": `The Overlook Crossfire`, 
+                "desc": `The arrow slits connect directly to Area 4 and 4a. 
+                Creatures firing from behind them enjoy Improved Cover (+8 AC, +4 to Reflex saves, improved evasion, +10 bonus on Hide checks).<br><br>
+                If the party takes care of Wark and Thark quietly, the orcs in area 4 may not notice them at all. 
+                Characters in disguise may pass to area 2 without danger, provided the orcs did not raise the alarm. 
+                Characters who attempt to sneak past the row of arrow slits must attempt Move Silently checks with a +4 bonus (the orcs aren't paying attention). 
+                To detect the sneaking characters, the orcs in area 4 must equal or beat the worst Move Silently result achieved by the player characters.` 
+              }
+            ],
             
             "doors": [ 
               {
@@ -65,37 +65,21 @@
               }
             ]
           },
-
-          // ==========================================
-          // COMBATANTS & COMBAT ENGINE DATA
-          // ==========================================
           
           "setupPositions": `Wark and Thark are standing in the northwest corner of the ledge.
           They are in position to see the pathway leading up, 
           but are not paying attention and receive a -4 penalty to Spot and Listen checks.<br><br>
           Wark and Thark are not the only enemies here; 
           archers positioned in area 4 can freely take potshots at the characters.`,
-
-          // ==========================================
-          // STRATEGY & BEHAVIOR
-          // ==========================================
           
           "development": `If attacked or confronted by more than one visible character without prior negotiation, 
           Wark and Thark call out a warning to the orcs in area 4 as soon as they get a chance to act.
           They stand their ground against one character, but flee to area 3 otherwise.
           If the characters are disguised as orcs, the two don't call out a warning until their second action comes up.`,
-
-          // ==========================================
-          // REWARDS, LOOT & CONTAINER ARRAYS
-          // ==========================================
           
           "treasure": {
             "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp. Thark also carries a small pouch containing stringy, sun-dried mountain lizard meat.`
           },
-
-          // ==========================================
-          // SPECIAL DYNAMIC TRIGGER CARDS
-          // ==========================================
           
           "specialEvents": [
             {
