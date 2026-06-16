@@ -1,6 +1,10 @@
 import { syncEngineStateWithCsv } from './engineState.js';
 import { calculatePowerLevel, calculateEncounterLevel, calculatePartyPowerLevel, calculatePartyEncounterLevel, mExperience, parseChallengeRating } from './dataParsers.js';
 
+export function forceEngineRedraw() {
+    renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
+}
+
 export function injectEngineStyles() {
     if (document.getElementById('dnd-engine-core-styles')) return;
     const linkTag = document.createElement('link');
