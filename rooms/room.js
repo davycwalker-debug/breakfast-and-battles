@@ -474,7 +474,7 @@ function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
                 </div>
                 
                 <div class="matrix-input-group row-xp-display-group">
-                    <label class="row-xp-label">XP Per:</label>
+                    <span class="row-xp-label">XP Per:</span>
                     <div class="matrix-xp-output">${rowXpString}</div>
                 </div>
             </div>
