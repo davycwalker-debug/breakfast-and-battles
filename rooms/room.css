@@ -9,9 +9,6 @@
 }
 
 :root {
-    /* ======================================================================
-       1. CORE CANVAS & CONTAINERS (Strict Luminescence Hierarchy)
-       ====================================================================== */
     --bg-color: #0f0f11;
     --card-color: #16161a;
     --card-inner: #1d1d24;
@@ -19,16 +16,10 @@
     --border-muted: #222229;
     --input-bg: #111114;
 
-    /* ======================================================================
-       2. TYPOGRAPHY & TEXT INTERFACES
-       ====================================================================== */
     --text-main: #f1f1f4;
     --text-muted: #9494a1;
-    --text-inverse: #0b0b0d; /* High-contrast crisp black text for filled active badge fields */
+    --text-inverse: #0b0b0d;
 
-    /* ======================================================================
-       3. SYSTEM ACCENTS (Raw Hue Splitting for Dynamic Alpha Blending)
-       ====================================================================== */
     --accent-gold-hsl: 24, 18%, 72%;
     --accent-gold: hsl(var(--accent-gold-hsl));
 
@@ -44,28 +35,20 @@
     --accent-green-hsl: 122, 39%, 49%;
     --accent-green: hsl(var(--accent-green-hsl));
 
-    /* ======================================================================
-       4. CONTEXTUAL OVERLAYS & NARRATIVE CHANNELS
-       ====================================================================== */
     --read-aloud-bg: #141913;
     --read-aloud-border: #3b4c34;
     
-    /* Narrative & Dialogue Systems */
     --speaker-tag: #ffb366;
     --dialogue-response: #b3d9ff;
     
-    /* Trap & Hazard System Mechanics (Derived safely from Red HSL spectrum) */
     --trap-bg: hsla(var(--accent-red-hsl), 0.06);
     --trap-border: hsla(var(--accent-red-hsl), 0.25);
     --trap-divider: hsla(var(--accent-red-hsl), 0.35);
     --trap-dc-bg: hsla(var(--accent-red-hsl), 0.15);
-    --trap-dc-text: #ffa3a3; /* Enhanced slightly for strict dark-mode contrast readability */
-
-    /* ======================================================================
-       5. COMBAT STATE COMPONENT OVERRIDES
-       ====================================================================== */
-    --flag-staggered-bg: #4d3305;   /* Deepened slight value drop to push text forward */
-    --flag-staggered-text: #ffe066; /* Brightened slightly for crisp AA accessibility reading */
+    --trap-dc-text: #ffa3a3;
+   
+    --flag-staggered-bg: #4d3305;
+    --flag-staggered-text: #ffe066;
     --flag-unconscious-bg: #4a2406;
     --flag-dying-bg: #4a0d0d;
     --flag-dead-bg: #222229;
@@ -87,7 +70,6 @@ body {
     margin: 0 auto;
 }
 
-/* --- Typography Declarations --- */
 h1, h2, h3, h4 {
     color: var(--text-main);
     font-weight: 700;
@@ -193,7 +175,7 @@ li {
 
 
 /* ==========================================================================
-   3. TRACKER ENGINE MECHANICS (PURE GRID GRID & MATRIX TABLES)
+   3. TRACKER ENGINE MECHANICS
    ========================================================================== */
 
 .tracker-box {
@@ -243,7 +225,7 @@ li {
 }
 
 .tracker-grid > div:nth-child(4n) .hp-badge {
-    text-align: left; /* Keep inline cell structure stable if components shift right */
+    text-align: left;
 }
 
 .tracker-grid > div:nth-last-child(-n+4) {
@@ -293,7 +275,6 @@ li {
     gap: 4px;
 }
 
-/* --- Dynamic Combatant System States --- */
 .status-text {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -323,6 +304,28 @@ li {
 .tracker-cell.tracker-row-dead.name-col,
 .tracker-cell.tracker-row-dead .tooltip-target { text-decoration: line-through; color: var(--text-muted); }
 
+.tracker-creature-note-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--border-muted);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 2px 0;
+    width: 90%;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.tracker-creature-note-input:focus {
+    border-bottom-style: solid;
+    border-bottom-color: var(--accent-gold);
+    color: var(--text-main);
+}
+
+.tracker-creature-note-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.4;
+}
 
 /* ==========================================================================
    4. FORM INPUTS & INTERACTIVE MECHANICS
@@ -374,7 +377,6 @@ li {
     border-color: color-mix(in srgb, var(--border-color) 70%, var(--accent-gold));
 }
 
-/* Universal Spinner Interface Overrides */
 .hp-input::-webkit-outer-spin-button,
 .hp-input::-webkit-inner-spin-button,
 .matrix-input::-webkit-outer-spin-button,
@@ -391,7 +393,6 @@ li {
     -moz-appearance: textfield;
 }
 
-/* System Global Animation Transitions */
 .btn-add-combatant, 
 .btn-sort-tracker, 
 .tracker-input, 
@@ -403,7 +404,6 @@ li {
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 
-/* Control Mechanism Triggers */
 .btn-add-combatant {
     background: color-mix(in srgb, var(--accent-gold) 15%, transparent);
     border: 1px solid var(--accent-gold);
@@ -451,7 +451,6 @@ li {
     color: var(--accent-gold);
 }
 
-/* Drag-and-Drop Core Hooks */
 .tracker-drag-handle {
     cursor: grab;
     user-select: none;
@@ -521,7 +520,6 @@ li {
     border: 1px solid var(--trap-divider);
 }
 
-/* NPC Narrative Nodes */
 .dialogue-tree-container {
     background: var(--card-inner);
     border-left: 4px solid var(--accent-gold);
@@ -542,7 +540,6 @@ li {
 .dialogue-response { color: var(--accent-blue); padding-left: 8px; }
 .speaker-tag { color: #ffb366; font-weight: bold; }
 
-/* Mechanical Check Framework Cards */
 .ability-checks-container {
     margin: 20px 0;
 }
@@ -577,7 +574,6 @@ li {
 .branch.success { border-left: 3px solid #4caf50; }
 .branch.failure { border-left: 3px solid #f44336; }
 
-/* Scripted Narrative Flow Event Triggers */
 .special-event-card {
     border-radius: 8px;
     padding: 24px;
@@ -612,7 +608,7 @@ li {
     position: absolute;
     top: 50%;
     left: 100%;
-    transform: translate(10px, -50%); /* Vertical tracking anchor alignment */
+    transform: translate(10px, -50%);
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -628,7 +624,7 @@ li {
 .tooltip-target:hover .roster-tooltip {
     visibility: visible;
     opacity: 1;
-    transform: translate(20px, -50%); /* Micro-interaction offset drift */
+    transform: translate(20px, -50%);
 }
 
 .tooltip-header {
@@ -659,7 +655,7 @@ li {
 
 
 /* ==========================================================================
-   7. PARTY MATRIX (STRICT HORIZONTAL COMPRESSION)
+   7. PARTY MATRIX
    ========================================================================== */
 
 .party-matrix-section {
@@ -794,7 +790,6 @@ li {
     height: 24px;
 }
 
-/* --- Inline Engine Matrix Mechanics --- */
 .combat-tracker-header {
     display: flex; 
     justify-content: space-between; 
@@ -843,7 +838,7 @@ li {
 
 
 /* ==========================================================================
-   9. GLOBAL UTILITY MODIFIERS (A11Y HELPERS)
+   9. GLOBAL UTILITY MODIFIERS
    ========================================================================== */
 
 .text-center { text-align: center; }
