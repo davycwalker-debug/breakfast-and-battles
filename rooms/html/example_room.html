@@ -19,17 +19,13 @@
           // CORE HEADER INFO
           // ==========================================
           
-          /* [string] Main headline displayed at the very top of the interface. */
+          /* [string] Main headline. Serves as the strict unique ID for CSV database lookups. */
           "title": `Area 4: The Whispering Ossuary`,
           
           /* [string] Subordinate label attached to the header title. 
              Note: The rendering engine automatically appends Calculated Combat Level (CL) 
              and Experience Points (XP) metrics to this string dynamically. */
           "subtitle": `Dungeon Level 2`,
-          
-          /* [string] (Optional) Explicit baseline target identifier for CSV database lookups 
-             (multiplier.csv, party.csv, creatures.csv). If omitted, the engine falls back to using 'title'. */
-          "location": `Area 4: The Whispering Ossuary`,
 
           // ==========================================
           // NARRATIVE & INITIAL ABILITY CHECKS
@@ -242,7 +238,6 @@
           ]
         };
 
-        // Render orchestration run target
         renderRoomTemplate('encounter-output', roomData);
     </script>
 </body>
