@@ -36,20 +36,6 @@
           
           "initialReadAloudChecks": [
             {
-              "type": `Spot Check`, 
-              "dc": `18`,           
-              "prompt": `As you move around the corner onto the ledge...`, 
-              "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
-              "failure": `nothing stands out to you besides the scenic view.`
-            },
-            {
-              "type": `Spot Check`,
-              "dc": `13`,
-              "prompt": `As you examine the east wall more closely...`, 
-              "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead.`,
-              "failure": `nothing stands out to you.`
-            },
-            {
               "type": `Sense Motive`,
               "dc": `14`,
               "prompt": `Observing the guards' body language from a distance...`,
@@ -113,6 +99,32 @@
           
           "specialEvents": [
             {
+              "title": `Arrow Sense`,
+              "trigger": `If a PC approaches moves around the corner:`,
+              "readAloud": `As you move around the corner onto the ledge...`,
+              "mechanics": [
+                {
+                  "type": `Spot Check`,
+                  "dc": `18`,
+                  "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
+                  "failure": `nothing stands out to you besides the scenic view.`
+                }
+              ]
+            },
+            {
+              "title": `Arrow Investigation`,
+              "trigger": `If a PC investigates the east wall:`,
+              "readAloud": `As you examine the east wall more closely...`,
+              "mechanics": [
+                {
+                  "type": `Spot Check`,
+                  "dc": `18`,
+                  "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
+                  "failure": `nothing stands out to you.`
+                }
+              ]
+            },
+            {
               "title": `Overheard Griping`,
               "trigger": `If a PC approaches stealthily and spends a moment listening to the guards.`,
               "readAloud": `The two sentries speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
@@ -120,22 +132,21 @@
                 {
                   "type": `Listen Check`,
                   "dc": `12`,
-                  "success": `You manage to tune out the mountain wind and catch their low, grumbling conversation perfectly.`,
+                  "success": `You manage to tune out the mountain wind and catch their low, grumbling conversation perfectly.
+                  <strong>Thark:</strong> "...still can't believe it. We're the ones who found him in the woods. We brought him here. 
+                  We told Yarrack, 'Look at the size of this guy, he's a total freak.' We practically handed him the tribe."<br><br>
+                  <strong>Wark:</strong> "And now we're pacing back and forth in the sun. I've been walking for six hours, Thark. 
+                  My legs feel like wet noodles. I'm practically evaporating."<br><br>
+                  <strong>Thark:</strong> "Exactly! He's a complete fraud. He doesn't even do anything! 
+                  He just sits in his quarters eating whole boars and baby-talking his stupid dogs while we're out here walking off our breakfast. 
+                  Yarrack made us carry literal boulders up the mountain and Burdug made us draw circles on the wall just to look at a barbell, 
+                  but at least they made us do something."<br><br>
+                  <strong>Wark:</strong> "Ulfe doesn't care about the grind. He just wants to pet his little puppies. 
+                  Honestly, if someone brought me a decent slab of cured venison right now, I'd let a whole army of Dwarves walk right past the slits. 
+                  I can't keep doing this cardio."`,
                   "failure": `The words are lost to the wind, sounding like general, low-intensity grumbling about work.`
                 }
-              ],
-              "outcome": `On a success, read the following to the players:<br><br>
-              <strong>Thark:</strong> "...still can't believe it. We're the ones who found him in the woods. We brought him here. 
-              We told Yarrack, 'Look at the size of this guy, he's a total freak.' We practically handed him the tribe."<br><br>
-              <strong>Wark:</strong> "And now we're pacing back and forth in the sun. I've been walking for six hours, Thark. 
-              My legs feel like wet noodles. I'm practically evaporating."<br><br>
-              <strong>Thark:</strong> "Exactly! He's a complete fraud. He doesn't even do anything! 
-              He just sits in his quarters eating whole boars and baby-talking his stupid dogs while we're out here walking off our breakfast. 
-              Yarrack made us carry literal boulders up the mountain and Burdug made us draw circles on the wall just to look at a barbell, 
-              but at least they made us <em>do</em> something."<br><br>
-              <strong>Wark:</strong> "Ulfe doesn't care about the grind. He just wants to pet his little puppies. 
-              Honestly, if someone brought me a decent slab of cured venison right now, I'd let a whole army of Dwarves walk right past the slits. 
-              I can't keep doing this cardio."`
+              ]
             },
             {
               "title": `Exploiting the Low Totem Pole`,
@@ -144,21 +155,17 @@
               They handle their weapons with a mix of defensive hostility and a profound desire to be literally anywhere else.`,
               "mechanics": [
                 {
-                  "type": `Diplomacy Check`,
+                  "type": `Diplomacy Check (+4 circumstance if Overheard Griping event completed successfully)`,
                   "dc": `16`,
                   "success": `The speaker handles the confrontation smoothly without triggering immediate panic. 
-                  <strong>Circumstance Modifier:</strong> If the party successfully completed the 'Overheard Griping' check, 
-                  and specifically tailors their offer to the guards' complaints (e.g., offering high-quality rations, luxury meats, or a purse of at least 15 gp), 
-                  they receive a +4 circumstance bonus to this check.`,
+                  Wark inspects the bribe, looks up at the sky, and sighs. 'You know what? I'm declaring this an unscheduled rest day.' <br><br>
+                  They deliberately decline to call out a warning to the archers in Area 4, allowing the party to pass down the southern ledge unmolested. 
+                  Before turning their attention entirely to the food, Thark spits over the edge and mutters, 
+                  'Watch yourself inside. The boss cares more about his pets than his actual soldiers. The whole camp is a powder keg right now.'`,
                   "failure": `The guards grow paranoid that their blatant negligence will be spotted by the archers overhead in Area 4. 
                   Panicking, they draw weapons and sound the alarm.`
                 }
-              ],
-              "outcome": `On a success, Wark and Thark grumble, step away from the ledge edge, and eagerly accept the offering. 
-              Wark inspects the bribe, looks up at the sky, and sighs. 'You know what? I'm declaring this an unscheduled rest day.' <br><br>
-              They deliberately decline to call out a warning to the archers in Area 4, allowing the party to pass down the southern ledge unmolested. 
-              Before turning their attention entirely to the food, Thark spits over the edge and mutters, 
-              'Watch yourself inside. The boss cares more about his pets than his actual soldiers. The whole camp is a powder keg right now.'`
+              ]
             }
           ]
         };
