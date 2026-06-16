@@ -819,8 +819,8 @@ async function syncEngineStateWithCsv(containerId, data) {
         // Fetch read-only configuration layers directly from GitHub Pages static paths
         try {
             const [multResponse, partyResponse] = await Promise.all([
-                fetch('./multiplier.csv').then(res => res.ok ? res.text() : ""),
-                fetch('./party.csv').then(res => res.ok ? res.text() : "")
+                fetch('../multiplier.csv').then(res => res.ok ? res.text() : ""),
+                fetch('../party.csv').then(res => res.ok ? res.text() : "")
             ]);
             multiplierCsvText = multResponse;
             partyCsvText = partyResponse;
