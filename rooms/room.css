@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. GLOBAL RESETS, TOKENS & TYPOGRAPHY
+   1. GLOBAL RESETS, DESIGN TOKENS & TYPOGRAPHY
    ========================================================================== */
 
 *, 
@@ -9,19 +9,41 @@
 }
 
 :root {
+    /* Main Layout Theme Palette */
     --bg-color: #0f0f11;
     --card-color: #16161a;
     --card-inner: #1d1d24;
     --border-color: #2a2a32;
     --border-muted: #222229;
+    --input-bg: #111114;
+
+    /* Content & Typography Colors */
     --text-main: #f1f1f4;
     --text-muted: #9494a1;
+    
+    /* Branding & Mechanical System Accents */
     --accent-gold: #c5b4a8;
     --accent-red: #ff5a60;
     --accent-purple: #a855f7;
+    --accent-orange: #e67e22;
+    --accent-green: #4caf50;
+    --accent-blue: #b3d9ff;
+    
+    /* Component Contextual Overlays */
     --read-aloud-bg: #141913;
     --read-aloud-border: #3b4c34;
-    --input-bg: #111114;
+    --trap-bg: #201314;
+    --trap-border: #541e21;
+    --trap-divider: #6e272a;
+    --trap-dc-bg: #3d1719;
+    --trap-dc-text: #ff9999;
+    
+    /* Combat Engine State Flags */
+    --flag-staggered-bg: #5c4014;
+    --flag-staggered-text: #ffca3a;
+    --flag-unconscious-bg: #5c3314;
+    --flag-dying-bg: #5c1414;
+    --flag-dead-bg: #2b2b36;
 }
 
 body {
@@ -40,6 +62,7 @@ body {
     margin: 0 auto;
 }
 
+/* --- Typography Declarations --- */
 h1, h2, h3, h4 {
     color: var(--text-main);
     font-weight: 700;
@@ -145,7 +168,7 @@ li {
 
 
 /* ==========================================================================
-   3. TRACKER ENGINE MECHANICS (PURE GRID)
+   3. TRACKER ENGINE MECHANICS (PURE GRID GRID & MATRIX TABLES)
    ========================================================================== */
 
 .tracker-box {
@@ -192,6 +215,10 @@ li {
 .tracker-grid > div:nth-child(4n) {
     justify-content: flex-end;
     text-align: right;
+}
+
+.tracker-grid > div:nth-child(4n) .hp-badge {
+    text-align: left; /* Keep inline cell structure stable if components shift right */
 }
 
 .tracker-grid > div:nth-last-child(-n+4) {
@@ -241,7 +268,7 @@ li {
     gap: 4px;
 }
 
-/* --- State Flags & Dynamic Row System Shifts --- */
+/* --- Dynamic Combatant System States --- */
 .status-text {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -253,16 +280,16 @@ li {
     display: none;
 }
 
-.tracker-cell.tracker-row-staggered .status-text.flag-staggered { display: inline-block; background: #5c4014; color: #ffca3a; }
-.tracker-cell.tracker-row-dying .status-text.flag-dying { display: inline-block; background: #5c1414; color: #ff5a60; }
-.tracker-cell.tracker-row-dead .status-text.flag-dead { display: inline-block; background: #2b2b36; color: #9494a1; }
-.tracker-cell.tracker-row-unconscious .status-text.flag-unconscious { display: inline-block; background: #5c3314; color: #e67e22; }
+.tracker-cell.tracker-row-staggered .status-text.flag-staggered { display: inline-block; background: var(--flag-staggered-bg); color: var(--flag-staggered-text); }
+.tracker-cell.tracker-row-dying .status-text.flag-dying { display: inline-block; background: var(--flag-dying-bg); color: var(--accent-red); }
+.tracker-cell.tracker-row-dead .status-text.flag-dead { display: inline-block; background: var(--flag-dead-bg); color: var(--text-muted); }
+.tracker-cell.tracker-row-unconscious .status-text.flag-unconscious { display: inline-block; background: var(--flag-unconscious-bg); color: var(--accent-orange); }
 
 .tracker-cell.tracker-row-staggered.name-col,
-.tracker-cell.tracker-row-staggered .tooltip-target { color: #ffca3a; }
+.tracker-cell.tracker-row-staggered .tooltip-target { color: var(--flag-staggered-text); }
 
 .tracker-cell.tracker-row-unconscious.name-col,
-.tracker-cell.tracker-row-unconscious .tooltip-target { color: #e67e22; }
+.tracker-cell.tracker-row-unconscious .tooltip-target { color: var(--accent-orange); }
 
 .tracker-cell.tracker-row-dying.name-col,
 .tracker-cell.tracker-row-dying .tooltip-target { color: var(--accent-red); }
@@ -277,7 +304,9 @@ li {
    ========================================================================== */
 
 .tracker-input,
-.hp-input {
+.hp-input,
+.matrix-input,
+.multiplier-input {
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-main);
@@ -304,8 +333,10 @@ li {
     margin: 0;
 }
 
+.tracker-input:focus,
 .hp-input:focus,
-.tracker-input:focus {
+.matrix-input:focus,
+.multiplier-input:focus {
     outline: none;
     border-color: var(--accent-gold);
 }
@@ -318,27 +349,36 @@ li {
     border-color: color-mix(in srgb, var(--border-color) 70%, var(--accent-gold));
 }
 
-/* Hide Spinners across layout environments */
+/* Universal Spinner Interface Overrides */
 .hp-input::-webkit-outer-spin-button,
-.hp-input::-webkit-inner-spin-button {
+.hp-input::-webkit-inner-spin-button,
+.matrix-input::-webkit-outer-spin-button,
+.matrix-input::-webkit-inner-spin-button,
+.multiplier-input::-webkit-outer-spin-button,
+.multiplier-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-.hp-input[type=number] {
+
+.hp-input[type=number],
+.matrix-input[type=number],
+.multiplier-input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* Transition Suite Animations */
+/* System Global Animation Transitions */
 .btn-add-combatant, 
 .btn-sort-tracker, 
 .tracker-input, 
 .hp-input,
+.matrix-input,
+.multiplier-input,
 .btn-send-bottom,
 .tracker-drag-handle {
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 
-/* Tracking Engine Contextual Action Elements */
+/* Control Mechanism Triggers */
 .btn-add-combatant {
     background: color-mix(in srgb, var(--accent-gold) 15%, transparent);
     border: 1px solid var(--accent-gold);
@@ -386,7 +426,7 @@ li {
     color: var(--accent-gold);
 }
 
-/* Drag-and-Drop Matrix Hooks */
+/* Drag-and-Drop Core Hooks */
 .tracker-drag-handle {
     cursor: grab;
     user-select: none;
@@ -395,9 +435,9 @@ li {
 .tracker-drag-handle:active {
     cursor: grabbing;
 }
-.tracker-drag-handle.is-dragging {
+.tracker-cell.tracker-drag-handle.is-dragging {
     opacity: 0.35;
-    background: color-mix(in srgb, var(--accent-gold) 5%, transparent) !important;
+    background: color-mix(in srgb, var(--accent-gold) 5%, transparent);
     border-top: 1px dashed var(--accent-gold);
     border-bottom: 1px dashed var(--accent-gold);
 }
@@ -419,8 +459,8 @@ li {
 }
 
 .trap-card {
-    background: #201314;
-    border: 1px solid #541e21;
+    background: var(--trap-bg);
+    border: 1px solid var(--trap-border);
     border-radius: 8px;
     padding: 20px;
     margin-top: 16px;
@@ -430,7 +470,7 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #6e272a;
+    border-bottom: 1px solid var(--trap-divider);
     padding-bottom: 8px;
     margin-bottom: 14px;
 }
@@ -447,13 +487,13 @@ li {
 .trap-meta { list-style-type: none; padding-left: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 
 .dc-block {
-    background: #3d1719;
+    background: var(--trap-dc-bg);
     padding: 2px 6px;
     border-radius: 4px;
     font-family: monospace;
-    color: #ff9999;
+    color: var(--trap-dc-text);
     font-weight: bold;
-    border: 1px solid #6e272a;
+    border: 1px solid var(--trap-divider);
 }
 
 /* NPC Narrative Nodes */
@@ -474,7 +514,7 @@ li {
 .dialogue-node:last-child { border: none; margin: 0; padding: 0; }
 .dialogue-prompt { color: var(--text-muted); font-size: 0.95em; font-style: italic; margin-bottom: 4px; }
 .dialogue-prompt strong { color: var(--text-main); font-style: normal; }
-.dialogue-response { color: #b3d9ff; padding-left: 8px; }
+.dialogue-response { color: var(--accent-blue); padding-left: 8px; }
 .speaker-tag { color: #ffb366; font-weight: bold; }
 
 /* Mechanical Check Framework Cards */
@@ -547,7 +587,7 @@ li {
     position: absolute;
     top: 50%;
     left: 100%;
-    transform: translate(10px, -50%); /* Center-aligns vertically alongside labels */
+    transform: translate(10px, -50%); /* Vertical tracking anchor alignment */
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -560,11 +600,10 @@ li {
     transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
 }
 
-/* Hover Micro-interaction Targets */
 .tooltip-target:hover .roster-tooltip {
     visibility: visible;
     opacity: 1;
-    transform: translate(20px, -50%); /* Smooth lateral activation */
+    transform: translate(20px, -50%); /* Micro-interaction offset drift */
 }
 
 .tooltip-header {
@@ -628,7 +667,7 @@ li {
     border-radius: 6px;
     padding: 8px 10px;
     display: flex;
-    flex-wrap: wrap; /* Resilient mobile channel wrap logic */
+    flex-wrap: wrap; 
     align-items: center;
     justify-content: space-between;
     gap: 6px;
@@ -646,11 +685,11 @@ li {
     display: flex;
     align-items: center;
     gap: 4px;
-    flex: 0 1 auto; /* Blocks extreme layout expansion values */
+    flex: 0 1 auto; 
 }
 
 .row-xp-display-group {
-    margin-left: auto; /* Pin calculations fluidly along the right flank */
+    margin-left: auto; 
 }
 
 .matrix-input-group label,
@@ -666,44 +705,24 @@ li {
 .matrix-input {
     background: var(--bg-color);
     border: 1px solid var(--border-muted);
-    color: var(--text-main);
     width: 36px; 
     min-width: 36px;
     text-align: center;
     padding: 2px;
     height: 24px;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 0.8rem;
-    border-radius: 4px;
-}
-
-.matrix-input:focus {
-    outline: none;
-    border-color: var(--accent-gold);
 }
 
 .matrix-xp-output {
     font-weight: bold;
-    color: #4caf50; 
+    color: var(--accent-green); 
     padding: 2px 6px;
-    background: rgba(76, 175, 80, 0.1);
-    border: 1px solid rgba(76, 175, 80, 0.15);
+    background: color-mix(in srgb, var(--accent-green) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-green) 15%, transparent);
     border-radius: 4px;
     font-size: 0.75rem;
     font-family: monospace;
     text-align: center;
     min-width: 34px;
-}
-
-/* Clear spin interfaces across the grid fields */
-.matrix-input::-webkit-outer-spin-button,
-.matrix-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.matrix-input[type=number] {
-    -moz-appearance: textfield;
 }
 
 
@@ -748,27 +767,9 @@ li {
     text-align: center;
     padding: 2px 4px;
     height: 24px;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 0.85rem;
-    border-radius: 4px;
 }
 
-.multiplier-input:focus {
-    outline: none;
-    border-color: var(--accent-gold);
-}
-
-.multiplier-input::-webkit-outer-spin-button,
-.multiplier-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.multiplier-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-/* --- Inline Tracker Alignment & Layout Classes --- */
+/* --- Inline Engine Matrix Mechanics --- */
 .combat-tracker-header {
     display: flex; 
     justify-content: space-between; 
@@ -778,7 +779,7 @@ li {
 
 .tracker-add-row-cap {
     border-top: 2px solid var(--border-color); 
-    background: rgba(255,255,255,0.01);
+    background: rgba(255, 255, 255, 0.01);
 }
 
 .setup-positions {
@@ -800,7 +801,7 @@ li {
     height: 22px; 
     font-size: 0.9rem; 
     text-align: center; 
-    color: #e67e22; 
+    color: var(--accent-orange); 
     background: transparent;
 }
 
@@ -815,14 +816,18 @@ li {
     font-weight: normal;
 }
 
-/* --- Global Layout Helpers & Token Modifiers --- */
+
+/* ==========================================================================
+   9. GLOBAL UTILITY MODIFIERS (A11Y HELPERS)
+   ========================================================================== */
+
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .font-weight-bold { font-weight: bold; }
 .font-weight-normal { font-weight: normal; }
 
 .accent-gold-text { color: var(--accent-gold); }
-.accent-orange-text { color: #e67e22; }
+.accent-orange-text { color: var(--accent-orange); }
 .remove-btn-color { color: var(--accent-red); }
 
 .mb-16 { margin-bottom: 16px; }
