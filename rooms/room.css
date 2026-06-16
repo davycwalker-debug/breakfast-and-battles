@@ -35,13 +35,11 @@
     --accent-green-hsl: 122, 39%, 49%;
     --accent-green: hsl(var(--accent-green-hsl));
 
-    --accent-blue: #b3d9ff;
-
     --read-aloud-bg: #141913;
     --read-aloud-border: #3b4c34;
     
     --speaker-tag: #ffb366;
-    --dialogue-response: var(--accent-blue);
+    --dialogue-response: #b3d9ff;
     
     --trap-bg: hsla(var(--accent-red-hsl), 0.06);
     --trap-border: hsla(var(--accent-red-hsl), 0.25);
@@ -551,7 +549,7 @@ li {
 .dialogue-node:last-child { border: none; margin: 0; padding: 0; }
 .dialogue-prompt { color: var(--text-muted); font-size: 0.95em; font-style: italic; margin-bottom: 4px; }
 .dialogue-prompt strong { color: var(--text-main); font-style: normal; }
-.dialogue-response { color: var(--accent-blue); padding-left: 8px; }
+.dialogue-response { color: var(--dialogue-response); padding-left: 8px; }
 .speaker-tag { color: #ffb366; font-weight: bold; }
 
 .ability-checks-container {
