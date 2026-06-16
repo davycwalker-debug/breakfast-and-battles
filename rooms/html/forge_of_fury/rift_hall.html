@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 3: The Rift Hall</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==========================================
+          // CORE HEADER INFO
+          // ==========================================
+          
+          "title": `Area 3: The Rift Hall`,
+
+          // ==========================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==========================================
+          
+          "readAloud": `The great door opens into a large hall. 
+          You are standing on a narrow ledge overlooking a deep, dark crevasse that cuts the room in two, 
+          completely obstructing passage to the opposite side. 
+          A dangerous looking rope bridge, frayed and thin, spans the gap. 
+          Water gurgles and rushes somewhere far below. 
+          Two copper braziers burn brightly on either side of the door, illuminating this half of the room. 
+          You can just barely make out the opposite platform on the other side of the chasm.`,
+          
+          "initialReadAloudChecks": [
+            {
+              "type": `Spot Check`,
+              "dc": `0`,
+              "prompt": `You look beyond the rope bridge...`,
+              "success": `In the shadows of the natural rock of the chamber's far side, two porcine humanoids stand watch before another stone door. 
+              They snarl a challenge, revealing yellowed tusks, and raise their bows to fire on you!`,
+              "failure": `You're distracted by the rope bridge and don't see anything else.`
+            },
+            {
+              "type": `Sense Motive`,
+              "dc": `13`,
+              "prompt": `Observing the guards' aggressive posturing across the chasm...`,
+              "success": `They are bouncing on their toes and aggressively flexing their arms as they pull their bows. 
+              Their movements look overly performative and hyperactive, suggesting they are overcompensating with intense bravado rather than exhibiting calm, disciplined readiness.`,
+              "failure": `They look like standard, highly aggressive orc sentries.`
+            }
+          ],
+
+          // ==========================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==========================================
+          
+          "environment": {
+            "dimensions": `65 ft. by 30 ft. chamber, 30 ft. ceiling.`, 
+            "illumination": `Two copper braziers (20 ft. bright, 20 ft. dim) on the west wall.`, 
+            
+            "features": [
+              {
+                "name": `Rope Bridge`,
+                "desc": `Crossing the bridge is difficult enough to warrant a Balance check at DC 8. 
+                Each success allows a character to traverse a distance equal to half her or his Speed as a full action, 
+                or one-quarter her or his Speed as a move action.<br><br>
+                Climbers who fail their checks make no progress. If they fail by 5 or more, they may fall from the bridge. 
+                Allow characters a second Balance check (DC 18) to catch themselves; 
+                otherwise, they plummet almost 200 feet to the underground river below, striking the rocky walls along the way.
+                The damage of the fall is 20d6, and the river sweeps away anyone who somehow survives into a lightless, airless torrent of churning water. 
+                The characters can prevent fatal falls by roping themselves together before crossing. 
+                Of course, this may be difficult with the orcs firing arrows at them every round.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `A monumental double-door of solid carved stone leading into Area 2 (The Dwarf-Door).`
+              },
+              {
+                "location": `North Wall (Secret)`,
+                "desc": `A well-made stone door (DC 20 Search check) leading to Area 4 (The Archer's Gallery). 
+                The door operates by simultaneously pushing in two concealed stone plates about a foot above the floor.`
+              },
+              {
+                "location": `South Wall (Secret)`,
+                "desc": `A well-made stone door (DC 20 Search check) leading to Area 4a (The Archer's Gallery). 
+                The door operates by simultaneously pushing in two concealed stone plates about a foot above the floor.`
+              },
+              {
+                "location": `East Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 5 (Orc Cave).`
+              }
+            ]
+          },
+
+          // ==========================================
+          // COMBATANTS & COMBAT ENGINE DATA
+          // ==========================================
+          
+          "setupPositions": `The orcs use the rock pillars in the room for shelter, providing Cover (+4 AC, +2 to Reflex saves).`,
+
+          // ==========================================
+          // STRATEGY & BEHAVIOR
+          // ==========================================
+          
+          "tactics": {
+            "initialRound": `The orcs use their bows to attack characters trying to cross the bridge, then those casting spells, 
+            then characters shooting back at them with missile weapons. 
+            The archers gain a +2 attack bonus when firing at characters on the bridge, and the targets lose any Dexterity bonus to AC. 
+            Each hit forces the balancing character to make a Balance check (DC 8) or risk a fall, just as if he'd missed his climbing check by a margin of 5 or more.`
+          },
+          
+          "development": `If a PC gets two-thirds of the way across the bridge, 
+          one orc breaks cover to run up and destroy the rope bridge, using a falchion to sever the support ropes. 
+          The orc must cut two ropes, each with 8 hit points. If one is cut, the checks to cross the bridge increases to DC 13. 
+          If both are cut, the end of the bridge plummets into the crevasse. Characters on the bridge sustain 2d6 points of subdual damage from the impact, 
+          and must make Reflex saves (DC 13) or lose their grips and fall into the crevasse.<br><br>
+          If one orc is killed, the survivor loses his nerve, abandons his post, and flees through the eastern wooden door into Area 5 to shout for help.`,
+
+          // ==========================================
+          // REWARDS, LOOT & CONTAINER ARRAYS
+          // ==========================================
+          
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`
+          },
+
+          // ==========================================
+          // SPECIAL DYNAMIC TRIGGER CARDS
+          // ==========================================
+          
+          "specialEvents": [
+            {
+              "title": `Overheard Insecurities`,
+              "trigger": `If a PC approaches stealthily or listens across the chasm before combat begins.`,
+              "readAloud": `The two sentries stand near the far pillars, arguing in hushed but intense guttural tones over the roar of the water below.`,
+              "mechanics": [
+                {
+                  "type": `Listen Check`,
+                  "dc": `14`,
+                  "success": `You manage to tune out the roaring water and catch their defensive bickering clearly.
+                  <strong>Korg:</strong> "...did you see the way Yarrack looked at me when I brought him those iron bolts? 
+                  He did that little clicking thing with his tongue. 
+                  He thinks because my forearms aren't the size of hams, I don't respect the traditional grind."<br><br>
+                  <strong>Gesh:</strong> "Forget Yarrack. Yarrack's done. 
+                  He spent an hour yesterday screaming at the bunkroom boys about 'mind-muscle connection' and old-school volume. 
+                  Old man belongs in a retirement cavern. The Great Ulfe didn't lift a single boulder to get those traps. It's all genetics, bro. 
+                  We just gotta hang around the council room enough and some of that mass has gotta rub off."<br><br>
+                  <strong>Korg:</strong> "I know, but Burdug's guys keep leaving those charcoal charts on the wall. 
+                  One of them told me my shortbow draw form was 'grossly unoptimized for maximum upper-back activation.' It messed with my head, Gesh. 
+                  What if my lats <em>are</em> sleeping?"<br><br>
+                  <strong>Gesh:</strong> "They're trying to mind-trick you because they can't handle real weight. Keep flexing. 
+                  If anyone comes across that bridge, we pin 'em to the wood. 
+                  Ulfe sees us holding the line, we're guaranteed a spot in the inner circle. No more bridge duty."`,
+                  "failure": `The roaring water drowns out the words, sounding like general, low-intensity grumbling.`
+                }
+              ]
+            },
+            {
+              "title": `Exploiting the Clout-Chasers`,
+              "trigger": `If a character shouts across the chasm to parley, trick, or bluff the archers instead of initiating combat.`,
+              "readAloud": `The two archers lower their bows slightly, exchanging wide-eyed, defensive glances as your voice echoes through the cavern hall.`,
+              "mechanics": [
+                {
+                  "type": `Bluff or Intimidation Check (+4 circumstance if Overheard Insecurities event completed successfully)`,
+                  "dc": `18`,
+                  "success": `The speaker successfully preys upon the guards' deep professional imposter syndrome. 
+                  Confused and deeply insecure about their form and standing, Korg stammers and lowers his weapon entirely. <br><br>
+                  They decline to cut the bridge ropes and hold their fire, allowing the party to negotiate or cross safely, 
+                  provided the party guarantees not to tell the rest of the camp that they let the party pass.`,
+                  "failure": `The guards grow paranoid that they are being mocked. Worried about looking weak, they shout a war cry and open fire.`
+                }
+              ]
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
