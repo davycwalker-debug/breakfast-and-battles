@@ -264,7 +264,7 @@ export function renderTraps(trapsArray) {
                     <div class="trap-header"><span class="trap-title"><strong>${t.name}</strong></span><span class="trap-cr">CR ${t.cr}</span></div>
                     <ul class="trap-meta">
                         <li><strong>Trigger:</strong> ${t.trigger} &nbsp;|&nbsp; <strong>Reset:</strong> ${t.reset}</li>
-                        <li><strong>Search DC:</strong> <code class="dc-block">DC ${t.searchDc}</code> &nbsp;|&nbsp; <strong>Disable Device DC:</strong> <code class="dc-block">DC ${t.disableDc}</code></li>
+                        <li><strong>Search DC:</strong> <code class="dc-block">${t.searchDc}</code> &nbsp;|&nbsp; <strong>Disable Device DC:</strong> <code class="dc-block">${t.disableDc}</code></li>
                         <li><strong class="accent-gold-text">Effect:</strong> ${t.effect}</li>
                     </ul>
                 </div>
