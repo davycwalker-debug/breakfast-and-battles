@@ -326,8 +326,7 @@ function renderTrackerRow(c, idx) {
                        class="tracker-creature-note-input" 
                        placeholder="Notes (Conditions, positions...)" 
                        value="${c.notes || ''}" 
-                       oninput="window.dndEngineState.liveCreatures[${idx}].notes = this.value"
-                       style="background: transparent; border: none; border-bottom: 1px dashed #555; color: #aaa; font-size: 0.75rem; padding: 2px 0; width: 90%; outline: none;">
+                       oninput="window.dndEngineState.liveCreatures[${idx}].notes = this.value">
             </div>
         </div>
         
