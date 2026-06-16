@@ -81,6 +81,16 @@ h4 {
     margin: 24px 0 32px 0;
 }
 
+ul {
+    padding-left: 24px;
+    margin: 12px 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+
 /* ==========================================================================
    2. CORE ROOM LAYOUTS & CONTAINERS
    ========================================================================== */
@@ -108,15 +118,6 @@ h4 {
     margin: 0;
 }
 
-ul {
-    padding-left: 24px;
-    margin: 12px 0;
-}
-
-li {
-    margin-bottom: 8px;
-}
-
 .env-meta-list {
     list-style: none;
     padding-left: 0;
@@ -141,6 +142,7 @@ li {
     margin-top: 20px;
     border-radius: 6px;
 }
+
 
 /* ==========================================================================
    3. TRACKER ENGINE MECHANICS (PURE GRID)
@@ -239,6 +241,7 @@ li {
     gap: 4px;
 }
 
+/* --- State Flags & Dynamic Row System Shifts --- */
 .status-text {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -267,6 +270,7 @@ li {
 .tracker-cell.tracker-row-dead { opacity: 0.4; }
 .tracker-cell.tracker-row-dead.name-col,
 .tracker-cell.tracker-row-dead .tooltip-target { text-decoration: line-through; color: var(--text-muted); }
+
 
 /* ==========================================================================
    4. FORM INPUTS & INTERACTIVE MECHANICS
@@ -300,18 +304,21 @@ li {
     margin: 0;
 }
 
-.hp-input:focus {
-    outline: none;
-    border-color: var(--accent-gold);
-    background: var(--card-inner);
-}
-
+.hp-input:focus,
 .tracker-input:focus {
     outline: none;
     border-color: var(--accent-gold);
 }
 
-/* Hide Spinners */
+.hp-input:focus {
+    background: var(--card-inner);
+}
+
+.tracker-input:hover {
+    border-color: color-mix(in srgb, var(--border-color) 70%, var(--accent-gold));
+}
+
+/* Hide Spinners across layout environments */
 .hp-input::-webkit-outer-spin-button,
 .hp-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -321,7 +328,7 @@ li {
     -moz-appearance: textfield;
 }
 
-/* Transition Suite */
+/* Transition Suite Animations */
 .btn-add-combatant, 
 .btn-sort-tracker, 
 .tracker-input, 
@@ -331,11 +338,7 @@ li {
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 
-.tracker-input:hover {
-    border-color: color-mix(in srgb, var(--border-color) 70%, var(--accent-gold));
-}
-
-/* Buttons */
+/* Tracking Engine Contextual Action Elements */
 .btn-add-combatant {
     background: color-mix(in srgb, var(--accent-gold) 15%, transparent);
     border: 1px solid var(--accent-gold);
@@ -383,7 +386,7 @@ li {
     color: var(--accent-gold);
 }
 
-/* Drag-and-Drop Elements */
+/* Drag-and-Drop Matrix Hooks */
 .tracker-drag-handle {
     cursor: grab;
     user-select: none;
@@ -398,6 +401,7 @@ li {
     border-top: 1px dashed var(--accent-gold);
     border-bottom: 1px dashed var(--accent-gold);
 }
+
 
 /* ==========================================================================
    5. DIALOGUE, HAZARDS & CARDS
@@ -452,6 +456,7 @@ li {
     border: 1px solid #6e272a;
 }
 
+/* NPC Narrative Nodes */
 .dialogue-tree-container {
     background: var(--card-inner);
     border-left: 4px solid var(--accent-gold);
@@ -472,6 +477,7 @@ li {
 .dialogue-response { color: #b3d9ff; padding-left: 8px; }
 .speaker-tag { color: #ffb366; font-weight: bold; }
 
+/* Mechanical Check Framework Cards */
 .ability-checks-container {
     margin: 20px 0;
 }
@@ -506,7 +512,7 @@ li {
 .branch.success { border-left: 3px solid #4caf50; }
 .branch.failure { border-left: 3px solid #f44336; }
 
-/* Special Event Cards */
+/* Scripted Narrative Flow Event Triggers */
 .special-event-card {
     border-radius: 8px;
     padding: 24px;
@@ -523,6 +529,7 @@ li {
 .event-title-group h4 { margin: 0; color: #fff; font-size: 1.15em; text-transform: none; letter-spacing: normal; }
 .event-trigger { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 2px; }
 
+
 /* ==========================================================================
    6. CONTEXTUAL ROSTER TOOLTIPS
    ========================================================================== */
@@ -538,10 +545,9 @@ li {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    /* Move layout anchor from top to the right side */
     top: 50%;
     left: 100%;
-    transform: translate(10px, -50%); /* Centers vertically to the name */
+    transform: translate(10px, -50%); /* Center-aligns vertically alongside labels */
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -554,14 +560,13 @@ li {
     transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
 }
 
-/* Show tooltip on hover */
+/* Hover Micro-interaction Targets */
 .tooltip-target:hover .roster-tooltip {
     visibility: visible;
     opacity: 1;
-    transform: translate(20px, -50%); /* Smooth slide-out effect rightwards */
+    transform: translate(20px, -50%); /* Smooth lateral activation */
 }
 
-/* Tooltip Layout Structure */
 .tooltip-header {
     font-weight: bold;
     color: var(--text-main);
@@ -588,34 +593,6 @@ li {
     color: var(--accent-gold);
 }
 
-/* ==========================================================================
-   7. PARTY MATRIX (MAX LINE COMPRESSION FIX)
-   ========================================================================== */
-
-.party-matrix-section {
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: clamp(12px, 3vw, 20px); 
-    margin-bottom: 24px;
-}
-
-.matrix-header-title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-    font-weight: 700;
-}
-
-.party-matrix-grid {
-    display: grid;
-    /* Increased minimum width threshold so parent cards don't squeeze too early */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
-    max-width: 850px; 
-    gap: 12px;
-}
 
 /* ==========================================================================
    7. PARTY MATRIX (STRICT HORIZONTAL COMPRESSION)
@@ -640,21 +617,18 @@ li {
 
 .party-matrix-grid {
     display: grid;
-    /* Keeps a comfortable card baseline footprint */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
     max-width: 850px; 
     gap: 12px;
 }
 
-/* --- FORCE SINGLE-LINE FLEX CHANNELS --- */
 .party-matrix-row {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
     padding: 8px 10px;
-    
     display: flex;
-    flex-wrap: wrap; /* Safe backup wrapping for ultra-small mobile widths */
+    flex-wrap: wrap; /* Resilient mobile channel wrap logic */
     align-items: center;
     justify-content: space-between;
     gap: 6px;
@@ -668,16 +642,15 @@ li {
     min-width: 16px;
 }
 
-/* Rigid internal sizing limits to prevent vertical stretching or premature breaking */
 .matrix-input-group {
     display: flex;
     align-items: center;
     gap: 4px;
-    flex: 0 1 auto; /* Stops elements from inflating into giant columns */
+    flex: 0 1 auto; /* Blocks extreme layout expansion values */
 }
 
 .row-xp-display-group {
-    margin-left: auto; /* Pushes the XP box cleanly to the right boundary edge */
+    margin-left: auto; /* Pin calculations fluidly along the right flank */
 }
 
 .matrix-input-group label {
@@ -709,7 +682,6 @@ li {
     border-color: var(--accent-gold);
 }
 
-/* --- DYNAMIC XP CHIP --- */
 .matrix-xp-output {
     font-weight: bold;
     color: #4caf50; 
@@ -723,7 +695,7 @@ li {
     min-width: 34px;
 }
 
-/* Clear spin vectors */
+/* Clear spin interfaces across the grid fields */
 .matrix-input::-webkit-outer-spin-button,
 .matrix-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -733,8 +705,9 @@ li {
     -moz-appearance: textfield;
 }
 
+
 /* ==========================================================================
-   8. COMPACT HEADER METRIC CONTROLS
+   8. COMPACT HEADER METRIC CONTROLS & UTILITIES
    ========================================================================== */
 
 .header-subtitle-row {
@@ -785,7 +758,6 @@ li {
     border-color: var(--accent-gold);
 }
 
-/* Strips native increment arrows across modern layout browsers */
 .multiplier-input::-webkit-outer-spin-button,
 .multiplier-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -793,4 +765,75 @@ li {
 }
 .multiplier-input[type=number] {
     -moz-appearance: textfield;
+}
+
+/* --- Inline Tracker Alignment & Layout Classes --- */
+.combat-tracker-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 12px;
+}
+
+.tracker-add-row-cap {
+    border-top: 2px solid var(--border-color); 
+    background: rgba(255,255,255,0.01);
+}
+
+.setup-positions {
+    margin-top: 20px;
+}
+
+.inline-init-input {
+    width: 40px; 
+    text-align: left; 
+    background: transparent; 
+    font-family: monospace; 
+    font-size: 1rem; 
+    font-weight: bold; 
+    color: var(--accent-gold);
+}
+
+.inline-sub-input {
+    width: 38px; 
+    height: 22px; 
+    font-size: 0.9rem; 
+    text-align: center; 
+    color: #e67e22; 
+    background: transparent;
+}
+
+.init-label-text,
+.subdual-inline-wrapper,
+.subdual-text-wrapper {
+    font-size: 0.85rem; 
+    color: var(--text-muted);
+}
+
+.init-label-text {
+    font-weight: normal;
+}
+
+/* --- Global Layout Helpers & Token Modifiers --- */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.font-weight-bold { font-weight: bold; }
+.font-weight-normal { font-weight: normal; }
+
+.accent-gold-text { color: var(--accent-gold); }
+.accent-orange-text { color: #e67e22; }
+.remove-btn-color { color: var(--accent-red); }
+
+.mb-16 { margin-bottom: 16px; }
+.mt-16 { margin-top: 16px; }
+.mx-2 { margin: 0 2px; }
+.mx-4 { margin: 0 4px; }
+
+.w-60 { width: 60px; }
+.sub-input-w { width: 38px; }
+
+.flex-align-center-gap-8 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
