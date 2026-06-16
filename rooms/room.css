@@ -35,11 +35,13 @@
     --accent-green-hsl: 122, 39%, 49%;
     --accent-green: hsl(var(--accent-green-hsl));
 
+    --accent-blue: #b3d9ff;
+
     --read-aloud-bg: #141913;
     --read-aloud-border: #3b4c34;
     
     --speaker-tag: #ffb366;
-    --dialogue-response: #b3d9ff;
+    --dialogue-response: var(--accent-blue);
     
     --trap-bg: hsla(var(--accent-red-hsl), 0.06);
     --trap-border: hsla(var(--accent-red-hsl), 0.25);
@@ -62,6 +64,7 @@ body {
     padding: 40px 20px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -151,7 +154,8 @@ li {
 .env-meta-list {
     list-style: none;
     padding-left: 0;
-    display: column;
+    display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 8px;
     background: var(--card-inner);
@@ -214,17 +218,17 @@ li {
     min-height: 48px;
 }
 
-.tracker-grid > div:nth-child(4n+1) {
+.tracker-cell:nth-child(4n+1) {
     justify-content: center;
     text-align: center;
 }
 
-.tracker-grid > div:nth-child(4n) {
+.tracker-cell.hp-col {
     justify-content: flex-end;
     text-align: right;
 }
 
-.tracker-grid > div:nth-child(4n) .hp-badge {
+.tracker-cell.hp-col .hp-badge {
     text-align: left;
 }
 
