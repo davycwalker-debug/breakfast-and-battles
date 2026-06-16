@@ -64,7 +64,10 @@ export function calculateEncounterMetrics(data) {
     
     let dynamicXpAward = 0;
     if (averagePartyLevel > 0) {
-        dynamicXpAward = creatures.reduce((sum, creature) => sum + mExperience(averagePartyLevel, Number(creature.cr) || 0), 0);
+        dynamicXpAward = creatures.reduce((sum, creature) => {
+            const crValue = parseChallengeRating(creature.cr);
+            return sum + mExperience(averagePartyLevel, crValue);
+        }, 0);
     }
 
     const averageXp = totalPartyCount > 0 ? (dynamicXpAward / totalPartyCount) : 0;
@@ -305,27 +308,19 @@ export function renderCustomSection(sec) {
 
 export function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
     const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
+    
+    const activeCreatures = (creatures && creatures.length) 
+        ? creatures 
+        : (window.dndEngineState?.liveCreatures || []);
+
     let rowsHtml = slots.map((slot, index) => {
         const rowCount = Number(slot.count) || 0;
         const rowEcl = Number(slot.ecl) || 0;
         let rowXpString = "—";
 
-        if (rowCount > 0 && rowEcl > 0 && creatures && Array.isArray(creatures)) {
-            const dynamicRowXpAward = creatures.reduce((sum, creature) => {
-                // --- SAFELY PARSE CR STRINGS/FRACTIONS ---
-                let crValue = 0;
-                const rawCr = String(creature.cr || "").trim();
-                
-                if (rawCr.includes('/')) {
-                    const parts = rawCr.split('/');
-                    const num = parseFloat(parts[0]);
-                    const den = parseFloat(parts[1]);
-                    crValue = den !== 0 ? num / den : 0;
-                } else {
-                    crValue = parseFloat(rawCr);
-                    if (isNaN(crValue)) crValue = 0;
-                }
-                
+        if (rowCount > 0 && rowEcl > 0 && activeCreatures.length > 0) {
+            const dynamicRowXpAward = activeCreatures.reduce((sum, creature) => {
+                const crValue = parseChallengeRating(creature.cr);
                 return sum + mExperience(rowEcl, crValue);
             }, 0);
             
