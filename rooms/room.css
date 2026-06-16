@@ -327,6 +327,16 @@ li {
     opacity: 0.4;
 }
 
+.tracker-creature-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tracker-creature-link:hover {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
 /* ==========================================================================
    4. FORM INPUTS & INTERACTIVE MECHANICS
    ========================================================================== */
