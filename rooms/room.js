@@ -748,7 +748,7 @@ function findMultiplierFromCsv(csvText, targetTitle) {
 function findPartyDefaultsFromCsv(csvText, targetTitle) {
     const matches = [];
     if (!csvText) return matches;
-    const lines = csvText.split('\n');
+    const lines = csvText.split(/\r?\n/);
 
     for (let i = 1; i < lines.length; i++) {
         const row = lines[i].split(',');
@@ -763,49 +763,112 @@ function findPartyDefaultsFromCsv(csvText, targetTitle) {
     return matches;
 }
 
+function findCreaturesFromCsv(csvText, targetLocation) {
+    if (!csvText) return [];
+    
+    const lines = csvText.split(/\r?\n/);
+    const matchedCreatures = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const columns = line.split(',');
+        if (columns.length < 11) continue;
+        
+        const fileLocation = columns[0].trim();
+        if (fileLocation !== targetLocation) continue;
+        
+        const name = columns[1].trim();
+        const initRoll = parseInt(columns[2].trim(), 10) || 0;
+        const hp = parseInt(columns[3].trim(), 10) || 0;
+        const maxHp = parseInt(columns[4].trim(), 10) || 0;
+        const ac = columns[5].trim();
+        
+        const fort = columns[6].trim();
+        const ref = columns[7].trim();
+        const will = columns[8].trim();
+        const savesString = `Fort ${fort} / \nRef ${ref} / \nWill ${will}`;
+        
+        const type = columns[9].trim();
+        
+        // Dynamic CR Parser (Allows completely blank values)
+        const rawCr = columns[10].trim();
+        let cr = ""; 
+        
+        if (rawCr !== "") {
+            if (rawCr.includes('/')) {
+                const parts = rawCr.split('/');
+                const num = parseFloat(parts[0]);
+                const den = parseFloat(parts[1]);
+                cr = den !== 0 ? num / den : 0;
+            } else {
+                cr = parseFloat(rawCr);
+                if (isNaN(cr)) cr = 0; // Fallback only if text is gibberish, not empty
+            }
+        }
+
+        matchedCreatures.push({
+            name,
+            initRoll,
+            hp,
+            maxHp,
+            ac,
+            saves: savesString,
+            type,
+            cr // Will be a float, 0, or an empty string ""
+        });
+    }
+    
+    return matchedCreatures;
+}
+
 async function syncEngineStateWithCsv(containerId, data) {
-    // 1. HARD CRASH GUARD: If an incomplete redraw cycle passes bad data, drop it.
     if (!data) return;
 
-    // 2. CACHE HIT: Check if we are already synchronized for this container
     if (window.dndEngineState.initialized && window.dndEngineState.currentContainerId === containerId) {
         return;
     }
         
-    // 3. LOCK IMMEDIATELY: Set initialized flags BEFORE triggering downstream side-effects
     window.dndEngineState.currentContainerId = containerId;
     window.dndEngineState.rawBaselineData = data;
     window.dndEngineState.initialized = true;
 
-    // 4. SEED DATA STRUCTURES
-    window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
-        ...JSON.parse(JSON.stringify(c)),
-        subdual: c.subdual || 0 
-    })) : [];
-
     const targetTitle = data.title || '';
     let multiplierCsvText = "";
     let partyCsvText = "";
+    let creaturesCsvText = "";
 
+    // 1. Unified Concurrent Fetch Engine Requests
     try {
-        const [multResponse, partyResponse] = await Promise.all([
+        const [multResponse, partyResponse, creaturesResponse] = await Promise.all([
             fetch('../multiplier.csv').then(res => res.ok ? res.text() : ""),
-            fetch('../party.csv').then(res => res.ok ? res.text() : "")
+            fetch('../party.csv').then(res => res.ok ? res.text() : ""),
+            fetch('../creatures.csv').then(res => res.ok ? res.text() : "")
         ]);
         multiplierCsvText = multResponse;
         partyCsvText = partyResponse;
+        creaturesCsvText = creaturesResponse;
     } catch (error) {
-        console.error("DndEngine State Error: Unable to extract CSV database defaults.", error);
+        console.error("DndEngine State Error: Unable to extract CSV database collections.", error);
     }
 
-    // Assign Multiplier Fallbacks
-    window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, targetTitle));
+    // 2. Extract and Parse Dynamic Roster from CSV
+    const parsedCsvCreatures = findCreaturesFromCsv(creaturesCsvText, targetTitle);
     
-    // NOTE: This call internalizes values and calls forceEngineRedraw()
-    // Because we set initialized = true above, the circular call will now safely exit out immediately!
+    // Fallback to inline JSON if CSV returns empty for this location channel
+    const activeCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
+
+    window.dndEngineState.liveCreatures = activeCreatures.map(c => ({
+        ...JSON.parse(JSON.stringify(c)),
+        subdual: c.subdual || 0 
+    }));
+
+    // 3. Multiplier Calculations
+    window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, targetTitle));
     updateXpMultiplier(window.dndEngineState.xpMultiplierText);
     
-    // Seed default structures
+    // 4. Seeding Party Matrix Slots
     window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
     const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, targetTitle);
 
