@@ -32,9 +32,9 @@ export async function syncEngineStateWithCsv(containerId, data) {
 
     try {
         const [multResponse, partyResponse, creaturesResponse] = await Promise.all([
-            fetch('../multiplier.csv').then(res => res.ok ? res.text() : ""),
-            fetch('../party.csv').then(res => res.ok ? res.text() : ""),
-            fetch('../creatures.csv').then(res => res.ok ? res.text() : "")
+            fetch('../csv/multiplier.csv').then(res => res.ok ? res.text() : ""),
+            fetch('../csv/party.csv').then(res => res.ok ? res.text() : ""),
+            fetch('../csv/creatures.csv').then(res => res.ok ? res.text() : "")
         ]);
         multiplierCsvText = multResponse;
         partyCsvText = partyResponse;
