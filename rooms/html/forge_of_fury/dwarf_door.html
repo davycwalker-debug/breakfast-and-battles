@@ -19,81 +19,81 @@
           // CORE HEADER INFO
           // ==================================================================
           
-          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
-             CRITICAL: This string acts as the exact unique primary key identifier used by 
-             the JavaScript engine to match and pull monster data from CSV database files. */
           "title": `Area 2: The Dwarf-Door`,
 
           // ==================================================================
           // NARRATIVE & INITIAL ABILITY CHECKS
           // ==================================================================
           
-          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
-             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
-             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
-          "readAloud": `Broad, shallow steps lead up a steep fissure to the 
-          south and turn east into the mountainside. Here, a 
-          broad entrance has been carved out of the stone. 
-          Marble steps cracked with age and veined with green 
-          moss lead up to a strong double-door of carved stone, 
-          8 feet wide and almost 10 feet tall. Two arrow slits 
-          high on the north and south walls command this area.`,
+          "readAloud": `Broad, shallow steps track upward through a jagged, claustrophobic fissure before hooking sharply to the east. 
+          Suddenly, the oppressive rock gives way to a grand, ancient entryway meticulously sheared into the heart of the mountain. <br><br>
+          A set of majestic marble stairs—now cracked with age, veined with bright green moss, 
+          and littered with a few crushed, empty ration tins—leads up to a massive double-door of deeply carved stone. 
+          The portal is easily eight feet wide and stretches nearly ten feet high, looking every bit like a monument built to withstand an empire's collapse. <br><br>
+          Unfortunately for you, two ominous arrow slits carved high into the northern and southern stone walls stare directly down at the landing, 
+          commanding the entire approach with a textbook crossfire setup.`,
+
+          "initialReadAloudChecks": [
+            {
+              "type": `Knowledge (Architecture) Check`,
+              "dc": `12`,
+              "prompt": `Examining the layout of the grand marble steps...`, 
+              "success": `you realize the ancient builders deliberately designed these wide, uneven rises to completely disrupt a charging attacker's momentum. Rushing up these stairs at full speed is a fantastic way to trip over your own boots.`,
+              "failure": `the stairs look old, fancy, and annoying to climb.`
+            }
+          ],
 
           // ==================================================================
           // ENVIRONMENT & ARCHITECTURE
           // ==================================================================
           
-          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
           "environment": {
-            "dimensions": `10 ft. x 30 ft. steep path opening up to 40 ft. x 30 ft. entrance.`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
-            "illumination": `Sunlight.`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            "dimensions": `10 ft. x 30 ft. steep path opening up to 40 ft. x 30 ft. entrance.`, 
+            "illumination": `Bright daylight spilling through the mountain cleft.`, 
             
-            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
-               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
             "features": [
               {
-                "name": `Shallow Steps`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
-                "desc": `These shallow steps leading to the entryway prevent charging.`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+                "name": `The Grand Stairs`, 
+                "desc": `The entire staircase layout acts as difficult terrain during combat. 
+                The ancient dwarves didn't believe in letting guests arrive in a hurry.` 
               },
               {
-                "name": `Grand Steps`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
-                "desc": `These grand steps up to the stone door prevent charging.`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+                "name": `The Overlook Crossfire`, 
+                "desc": `The arrow slits connect directly to Area 4. 
+                Creatures firing from behind them enjoy Improved Cover (+8 AC, +4 to Reflex saves, improved evasion, +10 bonus on Hide checks).` 
               }
             ],
             
-            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
             "doors": [
               {
-                "location": `Northern Path`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
-                "desc": `The northern section of the path ascends steeply through a deep cleft or fissure in the rock to Area 1 (The End of the Trail).`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+                "location": `Northern Path`, 
+                "desc": `The path descends through the rocky cleft, winding back around toward the breezy, unmotivated outpost of Area 1.` 
               },
               {
-                "location": `East Wall`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
-                "desc": `Strong double-door of carved stone, 
-                8 feet wide and almost 10 feet tall, leading to Area 3 (The Rift Hall). 
-                If the characters silenced the orcs in area 1 and moved 
-                past the orcs in area 4 by using stealth or a disguise, they 
-                find the door at the top of the marble stairs standing open.<br><br>
-                On the other hand, if the characters allow the orcs in 
-                area 4 to discover their presence and don't move quickly to 
-                reach the door, the orcs shut it in their faces. 
-                Opening the door once it has been shut is very hard, as it is barred on 
-                the other side. A Strength check (DC 25) is necessary to 
-                force it. A knock spell or an Open Lock check (DC 20) can 
-                lift the bar much more easily.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+                "location": `East Wall`, 
+                "desc": `A monumental double-door of solid carved stone leading into Area 3 (The Rift Hall).<br><br>
+                If the party successfully bribed, snuck past, or quietly incapacitated the sentries in Area 1, 
+                they arrive to find this grand stone gate standing completely, hilariously wide open. 
+                The guards inside assumed someone else was handling security.<br><br>
+                However, if the alarm was raised in Area 1, or if the party stands around debating tactics in plain view of the arrow slits, 
+                the orcs in Area 4 will curse loudly, slam the massive doors shut, and drop a heavy iron bar into place. <br><br>
+                Once barred, getting inside requires some serious elbow grease. 
+                A Strength check (DC 25) is necessary to force it. 
+                A knock spell or an Open Lock check (DC 20) can lift the bar much more easily.` 
               }
             ]
           },
           
-          /* [Markdown String] (Optional) Eventualities, long-term consequences, reinforcement arrivals, or aftermath.
-             UI PRESENTATION: Automatically wrapped inside a clean, distinctive dashed-border development layout block. */
-          "development": `The characters may be repelled in their 
-          attack. If they leave and return later, two orcs from area 11 
-          are now in this area, standing watch, while Burdug 
-          moves to area 4 in order to add to the 
-          firepower of the orcs on watch there. It doesn't get any 
-          easier for the characters to rush the Mountain Door on 
-          subsequent tries!`
+          // ==================================================================
+          // DEVELOPMENT & AFTERMATH
+          // ==================================================================
+          
+          "development": `Should the party completely botch this assault, retreat down the mountain to lick their wounds, 
+          and try again later, the orcs treat the lapse in security like an audit. <br><br>
+          Upon returning, the open-door policy is permanently canceled. 
+          Two reinforced orc sentries from Area 11 are now permanently posted on the marble landing, looking incredibly stressed. 
+          Furthermore, Burdug herself moves up to Area 4 to personally manage the archers, adding some magical firepower to the crossfire. 
+          Rushing the front door a second time will be significantly less funny.`
         };
 
         renderRoomTemplate('encounter-output', roomData);
