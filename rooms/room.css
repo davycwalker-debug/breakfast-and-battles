@@ -9,7 +9,9 @@
 }
 
 :root {
-    /* Main Layout Theme Palette */
+    /* ======================================================================
+       1. CORE CANVAS & CONTAINERS (Strict Luminescence Hierarchy)
+       ====================================================================== */
     --bg-color: #0f0f11;
     --card-color: #16161a;
     --card-inner: #1d1d24;
@@ -17,33 +19,56 @@
     --border-muted: #222229;
     --input-bg: #111114;
 
-    /* Content & Typography Colors */
+    /* ======================================================================
+       2. TYPOGRAPHY & TEXT INTERFACES
+       ====================================================================== */
     --text-main: #f1f1f4;
     --text-muted: #9494a1;
-    
-    /* Branding & Mechanical System Accents */
-    --accent-gold: #c5b4a8;
-    --accent-red: #ff5a60;
-    --accent-purple: #a855f7;
-    --accent-orange: #e67e22;
-    --accent-green: #4caf50;
-    --accent-blue: #b3d9ff;
-    
-    /* Component Contextual Overlays */
+    --text-inverse: #0b0b0d; /* High-contrast crisp black text for filled active badge fields */
+
+    /* ======================================================================
+       3. SYSTEM ACCENTS (Raw Hue Splitting for Dynamic Alpha Blending)
+       ====================================================================== */
+    --accent-gold-hsl: 24, 18%, 72%;
+    --accent-gold: hsl(var(--accent-gold-hsl));
+
+    --accent-red-hsl: 358, 100%, 68%;
+    --accent-red: hsl(var(--accent-red-hsl));
+
+    --accent-purple-hsl: 273, 91%, 65%;
+    --accent-purple: hsl(var(--accent-purple-hsl));
+
+    --accent-orange-hsl: 28, 80%, 52%;
+    --accent-orange: hsl(var(--accent-orange-hsl));
+
+    --accent-green-hsl: 122, 39%, 49%;
+    --accent-green: hsl(var(--accent-green-hsl));
+
+    /* ======================================================================
+       4. CONTEXTUAL OVERLAYS & NARRATIVE CHANNELS
+       ====================================================================== */
     --read-aloud-bg: #141913;
     --read-aloud-border: #3b4c34;
-    --trap-bg: #201314;
-    --trap-border: #541e21;
-    --trap-divider: #6e272a;
-    --trap-dc-bg: #3d1719;
-    --trap-dc-text: #ff9999;
     
-    /* Combat Engine State Flags */
-    --flag-staggered-bg: #5c4014;
-    --flag-staggered-text: #ffca3a;
-    --flag-unconscious-bg: #5c3314;
-    --flag-dying-bg: #5c1414;
-    --flag-dead-bg: #2b2b36;
+    /* Narrative & Dialogue Systems */
+    --speaker-tag: #ffb366;
+    --dialogue-response: #b3d9ff;
+    
+    /* Trap & Hazard System Mechanics (Derived safely from Red HSL spectrum) */
+    --trap-bg: hsla(var(--accent-red-hsl), 0.06);
+    --trap-border: hsla(var(--accent-red-hsl), 0.25);
+    --trap-divider: hsla(var(--accent-red-hsl), 0.35);
+    --trap-dc-bg: hsla(var(--accent-red-hsl), 0.15);
+    --trap-dc-text: #ffa3a3; /* Enhanced slightly for strict dark-mode contrast readability */
+
+    /* ======================================================================
+       5. COMBAT STATE COMPONENT OVERRIDES
+       ====================================================================== */
+    --flag-staggered-bg: #4d3305;   /* Deepened slight value drop to push text forward */
+    --flag-staggered-text: #ffe066; /* Brightened slightly for crisp AA accessibility reading */
+    --flag-unconscious-bg: #4a2406;
+    --flag-dying-bg: #4a0d0d;
+    --flag-dead-bg: #222229;
 }
 
 body {
