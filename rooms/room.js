@@ -458,7 +458,7 @@ function renderPartyEclMatrix(slots, creatures) {
             }, 0);
 
             // 2. Divide by this row's specific count instead of the whole team size
-            const averageRowXp = dynamicRowXpAward > 0 ? (dynamicRowXpAward / rowCount) : 0;
+            const averageRowXp = dynamicRowXpAward > 0 ? (dynamicRowXpAward / totalPartyCount) : 0;
 
             // 3. Apply the global custom math multiplier weight and round up cleanly
             rowXpString = Math.ceil(averageRowXp * activeMultiplier);
