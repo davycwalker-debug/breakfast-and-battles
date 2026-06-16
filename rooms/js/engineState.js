@@ -1,9 +1,9 @@
 import { findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv } from './dataParsers.js';
 
 const PATH_CONFIG = {
-    multiplier: '../csv/multiplier.csv',
-    party: '../csv/party.csv',
-    creatures: '../csv/creatures.csv'
+    multiplier: '../../csv/multiplier.csv',
+    party: '../../csv/party.csv',
+    creatures: '../../csv/creatures.csv'
 };
 
 window.dndEngineState = window.dndEngineState || {
