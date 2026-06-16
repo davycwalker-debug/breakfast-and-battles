@@ -1,5 +1,5 @@
 import { syncEngineStateWithCsv } from './engineState.js';
-import { calculatePowerLevel, calculateEncounterLevel, calculatePartyPowerLevel, calculatePartyEncounterLevel, mExperience } from './dataParsers.js';
+import { calculatePowerLevel, calculateEncounterLevel, calculatePartyPowerLevel, calculatePartyEncounterLevel, mExperience, parseChallengeRating } from './dataParsers.js';
 
 export function injectEngineStyles() {
     if (document.getElementById('dnd-engine-core-styles')) return;
