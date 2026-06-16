@@ -1,4 +1,3 @@
-import { renderRoomTemplate } from './renderer.js';
 import { findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv } from './dataParsers.js';
 
 window.dndEngineState = window.dndEngineState || {
@@ -11,10 +10,6 @@ window.dndEngineState = window.dndEngineState || {
     xpMultiplier: 1.0,
     partySlots: Array.from({ length: 6 }, () => ({ count: '', ecl: '' }))
 };
-
-export function forceEngineRedraw() {
-    renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
-}
 
 export async function syncEngineStateWithCsv(containerId, data) {
     if (!data) return;
