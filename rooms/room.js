@@ -54,7 +54,7 @@ async function renderRoomTemplate(containerId, data) {
         htmlLines.push(renderDialogueTree(data.dialogueTree));
     }
 
-    htmlLines.push(renderCombatTracker(window.dndEngineState.liveCreatures, data.creatures, data.setupPositions));
+    htmlLines.push(renderCombatTracker(window.dndEngineState.liveCreatures, data.setupPositions));
     htmlLines.push(renderTactics(data.tactics, data.development));
     htmlLines.push(renderTraps(data.traps));
     htmlLines.push(renderTreasure(data.treasure));
@@ -265,7 +265,7 @@ function renderCombatTracker(liveTracker, positions) {
                 </div>
             </div>
             
-            ${positions ? `<p class="setup-positions"><strong>Setup Positions:</strong> ${positions}</p>` : ''}
+            ${positions && typeof positions === 'string' ? `<p class="setup-positions"><strong>Setup Positions:</strong> ${positions}</p>` : ''}
         </section>
     `;
 }
