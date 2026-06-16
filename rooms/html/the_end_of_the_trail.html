@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 1: The End of the Trail</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../js/renderer.js';
+        import '../js/interactions.js';
+        
+        const roomData = {
+          // ==========================================
+          // CORE HEADER INFO
+          // ==========================================
+          
+          /* [string] Main headline. Serves as the strict unique ID for CSV database lookups. */
+          "title": `Area 4: The Whispering Ossuary`,
+
+          // ==========================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==========================================
+          
+          /* [string] (Optional) Block text displayed inside a styled box for DM flavor descriptions. 
+             PRO TIP: You can use HTML inline markdown (like <strong> or <em>) to emphasize details. */
+          "readAloud": `The path climbs up one last steep switchback toward a bare shoulder of rock. 
+          The hillside climbs steeply on your right and drops away precipitously on your left. 
+          Debris and rubbish lie scattered over the last hundred yards or so of the path--
+          discarded waterskins, bits of charred bone, and splitered casks or kegs discarded carelessly from the path. 
+          Up ahead, the path opens up onto a wide ledge and then doubles back sharply into the mountainside.<br><br>
+          Two bestial humanoids in scale armor stand watch on the ledge. 
+          They appear to be inattentive and bored with their duty.`,
+          
+          /* [array of objects] (Optional) Quick-reference skill/saving throws rolled immediately upon entry. 
+             Renders an integrated card layout pairing a custom prompt with discrete branches. */
+          "initialReadAloudChecks": [
+            {
+              "type": `Spot Check`, // Type of check or save to display on the badge
+              "dc": `18`,           // Difficulty Class value string
+              "prompt": `As you move around the corner onto the ledge...`, // (Optional) Additional contextual prompt
+              "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead.`,
+              "failure": `nothing stands out to you.`
+            },
+            {
+              "type": `Spot Check`,
+              "dc": `13`,
+              "prompt": `As you examine the east wall more closely...`, // (Optional) Additional contextual prompt
+              "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead.`,
+              "failure": `nothing stands out to you.`
+            }
+          ],
+
+          // ==========================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==========================================
+          
+          /* [object] Structural layouts, illumination characteristics, maps, and portals. */
+          "environment": {
+            "dimensions": `95 ft. x 10 ft. path opening up to a 35 ft. x 30 ft. ledge.`, // Overall spatial size
+            "illumination": `Sunlight.`, // Light status
+            
+            "doors": [ // [array of objects] Transitions, safety checks, or exit paths out of the area
+              {
+                "location": `South Ledge`,
+                "desc": `The southern section of the ledge descends steeply through a deep cleft or fissure in the rock.`
+              }
+            ]
+          },
+
+          // ==========================================
+          // COMBATANTS & COMBAT ENGINE DATA
+          // ==========================================
+          
+          /* [string] (Optional) Text positioning instruction displayed at the bottom of the combat card tracker. */
+          "setupPositions": `Wark and Thark are standing in the northwest corner of the ledge.
+          They are in position to see the pathway leading up, 
+          but are not paying attention and receive a -4 penalty to Spot and Listen checks.<br><br>
+          Wark and Thark are not the only enemies here; 
+          archers positioned in area 4 can freely take potshots at the characters.`,
+
+          // ==========================================
+          // STRATEGY & BEHAVIOR
+          // ==========================================
+          
+          /* [string] (Optional) Moral limits, flight conditions, reinforcements, or consequences of victory. */
+          "development": `If attacked or condronted by more than one character, Wark and Thark call out a warning to the orcs in area 4 as soon as they get a chance to act.
+          They stand their ground against one character, but flee to area 3 otherwise.
+          If the characters are disguised as orcs, the two don't call out a warning until their second action comes up.`
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
