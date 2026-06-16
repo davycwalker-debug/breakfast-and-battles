@@ -14,10 +14,9 @@
     </div>
 
     <!-- 1. Bring in your styling + script layout core engine -->
-    <script src="../room.js"></script>
-
-    <!-- 2. Simply feed your raw JSON values here -->
-    <script>
+    <script type="module">
+        import { renderRoomTemplate } from '../renderer.js';
+        import '../interactions.js';
         // Data input object mapping out your exact campaign homework notes
         const roomData = {
           "title": "Area 48: Gallery",
