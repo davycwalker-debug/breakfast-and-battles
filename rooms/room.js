@@ -145,9 +145,10 @@ function renderHeader(title, subtitle) {
             <div class="header-subtitle-row">
                 ${subtitle ? `<p class="room-subtitle">${subtitle}</p>` : '<div></div>'}
                 <div class="multiplier-wrapper">
-                    <label class="multiplier-label">Multiplier:</label>
+                    <label for="input-xp-multiplier" class="multiplier-label">Multiplier:</label>
                     <input type="text" 
-                           id="input-xp-multiplier" data-focus-key="xp-multiplier" 
+                           id="input-xp-multiplier" 
+                           data-focus-key="xp-multiplier" 
                            class="tracker-input multiplier-input" 
                            placeholder="1.0" 
                            value="${window.dndEngineState.xpMultiplierText}" 
@@ -449,24 +450,29 @@ function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
         return `
             <div class="party-matrix-row">
                 <div class="matrix-cell-num">#${index + 1}</div>
+                
                 <div class="matrix-input-group">
-                    <label>Count:</label>
+                    <label for="matrix-count-${index}">Count:</label>
                     <input type="number" 
+                           id="matrix-count-${index}"
                            data-focus-key="matrix-count-${index}"
                            class="tracker-input matrix-input num-input" 
                            placeholder="0" 
                            value="${slot.count}" 
                            oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
                 </div>
+                
                 <div class="matrix-input-group">
-                    <label>ECL:</label>
+                    <label for="matrix-ecl-${index}">ECL:</label>
                     <input type="number" 
+                           id="matrix-ecl-${index}"
                            data-focus-key="matrix-ecl-${index}"
                            class="tracker-input matrix-input num-input" 
                            placeholder="1" 
                            value="${slot.ecl}" 
                            oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
                 </div>
+                
                 <div class="matrix-input-group row-xp-display-group">
                     <label class="row-xp-label">XP Per:</label>
                     <div class="matrix-xp-output">${rowXpString}</div>
