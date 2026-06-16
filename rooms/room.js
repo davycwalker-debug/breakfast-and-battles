@@ -27,12 +27,12 @@ async function renderRoomTemplate(containerId, data) {
 
     // 2. Fragment Assembly Matrix
     let displaySubtitle = data.subtitle || '';
+    let totalPartyCount = 0;
     if (data.creatures && Array.isArray(data.creatures)) {
         
         const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
         const totalEl = calculateEncounterLevel(totalPl);
     
-        let totalPartyCount = 0;
         let totalPartyECL = 0;
         let totalPartyPl = 0;
         
