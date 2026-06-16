@@ -1,6 +1,8 @@
 import { syncEngineStateWithCsv } from './engineState.js';
 import { calculatePowerLevel, calculateEncounterLevel, calculatePartyPowerLevel, calculatePartyEncounterLevel, mExperience, parseChallengeRating } from './dataParsers.js';
 
+const STYLESHEET_URL = 'https://davycwalker-debug.github.io/breakfast-and-battles/rooms/room.css';
+
 export function forceEngineRedraw() {
     renderRoomTemplate(window.dndEngineState.currentContainerId, window.dndEngineState.rawBaselineData);
 }
@@ -10,7 +12,7 @@ export function injectEngineStyles() {
     const linkTag = document.createElement('link');
     linkTag.id = 'dnd-engine-core-styles';
     linkTag.rel = 'stylesheet';
-    linkTag.href = 'https://davycwalker-debug.github.io/breakfast-and-battles/rooms/room.css';
+    linkTag.href = STYLESHEET_URL;
     document.head.appendChild(linkTag);
 }
 
@@ -81,8 +83,6 @@ export function calculateEncounterMetrics(data) {
 
     return { totalPartyCount, clString, xpString };
 }
-
-// --- Markup Generator Partial Blocks ---
 
 export function renderHeader(title, subtitle) {
     return `
@@ -228,7 +228,7 @@ export function renderTrackerRow(c, idx) {
                     <span class="status-text flag-unconscious">[Unconscious] </span>
                     ${nameDisplay}
                 </div>
-                <input type="text" id="creature-note-${idx}" name="creature-note-${idx}" aria-label="Notes for ${c.name}" class="tracker-creature-note-input" placeholder="Notes (Conditions, positions...)" value="${c.notes || ''}" oninput="window.dndEngineState.liveCreatures[${idx}].notes = this.value">
+                <input type="text" id="creature-note-${idx}" name="creature-note-${idx}" aria-label="Notes for ${c.name}" class="tracker-creature-note-input" placeholder="Notes (Conditions, positions...)" value="${c.notes || ''}" oninput="updateCreatureNotesInline(${idx}, this.value)">
             </div>
         </div>
         <div class="tracker-cell hp-col ${statusClass}" data-index="${idx}">
@@ -312,10 +312,7 @@ export function renderCustomSection(sec) {
 
 export function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
     const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
-    
-    const activeCreatures = (creatures && creatures.length) 
-        ? creatures 
-        : (window.dndEngineState?.liveCreatures || []);
+    const activeCreatures = (creatures && creatures.length) ? creatures : (window.dndEngineState?.liveCreatures || []);
 
     let rowsHtml = slots.map((slot, index) => {
         const rowCount = Number(slot.count) || 0;
@@ -360,8 +357,6 @@ export function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
     `;
 }
 
-// --- Main Structural Orchestrator ---
-
 export async function renderRoomTemplate(containerId, data) {
     injectEngineStyles();
     await syncEngineStateWithCsv(containerId, data);
@@ -372,29 +367,24 @@ export async function renderRoomTemplate(containerId, data) {
     const metrics = calculateEncounterMetrics(data);
     const displaySubtitle = buildSubtitle(data.subtitle, metrics);
 
-    let htmlLines = [
+    const htmlSegments = [
         `<div class="dnd-room-wrapper">`,
         renderHeader(data.title, displaySubtitle),
-        renderPartyEclMatrix(window.dndEngineState.partySlots, data.creatures, metrics.totalPartyCount)
+        renderPartyEclMatrix(window.dndEngineState.partySlots, window.dndEngineState.liveCreatures, metrics.totalPartyCount),
+        data.readAloud ? `<section class="room-section read-aloud-section"><h3>Read-Aloud Narrative</h3>${renderReadAloudBox(data.readAloud)}</section>` : '',
+        data.initialReadAloudChecks ? `<div class="ability-checks-container">${renderInlineChecks(data.initialReadAloudChecks)}</div>` : '',
+        renderEnvironment(data.environment),
+        data.dialogueTree ? renderDialogueTree(data.dialogueTree) : '',
+        renderCombatTracker(window.dndEngineState.liveCreatures, data.setupPositions),
+        renderTactics(data.tactics, data.development),
+        renderTraps(data.traps),
+        renderTreasure(data.treasure),
+        data.specialEvents?.map(evt => renderSpecialEvent(evt)).join('\n') || '',
+        data.additionalSections?.map(sec => renderCustomSection(sec)).join('\n') || '',
+        `</div>`
     ];
     
-    if (data.readAloud) htmlLines.push(`<section class="room-section read-aloud-section"><h3>Read-Aloud Narrative</h3>${renderReadAloudBox(data.readAloud)}</section>`);
-    if (data.initialReadAloudChecks) htmlLines.push(`<div class="ability-checks-container">${renderInlineChecks(data.initialReadAloudChecks)}</div>`);
-    
-    htmlLines.push(renderEnvironment(data.environment));
-    if (data.dialogueTree) htmlLines.push(renderDialogueTree(data.dialogueTree));
-
-    htmlLines.push(renderCombatTracker(window.dndEngineState.liveCreatures, data.setupPositions));
-    htmlLines.push(renderTactics(data.tactics, data.development));
-    htmlLines.push(renderTraps(data.traps));
-    htmlLines.push(renderTreasure(data.treasure));
-
-    if (data.specialEvents) data.specialEvents.forEach(evt => htmlLines.push(renderSpecialEvent(evt)));
-    if (data.additionalSections) data.additionalSections.forEach(sec => htmlLines.push(renderCustomSection(sec)));
-
-    htmlLines.push(`</div>`);
-    
     const savedFocusKey = captureActiveFocusKey();
-    container.innerHTML = htmlLines.join('\n');
+    container.innerHTML = htmlSegments.filter(Boolean).join('\n');
     restoreFocusKey(container, savedFocusKey);
 }
