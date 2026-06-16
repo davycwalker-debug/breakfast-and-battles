@@ -27,8 +27,7 @@ export async function syncEngineStateWithCsv(containerId, data) {
     window.dndEngineState.rawBaselineData = data;
     window.dndEngineState.initialized = true;
 
-    // Pro-Tip: Fall back gracefully to location lookup if title is overridden
-    const csvSearchTarget = data.location || data.title || '';
+    const targetTitle = data.title || '';
     let multiplierCsvText = "", partyCsvText = "", creaturesCsvText = "";
 
     try {
@@ -44,7 +43,7 @@ export async function syncEngineStateWithCsv(containerId, data) {
         console.error("DndEngine State Error: Unable to extract CSV database collections.", error);
     }
 
-    const parsedCsvCreatures = findCreaturesFromCsv(creaturesCsvText, csvSearchTarget);
+    const parsedCsvCreatures = findCreaturesFromCsv(creaturesCsvText, targetTitle);
     const activeCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
 
     window.dndEngineState.liveCreatures = activeCreatures.map(c => ({
@@ -52,13 +51,12 @@ export async function syncEngineStateWithCsv(containerId, data) {
         subdual: c.subdual || 0 
     }));
 
-    window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, csvSearchTarget));
+    window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, targetTitle));
     
-    // Core engine optimization: call logic locally without forcing double-draw on startup
     updateXpMultiplierState(window.dndEngineState.xpMultiplierText);
     
     window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
-    const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, csvSearchTarget);
+    const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, targetTitle);
 
     csvPartyDefaults.forEach((incoming, i) => {
         if (i < 6 && incoming) {
