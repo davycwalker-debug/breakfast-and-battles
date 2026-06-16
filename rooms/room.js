@@ -735,8 +735,20 @@ function findPartyDefaultsFromCsv(csvText, targetTitle) {
 }
 
 async function syncEngineStateWithCsv(containerId, data) {
-    if (window.dndEngineState.initialized && window.dndEngineState.currentContainerId === containerId) return;
+    // 1. HARD CRASH GUARD: If an incomplete redraw cycle passes bad data, drop it.
+    if (!data) return;
+
+    // 2. CACHE HIT: Check if we are already synchronized for this container
+    if (window.dndEngineState.initialized && window.dndEngineState.currentContainerId === containerId) {
+        return;
+    }
         
+    // 3. LOCK IMMEDIATELY: Set initialized flags BEFORE triggering downstream side-effects
+    window.dndEngineState.currentContainerId = containerId;
+    window.dndEngineState.rawBaselineData = data;
+    window.dndEngineState.initialized = true;
+
+    // 4. SEED DATA STRUCTURES
     window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
         ...JSON.parse(JSON.stringify(c)),
         subdual: c.subdual || 0 
@@ -759,6 +771,9 @@ async function syncEngineStateWithCsv(containerId, data) {
 
     // Assign Multiplier Fallbacks
     window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, targetTitle));
+    
+    // NOTE: This call internalizes values and calls forceEngineRedraw()
+    // Because we set initialized = true above, the circular call will now safely exit out immediately!
     updateXpMultiplier(window.dndEngineState.xpMultiplierText);
     
     // Seed default structures
@@ -771,10 +786,6 @@ async function syncEngineStateWithCsv(containerId, data) {
             window.dndEngineState.partySlots[i].ecl = incoming.ecl !== undefined ? incoming.ecl : '';
         }
     });
-    
-    window.dndEngineState.currentContainerId = containerId;
-    window.dndEngineState.rawBaselineData = data;
-    window.dndEngineState.initialized = true;
 }
 
 /**
