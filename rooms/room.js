@@ -95,7 +95,7 @@ async function renderRoomTemplate(containerId, data) {
         `  </header>`,
         `  <hr class="section-divider">`
     ];
-    htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots, data.creatures));
+    htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots, data.creatures, totalPartyCount));
     
     if (data.readAloud) {
         htmlLines.push(`
@@ -439,7 +439,7 @@ function renderSpecialEvent(eventObj) {
  * Renders the interactive Party ECL configuration matrix panel.
  * Computes isolated, row-by-row XP distributions based on specific ECL slots.
  */
-function renderPartyEclMatrix(slots, creatures) {
+function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
     // Grab the active multiplier value from the global engine state fallback
     const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
 
