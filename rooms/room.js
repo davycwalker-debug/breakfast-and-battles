@@ -320,6 +320,9 @@ function renderTrackerRow(c, idx) {
                 </div>
                 
                 <input type="text" 
+                       id="creature-note-${idx}"
+                       name="creature-note-${idx}"
+                       aria-label="Notes for ${c.name}"
                        class="tracker-creature-note-input" 
                        placeholder="Notes (Conditions, positions...)" 
                        value="${c.notes || ''}" 
