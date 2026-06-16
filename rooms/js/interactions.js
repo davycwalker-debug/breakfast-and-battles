@@ -1,20 +1,19 @@
 import { updateXpMultiplierState } from './engineState.js';
 import { forceEngineRedraw } from './renderer.js';
 
-// --- Drag and Drop Handlers ---
-
 window.handleTrackerDragStart = function(e, index) {
     window.dndEngineState.draggedIndex = index;
     e.dataTransfer.effectAllowed = 'move';
+    
     document.querySelectorAll(`.tracker-drag-handle[data-index="${index}"]`)
             .forEach(cell => cell.classList.add('is-dragging'));
-}
+};
 
 window.handleTrackerDragEnd = function(e) {
     document.querySelectorAll('.tracker-drag-handle')
             .forEach(cell => cell.classList.remove('is-dragging', 'drag-over'));
     window.dndEngineState.draggedIndex = null;
-}
+};
 
 window.handleTrackerDragOver = function(e) {
     e.preventDefault();
@@ -25,17 +24,19 @@ window.handleTrackerDragOver = function(e) {
     
     const targetIndex = parseInt(targetCell.getAttribute('data-index'), 10);
     const originIndex = window.dndEngineState.draggedIndex;
-    if (targetIndex === originIndex || originIndex === null) return;
+    
+    if (originIndex === null || targetIndex === originIndex) return;
 
     const creatures = window.dndEngineState.liveCreatures;
+    if (!creatures || !creatures[originIndex]) return;
+
+    // Splice, re-insert, and shift focus state tracking references cleanly
     const movedItem = creatures.splice(originIndex, 1)[0];
     creatures.splice(targetIndex, 0, movedItem);
     
     window.dndEngineState.draggedIndex = targetIndex;
     forceEngineRedraw();
-}
-
-// --- List Mutation Modifiers ---
+};
 
 window.sendCreatureToBottom = function(index) {
     const creatures = window.dndEngineState.liveCreatures;
@@ -43,7 +44,7 @@ window.sendCreatureToBottom = function(index) {
     
     creatures.push(creatures.splice(index, 1)[0]);
     forceEngineRedraw();
-}
+};
 
 window.sortTrackerByInitiative = function() {
     const creatures = window.dndEngineState.liveCreatures;
@@ -51,15 +52,15 @@ window.sortTrackerByInitiative = function() {
     
     creatures.sort((a, b) => b.initRoll - a.initRoll);
     forceEngineRedraw();
-}
+};
 
 window.removeCombatantEntry = function(index) {
     const creatures = window.dndEngineState.liveCreatures;
-    if (!creatures) return;
+    if (!creatures || !creatures[index]) return;
 
     creatures.splice(index, 1);
     forceEngineRedraw();
-}
+};
 
 window.addNewCombatantEntry = function() {
     const inputs = {
@@ -70,33 +71,37 @@ window.addNewCombatantEntry = function() {
         subdual: document.getElementById('new-subdual')
     };
     
-    if (!inputs.name?.value.trim() || !inputs.init?.value || !inputs.hp?.value || !inputs.maxHp?.value) {
+    const nameVal = inputs.name?.value.trim() || "";
+    const initVal = parseInt(inputs.init?.value, 10);
+    const hpVal = parseInt(inputs.hp?.value, 10);
+    const maxHpVal = parseInt(inputs.maxHp?.value, 10);
+    
+    if (!nameVal || isNaN(initVal) || isNaN(hpVal) || isNaN(maxHpVal)) {
         alert('Please completely fill out all tracking structural properties.');
         return;
     }
     
     window.dndEngineState.liveCreatures.push({
-        name: inputs.name.value.trim(),
-        initRoll: parseInt(inputs.init.value, 10),
-        hp: parseInt(inputs.hp.value, 10),
-        maxHp: parseInt(inputs.maxHp.value, 10),
-        subdual: inputs.subdual?.value ? parseInt(inputs.subdual.value, 10) : 0
+        name: nameVal,
+        initRoll: initVal,
+        hp: hpVal,
+        maxHp: maxHpVal,
+        subdual: inputs.subdual?.value ? (parseInt(inputs.subdual.value, 10) || 0) : 0,
+        notes: ""
     });
     
     forceEngineRedraw();
-}
-
-// --- Property Property Mutators ---
+};
 
 export function mutateCreatureProperty(index, key, rawValue) {
     const creatures = window.dndEngineState.liveCreatures;
     if (!creatures?.[index]) return;
     
-    // Check if the property is a text-bypassed value or note column string
-    if (key === 'hp' || key === 'maxHp' || key === 'subdual' || key === 'initRoll') {
+    const numericKeys = ['hp', 'maxHp', 'subdual', 'initRoll'];
+    
+    if (numericKeys.includes(key)) {
         const parsed = parseInt(rawValue, 10);
-        if (isNaN(parsed)) return;
-        creatures[index][key] = parsed;
+        creatures[index][key] = !isNaN(parsed) ? parsed : 0;
     } else {
         creatures[index][key] = rawValue;
     }
@@ -105,24 +110,28 @@ export function mutateCreatureProperty(index, key, rawValue) {
 
 window.updateCreatureHpInline = function(index, value) {
     mutateCreatureProperty(index, 'hp', value);
-}
+};
 
 window.updateCreatureSubdualInline = function(index, value) {
     mutateCreatureProperty(index, 'subdual', value);
-}
+};
 
 window.updateCreatureInitiativeInline = function(index, value) {
     mutateCreatureProperty(index, 'initRoll', value);
-}
+};
+
+window.updateCreatureNotesInline = function(index, value) {
+    mutateCreatureProperty(index, 'notes', value);
+};
 
 window.updatePartyMatrixSlot = function(index, field, value) {
     if (window.dndEngineState?.partySlots?.[index]) {
         window.dndEngineState.partySlots[index][field] = value;
         forceEngineRedraw();
     }
-}
+};
 
 window.updateXpMultiplier = function(value) {
     updateXpMultiplierState(value);
     forceEngineRedraw();
-}
+};
