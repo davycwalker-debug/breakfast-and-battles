@@ -617,18 +617,47 @@ li {
     gap: 12px;
 }
 
-/* --- ADAPTIVE AUTO-FIT INTERNAL CARD GRID --- */
+/* ==========================================================================
+   7. PARTY MATRIX (STRICT HORIZONTAL COMPRESSION)
+   ========================================================================== */
+
+.party-matrix-section {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: clamp(12px, 3vw, 20px); 
+    margin-bottom: 24px;
+}
+
+.matrix-header-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    font-weight: 700;
+}
+
+.party-matrix-grid {
+    display: grid;
+    /* Keeps a comfortable card baseline footprint */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    max-width: 850px; 
+    gap: 12px;
+}
+
+/* --- FORCE SINGLE-LINE FLEX CHANNELS --- */
 .party-matrix-row {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     
-    display: grid;
-    /* Uses auto-fitting tracks that dynamically combine/collapse based on space */
-    grid-template-columns: auto repeat(auto-fit, minmax(68px, 1fr));
-    gap: 6px 8px;
+    display: flex;
+    flex-wrap: wrap; /* Safe backup wrapping for ultra-small mobile widths */
     align-items: center;
+    justify-content: space-between;
+    gap: 6px;
 }
 
 .matrix-cell-num {
@@ -636,22 +665,23 @@ li {
     color: var(--accent-gold);
     font-family: monospace;
     font-weight: 700;
-    padding-right: 2px;
+    min-width: 16px;
 }
 
+/* Rigid internal sizing limits to prevent vertical stretching or premature breaking */
 .matrix-input-group {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
+    flex: 0 1 auto; /* Stops elements from inflating into giant columns */
 }
 
-/* Right-aligns the XP element in its column slot */
 .row-xp-display-group {
-    justify-content: flex-end;
+    margin-left: auto; /* Pushes the XP box cleanly to the right boundary edge */
 }
 
 .matrix-input-group label {
-    font-size: 0.62rem; 
+    font-size: 0.65rem; 
     color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 600;
@@ -690,7 +720,7 @@ li {
     font-size: 0.75rem;
     font-family: monospace;
     text-align: center;
-    min-width: 36px;
+    min-width: 34px;
 }
 
 /* Clear spin vectors */
