@@ -801,7 +801,7 @@ function findCreaturesFromCsv(csvText, targetLocation) {
         const fort = columns[6].trim();
         const ref = columns[7].trim();
         const will = columns[8].trim();
-        const savesString = `Fort ${fort} / \nRef ${ref} / \nWill ${will}`;
+        const savesString = `Fort ${fort} / Ref ${ref} / Will ${will}`;
         
         const type = columns[9].trim();
         
