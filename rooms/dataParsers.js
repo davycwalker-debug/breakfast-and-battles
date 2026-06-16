@@ -32,7 +32,7 @@ export function findPartyDefaultsFromCsv(csvText, targetTitle) {
     return matches;
 }
 
-export function findCreaturesFromCsv(csvText, targetLocation) {
+export function findCreaturesFromCsv(csvText, targetTitle) {
     if (!csvText) return [];
     const lines = csvText.split(/\r?\n/);
     const matchedCreatures = [];
@@ -43,7 +43,7 @@ export function findCreaturesFromCsv(csvText, targetLocation) {
         
         const columns = line.split(',');
         if (columns.length < 10) continue;
-        if (columns[0].trim() !== targetLocation) continue;
+        if (columns[0].trim() !== targetTitle) continue;
         
         const name = columns[1].trim();
         const initRoll = parseInt(columns[2].trim(), 10) || 0;
