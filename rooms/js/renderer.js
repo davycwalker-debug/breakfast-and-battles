@@ -311,7 +311,24 @@ export function renderPartyEclMatrix(slots, creatures, totalPartyCount) {
         let rowXpString = "—";
 
         if (rowCount > 0 && rowEcl > 0 && creatures && Array.isArray(creatures)) {
-            const dynamicRowXpAward = creatures.reduce((sum, creature) => sum + mExperience(rowEcl, Number(creature.cr) || 0), 0);
+            const dynamicRowXpAward = creatures.reduce((sum, creature) => {
+                // --- SAFELY PARSE CR STRINGS/FRACTIONS ---
+                let crValue = 0;
+                const rawCr = String(creature.cr || "").trim();
+                
+                if (rawCr.includes('/')) {
+                    const parts = rawCr.split('/');
+                    const num = parseFloat(parts[0]);
+                    const den = parseFloat(parts[1]);
+                    crValue = den !== 0 ? num / den : 0;
+                } else {
+                    crValue = parseFloat(rawCr);
+                    if (isNaN(crValue)) crValue = 0;
+                }
+                
+                return sum + mExperience(rowEcl, crValue);
+            }, 0);
+            
             const averageRowXp = dynamicRowXpAward > 0 ? (dynamicRowXpAward / totalPartyCount) : 0;
             rowXpString = Math.ceil(averageRowXp * activeMultiplier);
         }
