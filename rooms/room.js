@@ -109,7 +109,7 @@ function renderRoomTemplate(containerId, data) {
         
         const metrics = `CL ${clString}, XP ${xpString}`;
         if (displaySubtitle) {
-            displaySubtitle += `-- ${metrics}`;
+            displaySubtitle += ` -- ${metrics}`;
         } else {
             displaySubtitle = metrics;
         }
@@ -136,7 +136,7 @@ function renderRoomTemplate(containerId, data) {
         `  </header>`,
         `  <hr class="section-divider">`
     ];
-    htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots));
+    htmlLines.push(renderPartyEclMatrix(window.dndEngineState.partySlots, data.creatures));
     
     if (data.readAloud) {
         htmlLines.push(`
@@ -478,31 +478,64 @@ function renderSpecialEvent(eventObj) {
 
 /**
  * Renders the interactive Party ECL configuration matrix panel.
+ * Computes isolated, row-by-row XP distributions based on specific ECL slots.
  */
-function renderPartyEclMatrix(slots) {
-    let rowsHtml = slots.map((slot, index) => `
-        <div class="party-matrix-row">
-            <div class="matrix-cell-num">#${index + 1}</div>
-            <div class="matrix-input-group">
-                <label>Count:</label>
-                <input type="number" 
-                       data-focus-key="matrix-count-${index}"
-                       class="tracker-input matrix-input num-input" 
-                       placeholder="0" 
-                       value="${slot.count}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
+function renderPartyEclMatrix(slots, creatures) {
+    // Grab the active multiplier value from the global engine state fallback
+    const activeMultiplier = window.dndEngineState.xpMultiplier || 1.0;
+
+    let rowsHtml = slots.map((slot, index) => {
+        // Parse row values cleanly
+        const rowCount = Number(slot.count) || 0;
+        const rowEcl = Number(slot.ecl) || 0;
+        
+        let rowXpString = "—"; // Default fallback display when no players/levels are filled out
+
+        // Only calculate if we have a valid party count, an assigned level, and monster metrics present
+        if (rowCount > 0 && rowEcl > 0 && creatures && Array.isArray(creatures)) {
+            // 1. Accumulate dynamic baseline awards using the specific row's ECL instead of the global average
+            const dynamicRowXpAward = creatures.reduce((sum, creature) => {
+                return sum + mExperience(rowEcl, Number(creature.cr) || 0);
+            }, 0);
+
+            // 2. Divide by this row's specific count instead of the whole team size
+            const averageRowXp = dynamicRowXpAward > 0 ? (dynamicRowXpAward / rowCount) : 0;
+
+            // 3. Apply the global custom math multiplier weight and round up cleanly
+            rowXpString = Math.ceil(averageRowXp * activeMultiplier);
+        }
+
+        return `
+            <div class="party-matrix-row">
+                <div class="matrix-cell-num">#${index + 1}</div>
+                
+                <div class="matrix-input-group">
+                    <label>Count:</label>
+                    <input type="number" 
+                           data-focus-key="matrix-count-${index}"
+                           class="tracker-input matrix-input num-input" 
+                           placeholder="0" 
+                           value="${slot.count}" 
+                           oninput="updatePartyMatrixSlot(${index}, 'count', this.value)">
+                </div>
+                
+                <div class="matrix-input-group">
+                    <label>ECL:</label>
+                    <input type="number" 
+                           data-focus-key="matrix-ecl-${index}"
+                           class="tracker-input matrix-input num-input" 
+                           placeholder="1" 
+                           value="${slot.ecl}" 
+                           oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
+                </div>
+
+                <div class="matrix-input-group row-xp-display-group">
+                    <label class="row-xp-label">XP Per:</label>
+                    <div class="matrix-xp-output">${rowXpString}</div>
+                </div>
             </div>
-            <div class="matrix-input-group">
-                <label>ECL:</label>
-                <input type="number" 
-                       data-focus-key="matrix-ecl-${index}"
-                       class="tracker-input matrix-input num-input" 
-                       placeholder="1" 
-                       value="${slot.ecl}" 
-                       oninput="updatePartyMatrixSlot(${index}, 'ecl', this.value)">
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     return `
         <section class="room-section party-matrix-section">
@@ -511,7 +544,7 @@ function renderPartyEclMatrix(slots) {
                 ${rowsHtml}
             </div>
         </section>
-        <hr class="section-divider">
+        <section class="section-divider-wrapper"><hr class="section-divider"></section>
     `;
 }
 
