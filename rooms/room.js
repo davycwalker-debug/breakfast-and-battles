@@ -274,19 +274,24 @@ function renderTrackerRow(c, idx) {
     if (c.subdual === undefined) c.subdual = 0;
     const statusClass = getTrackerStatusClass(c.hp, c.subdual);
     
-    // FIX: Look inside the state object directly for properties parsed from CSV
     const hasStats = c.ac && c.saves && c.type;
+
+    // Build the dynamic name anchor or label layer
+    const displayNameText = c.link 
+        ? `<a href="${c.link}" target="_blank" rel="noopener noreferrer" class="tracker-creature-link" onclick="event.stopPropagation();">${c.name}</a>`
+        : `<span>${c.name}</span>`;
     
+    // FIX: Fallback to the live displayNameText string wrapper if stats exist 
     const nameDisplay = hasStats ? `
         <div class="tooltip-target">
-            ${c.name}
+            ${displayNameText}
             <div class="roster-tooltip">
                 <div class="tooltip-stat"><strong>AC:</strong> ${c.ac}</div>
                 <div class="tooltip-stat"><strong>Saves:</strong> ${c.saves.replace(/\n/g, '<br>')}</div>
                 <div class="tooltip-stat"><strong>Type:</strong> ${c.type}</div>
             </div>
         </div>
-    ` : `<span>${c.name}</span>`;
+    ` : displayNameText;
 
     return `
         <div class="tracker-cell tracker-drag-handle ${statusClass}" 
@@ -787,7 +792,8 @@ function findCreaturesFromCsv(csvText, targetLocation) {
         if (!line) continue;
         
         const columns = line.split(',');
-        if (columns.length < 11) continue;
+        
+        if (columns.length < 10) continue;
         
         const fileLocation = columns[0].trim();
         if (fileLocation !== targetLocation) continue;
@@ -805,10 +811,9 @@ function findCreaturesFromCsv(csvText, targetLocation) {
         
         const type = columns[9].trim();
         
-        // Dynamic CR Parser (Allows completely blank values)
-        const rawCr = columns[10].trim();
-        let cr = ""; 
-        
+        const rawCr = columns[10] ? columns[10].trim() : "";
+        let cr = 0;
+
         if (rawCr !== "") {
             if (rawCr.includes('/')) {
                 const parts = rawCr.split('/');
@@ -817,8 +822,13 @@ function findCreaturesFromCsv(csvText, targetLocation) {
                 cr = den !== 0 ? num / den : 0;
             } else {
                 cr = parseFloat(rawCr);
-                if (isNaN(cr)) cr = 0; // Fallback only if text is gibberish, not empty
+                if (isNaN(cr)) cr = 0;
             }
+        }
+
+        let link = "";
+        if (columns[11]) {
+            link = columns[11].trim();
         }
 
         matchedCreatures.push({
@@ -829,7 +839,8 @@ function findCreaturesFromCsv(csvText, targetLocation) {
             ac,
             saves: savesString,
             type,
-            cr // Will be a float, 0, or an empty string ""
+            cr,
+            link: link || null
         });
     }
     
