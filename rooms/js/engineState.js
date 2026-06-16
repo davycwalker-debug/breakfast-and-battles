@@ -1,5 +1,11 @@
 import { findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv } from './dataParsers.js';
 
+const PATH_CONFIG = {
+    multiplier: '../csv/multiplier.csv',
+    party: '../csv/party.csv',
+    creatures: '../csv/creatures.csv'
+};
+
 window.dndEngineState = window.dndEngineState || {
     initialized: false,
     liveCreatures: [],
@@ -26,10 +32,11 @@ export async function syncEngineStateWithCsv(containerId, data) {
     let multiplierCsvText = "", partyCsvText = "", creaturesCsvText = "";
 
     try {
+        // Asynchronously extract files using path configurations
         const [multResponse, partyResponse, creaturesResponse] = await Promise.all([
-            fetch('../csv/multiplier.csv').then(res => res.ok ? res.text() : ""),
-            fetch('../csv/party.csv').then(res => res.ok ? res.text() : ""),
-            fetch('../csv/creatures.csv').then(res => res.ok ? res.text() : "")
+            fetch(PATH_CONFIG.multiplier).then(res => res.ok ? res.text() : ""),
+            fetch(PATH_CONFIG.party).then(res => res.ok ? res.text() : ""),
+            fetch(PATH_CONFIG.creatures).then(res => res.ok ? res.text() : "")
         ]);
         multiplierCsvText = multResponse;
         partyCsvText = partyResponse;
@@ -42,36 +49,35 @@ export async function syncEngineStateWithCsv(containerId, data) {
     const activeCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
 
     window.dndEngineState.liveCreatures = activeCreatures.map(c => ({
-        ...JSON.parse(JSON.stringify(c)),
+        ...c,
         subdual: c.subdual || 0 
     }));
 
     window.dndEngineState.xpMultiplierText = String(findMultiplierFromCsv(multiplierCsvText, targetTitle));
-    
     updateXpMultiplierState(window.dndEngineState.xpMultiplierText);
-    
-    window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
-    const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, targetTitle);
 
-    csvPartyDefaults.forEach((incoming, i) => {
-        if (i < 6 && incoming) {
-            window.dndEngineState.partySlots[i].count = incoming.count !== undefined ? incoming.count : '';
-            window.dndEngineState.partySlots[i].ecl = incoming.ecl !== undefined ? incoming.ecl : '';
-        }
+    const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, targetTitle);
+    window.dndEngineState.partySlots = Array.from({ length: 6 }, (_, i) => {
+        const incoming = csvPartyDefaults[i];
+        return {
+            count: (incoming && incoming.count !== undefined) ? incoming.count : '',
+            ecl: (incoming && incoming.ecl !== undefined) ? incoming.ecl : ''
+        };
     });
 }
 
 export function updateXpMultiplierState(value) {
-    window.dndEngineState.xpMultiplierText = value;
-    const cleanStr = value.trim();
+    const cleanStr = String(value || "1.0").trim();
+    window.dndEngineState.xpMultiplierText = cleanStr;
+    
     const fractionMatch = cleanStr.match(/^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/);
 
     if (fractionMatch) {
         const num = parseFloat(fractionMatch[1]);
         const den = parseFloat(fractionMatch[2]);
-        if (den !== 0) window.dndEngineState.xpMultiplier = num / den;
+        window.dndEngineState.xpMultiplier = den !== 0 ? num / den : 1.0;
     } else {
         const parsed = parseFloat(cleanStr);
-        if (!isNaN(parsed)) window.dndEngineState.xpMultiplier = parsed;
+        window.dndEngineState.xpMultiplier = !isNaN(parsed) ? parsed : 1.0;
     }
 }
