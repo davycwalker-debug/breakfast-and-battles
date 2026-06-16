@@ -1,4 +1,5 @@
-import { forceEngineRedraw, updateXpMultiplierState } from './engineState.js';
+import { updateXpMultiplierState } from './engineState.js';
+import { forceEngineRedraw } from './renderer.js';
 
 // --- Drag and Drop Handlers ---
 
