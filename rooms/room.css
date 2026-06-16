@@ -589,7 +589,7 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX
+   7. PARTY MATRIX (COMPACT TEXT-SAFE FLEX LAYOUT)
    ========================================================================== */
 
 .party-matrix-section {
@@ -611,24 +611,24 @@ li {
 
 .party-matrix-grid {
     display: grid;
-    /* Increased minimum width slightly to 260px to provide better card baselines */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    /* Keeps a stable card width baseline that won't squash text too far */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
     max-width: 850px; 
-    gap: 12px;
+    gap: 10px;
 }
 
-/* --- FLEX FLUID INTERNAL MATRIX CARD LAYOUT --- */
+/* --- RIGID INTERNAL GRID CHANNELS --- */
 .party-matrix-row {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     
-    /* Changed from grid to flex to prevent elements breaking card walls */
-    display: flex;
+    display: grid;
+    /* Allocates precise percentage fractions for text blocks so they cannot overflow */
+    grid-template-columns: auto 1fr 1fr auto;
+    gap: 6px;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
 }
 
 .matrix-cell-num {
@@ -636,21 +636,26 @@ li {
     color: var(--accent-gold);
     font-family: monospace;
     font-weight: 700;
-    margin-right: 2px;
+    padding-right: 2px;
 }
 
 .matrix-input-group {
     display: flex;
     align-items: center;
     gap: 4px;
+    min-width: 0; /* Prevents flex items from breaking their parent container container size */
+}
+
+.row-xp-display-group {
+    justify-content: flex-end;
 }
 
 .matrix-input-group label {
-    font-size: 0.65rem; 
+    font-size: 0.62rem; /* Marginally adjusted for flawless text bounding */
     color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     white-space: nowrap;
 }
 
@@ -658,8 +663,8 @@ li {
     background: var(--bg-color);
     border: 1px solid var(--border-muted);
     color: var(--text-main);
-    width: 38px; /* Slightly trimmed to leave room for the text values */
-    min-width: 38px;
+    width: 36px; /* Trimmed slightly to maximize label spacing safely */
+    min-width: 36px;
     text-align: center;
     padding: 2px;
     height: 24px;
@@ -674,18 +679,18 @@ li {
     border-color: var(--accent-gold);
 }
 
-/* --- COMPACT DYNAMIC XP DISPLAY CHIP --- */
+/* --- DYNAMIC XP CHIP --- */
 .matrix-xp-output {
     font-weight: bold;
     color: #4caf50; 
-    padding: 3px 6px;
+    padding: 2px 6px;
     background: rgba(76, 175, 80, 0.1);
     border: 1px solid rgba(76, 175, 80, 0.15);
     border-radius: 4px;
-    font-size: 0.75rem; /* Marginally adjusted down for safety boundaries */
+    font-size: 0.75rem;
     font-family: monospace;
     text-align: center;
-    min-width: 36px;
+    min-width: 34px;
 }
 
 /* Clear spin vectors */
