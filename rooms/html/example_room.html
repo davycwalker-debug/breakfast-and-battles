@@ -65,7 +65,7 @@
           // ENVIRONMENT & ARCHITECTURE
           // ==========================================
           
-          /* [object] (Optional) Structural layouts, illumination characteristics, maps, and portals. */
+          /* [object] Structural layouts, illumination characteristics, maps, and portals. */
           "environment": {
             "dimensions": `40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling`, // Overall spatial size
             "illumination": `Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.`, // Light status
@@ -114,53 +114,6 @@
           // ==========================================
           // COMBATANTS & COMBAT ENGINE DATA
           // ==========================================
-          
-          /* [array of objects] Main participant data mapped to interactive tracker grids. 
-             If creatures.csv contains matching rows under this room name, those entries override this block. */
-          "creatures": [
-            {
-              "name": `The Bleak Wraith`,             // Name/group identification string
-              "initRoll": 21,                          // [number] Initial order placement sorting metric
-              "hp": 44,                                // [number] Current running tracking health pools
-              "maxHp": 44,                             // [number] Static reference threshold
-              "subdual": 0,                            // [number] Stagger/unconscious tracing baseline
-              "notes": `Hovering 5 feet over the unholy grease pool.`, // (Optional) Initial tracking annotations
-              
-              // --- Hover Tooltip System Sub-Properties ---
-              // Providing these properties activates an interactive popup panel on hover.
-              "ac": `15 (+2 Dex, +3 deflection), touch 15, flat-footed 13`,
-              "saves": `Fort +2 / Ref +4 / Will +6`,
-              "type": `Undead (Incorporeal)`,
-              "cr": 5,                                 // [number/string] Used directly in dynamic Party XP matrix calculations
-              "link": `https://www.d20srd.org/srd/monsters/wraith.htm` // (Optional) Outbound hyperlink reference target
-            },
-            {
-              "name": `Ossuary Skeletons (x3)`,
-              "initRoll": 14,
-              "hp": 13,
-              "maxHp": 13,
-              "subdual": 0,
-              "notes": `Stealth bonus active while within wall masonry shadows.`,
-              "ac": `15 (+2 Dex, +3 natural)`,
-              "saves": `Fort +0 / Ref +2 / Will +2`,
-              "type": `Undead (Humanoid Skeleton)`,
-              "cr": 1, // Whole number verification target for tracker evaluation
-              "link": `https://www.d20srd.org/srd/monsters/skeleton.htm`
-            },
-            {
-              "name": `Swarm of Animating Shards`,
-              "initRoll": 8,
-              "hp": 9,
-              "maxHp": 9,
-              "subdual": 2, // Testing initial subdual damage layout processing
-              "notes": `Composed of loose fragments broken off during combat.`,
-              "ac": `12 (+2 Dex), touch 12, flat-footed 10`,
-              "saves": `Fort +1 / Ref +1 / Will -1`,
-              "type": `Undead (Swarm, Tiny)`,
-              "cr": `1/2`, // Extends and exercises fractional string parsing loops within findCreaturesFromCsv math blocks
-              "link": null // Evaluates fallback layout configuration when no link is provided
-            }
-          ],
           
           /* [string] (Optional) Text positioning instruction displayed at the bottom of the combat card tracker. */
           "setupPositions": `The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.`,
@@ -230,11 +183,11 @@
              available in your theme suite ('danger', 'warning', 'info') to demonstrate full color ranges. */
           "specialEvents": [
             {
-              "severity": `danger`, // High threat level card styling (Red border/accents)
+              "severity": `danger`, // (Optional) High threat level card styling (Red border/accents)
               "title": `Unraveling the Consecration`,
               "trigger": `If a PC channels positive energy or casts Holy Word inside the room.`,
               "readAloud": `A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.`,
-              "mechanics": [ 
+              "mechanics": [ // (Optional) Mechanical check for the event.
                 {
                   "type": `Will Save`,
                   "dc": `15`,
@@ -245,26 +198,9 @@
               "outcome": `The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2.`
             },
             {
-              "severity": `warning`, // Moderate/Tactical alert styling (Orange border/accents)
-              "title": `Igniting the Grease`,
-              "trigger": `Any open flame or fire attack interacting with the Obsidian Pool surface area.`,
-              "readAloud": `A low roar passes over the chamber floor as the greasy layer catches fire instantly, sending thick oily smoke curling toward the vaulted ceiling.`,
-              "mechanics": [
-                {
-                  "type": `Reflex Save`,
-                  "dc": `13`,
-                  "success": `The creature leaps clear of the expanding flames and takes no damage.`,
-                  "failure": `The creature takes 1d6 fire damage and catches fire directly.`
-                }
-              ],
-              "outcome": `The entire central pool space transforms into a hazardous field of white-hot columns dealing 1d6 ongoing thermal fire damage.`
-            },
-            {
-              "severity": `info`, // Exploration note or tactical update styling (Blue border/accents)
               "title": `Echoes of Shifting Masonry`,
               "trigger": `When the combat stretches onto or past Round 4.`,
               "readAloud": `The continuous weight of combat actions causes thousands of loose decorative jawbones to tumble down from the architecture, cluttering the floor boards.`,
-              "mechanics": [], // Empty array validates fallback clean presentation styling when a card has no dice tests
               "outcome": `All non-pool floor squares in the room now count as light difficult terrain (+1 square cost to move through).`
             }
           ],
