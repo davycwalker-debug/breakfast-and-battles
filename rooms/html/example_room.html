@@ -6,92 +6,85 @@
     <title>Area 4: The Whispering Ossuary</title>
 </head>
 <body>
-
     <div class="container">
-        <!-- Render target container -->
         <div id="encounter-output"></div>
     </div>
-
-    <!-- 1. Bring in your styling + script layout core engine -->
     <script src="../room.js"></script>
-
-    <!-- 2. Simply feed your raw JSON values here -->
     <script>
-        // Data input object mapping out your exact campaign homework notes
         const roomData = {
-          "title": "Area 4: The Whispering Ossuary",
-          "subtitle": "Dungeon Level 2",
+          "title": `Area 4: The Whispering Ossuary`,
+          "subtitle": `Dungeon Level 2`,
           "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.`,
           "initialReadAloudChecks": [
             {
-              "type": "Spot Check",
-              "dc": "17",
-              "success": "You notice the shallow liquid in the center isn't water—it has an oily sheen and clings to the stone like heavy grease.",
-              "failure": "The fluid appears to be ordinary, stagnant groundwater."
+              "type": `Spot Check`,
+              "dc": `17`,
+              "success": `You notice the shallow liquid in the center isn't water—it has an oily sheen and clings to the stone like heavy grease.`,
+              "failure": `The fluid appears to be ordinary, stagnant groundwater.`
             },
             {
-              "type": "Knowledge (Religion)",
-              "dc": "20",
-              "success": "The skull patterns match the profane funereal rites of Nerull, God of Death. This room is consecrated unholy ground.",
-              "failure": "You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin."
+              "type": `Knowledge (Religion)`,
+              "dc": `20`,
+              "success": `The skull patterns match the profane funereal rites of Nerull, God of Death. This room is consecrated unholy ground.`,
+              "failure": `You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin.`
             }
           ],
           "environment": {
-            "dimensions": "40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling",
-            "illumination": "Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.",
+            "dimensions": `40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling`,
+            "illumination": `Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.`,
             "features": [
               {
-                "name": "Obsidian Pool",
-                "desc": "Acts as difficult terrain. Filled with unholy, flammable grease. Creatures standing inside take a -2 penalty on saving throws against negative energy."
+                "name": `Obsidian Pool`,
+                "desc": `Acts as difficult terrain. Filled with unholy, flammable grease. Creatures standing inside take a -2 penalty on saving throws against negative energy.`
               },
               {
-                "name": "Skull-Lined Walls",
-                "desc": "Provides a +2 circumstance bonus to Hide checks for Tiny or smaller creatures due to the deep, overlapping shadows."
+                "name": `Skull-Lined Walls`,
+                "desc": `Provides a +2 circumstance bonus to Hide checks for Tiny or smaller creatures due to the deep, overlapping shadows.`
               }
             ],
             "doors": [
               {
-                "location": "North Wall",
-                "desc": "Heavy iron-banded oak door (Locked, Open Lock DC 25, Break DC 23)."
+                "location": `North Wall`,
+                "desc": `Heavy iron-banded oak door (Locked, Open Lock DC 25, Break DC 23).`
               },
               {
-                "location": "South Wall",
-                "desc": "Open archway leading back to Area 3 (The Sunken Vestibule)."
+                "location": `South Wall`,
+                "desc": `Open archway leading back to Area 3 (The Sunken Vestibule).`
               }
             ]
           },
           "dialogueTree": [
             {
-              "prompt": "If a player attempts to parley with the spirit before initiative or during a lull:",
-              "speaker": "The Bleak Wraith",
-              "response": "Mortals tread upon the marrow of the forgotten. Turn back, or join the choir of the silent."
+              "prompt": `If a player attempts to parley with the spirit before initiative or during a lull:`,
+              "speaker": `The Bleak Wraith`,
+              "response": `Mortals tread upon the marrow of the forgotten. Turn back, or join the choir of the silent.`
             },
             {
-              "prompt": "Demanding passage through the locked North Door:",
-              "speaker": "The Bleak Wraith",
-              "response": "The key is carved from the memory of your first breath. Give it up, and the path opens."
+              "prompt": `Demanding passage through the locked North Door:`,
+              "speaker": `The Bleak Wraith`,
+              "response": `The key is carved from the memory of your first breath. Give it up, and the path opens.`
             }
           ],
           "creatures": [
             {
-              "name": "The Bleak Wraith",
+              "name": `The Bleak Wraith`,
               "initRoll": 21,
               "hp": 44,
               "maxHp": 44,
-              "ac": "15 (+2 Dex, +3 deflection), touch 15, flat-footed 13",
-              "saves": "Fort +2 / Ref +4 / Will +6",
-              "type": "Undead (Incorporeal)",
-              "bio": "A swirling manifestation of negative energy radiating an aura of unnatural chill."
+              "ac": `15 (+2 Dex, +3 deflection), touch 15, flat-footed 13`,
+              "saves": `Fort +2 / Ref +4 / Will +6`,
+              "type": `Undead (Incorporeal)`,
+              "cr": 5
             },
             {
-              "name": "Ossuary Skeletons (x3)",
+              "name": `Ossuary Skeletons (x3)`,
               "initRoll": 14,
               "hp": 13,
               "maxHp": 13,
-              "ac": "15 (+2 Dex, +3 natural)",
-              "saves": "Fort +0 / Ref +2 / Will +2",
-              "type": "Undead (Humanoid Skeleton)",
-              "bio": `Reanimated bone constructs pulling themselves free from the wall masonry.`
+              "ac": `15 (+2 Dex, +3 natural)`,
+              "saves": `Fort +0 / Ref +2 / Will +2`,
+              "type": `Undead (Humanoid Skeleton)`,
+              "cr": 2
             }
           ],
           "setupPositions": `The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.`,
@@ -99,11 +92,11 @@
             "initialRound": `The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.`,
             "individual": [
               {
-                "name": "The Bleak Wraith",
+                "name": `The Bleak Wraith`,
                 "strategy": `Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength.`
               },
               {
-                "name": "Ossuary Skeletons",
+                "name": `Ossuary Skeletons`,
                 "strategy": `Form a defensive line around the obsidian pool, using Aid Another to boost the Wraith's AC or typing up martial characters.`
               }
             ]
@@ -111,50 +104,49 @@
           "development": `If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.`,
           "traps": [
             {
-              "name": "Wall-Mounted Scythe Trap",
-              "cr": "4",
-              "trigger": "Pressure plate located in front of the obsidian pool (Search DC 22 to locate).`,
-              "reset": "Manual (Requires a repair kit and 3 rounds of work).",
-              "searchDc": "22",
-              "disableDc": "20",
-              "effect": "+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line."
+              "name": `Wall-Mounted Scythe Trap`,
+              "cr": `4`,
+              "trigger": `Pressure plate located in front of the obsidian pool (Search DC 22 to locate).`,
+              "reset": `Manual (Requires a repair kit and 3 rounds of work).`,
+              "searchDc": `22`,
+              "disableDc": `20`,
+              "effect": `+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line.`
             }
           ],
           "treasure": {
-            "carried": "The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).",
+            "carried": `The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).`,
             "containers": [
               {
-                "name": "Bottom of the Obsidian Pool",
-                "contents": "A submerged iron lockbox holding 420 gp, an Onyx gemstone (worth 150 gp used for Animate Dead), and a +1 Heavy Steel Shield of Light."
+                "name": `Bottom of the Obsidian Pool`,
+                "contents": `A submerged iron lockbox holding 420 gp, an Onyx gemstone (worth 150 gp used for Animate Dead), and a +1 Heavy Steel Shield of Light.`
               }
             ]
           },
           "specialEvents": [
             {
-              "severity": "danger",
-              "title": "Unraveling the Consecration",
-              "trigger": "If a PC channels positive energy or casts Holy Word inside the room.",
-              "readAloud": "A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.",
+              "severity": `danger`,
+              "title": `Unraveling the Consecration`,
+              "trigger": `If a PC channels positive energy or casts Holy Word inside the room.`,
+              "readAloud": `A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.`,
               "mechanics": [
                 {
-                  "type": "Will Save",
-                  "dc": "15",
-                  "success": "The creature resists the psychological horror of the wail.",
-                  "failure": "The creature is Shaken (-2 on attack rolls, saving throws, and skill checks) for 1d4 rounds."
+                  "type": `Will Save`,
+                  "dc": `15`,
+                  "success": `The creature resists the psychological horror of the wail.`,
+                  "failure": `The creature is Shaken (-2 on attack rolls, saving throws, and skill checks) for 1d4 rounds.`
                 }
               ],
-              "outcome": "The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2."
+              "outcome": `The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2.`
             }
           ],
           "additionalSections": [
             {
-              "heading": "📜 Lore & Legends",
-              "content": "A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself."
+              "heading": `📜 Lore & Legends`,
+              "content": `A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself.`
             }
           ]
         };
 
-        // Fire rendering execution
         renderRoomTemplate('encounter-output', roomData);
     </script>
 </body>
