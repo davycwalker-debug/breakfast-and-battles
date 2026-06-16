@@ -299,8 +299,14 @@ function renderTrackerRow(c, idx, rosterData) {
         
         <div class="tracker-cell init-col ${statusClass} flex-align-center-gap-8">
             <button type="button" class="btn-send-bottom remove-btn-color font-weight-bold" title="Remove Combatant" onclick="removeCombatantEntry(${idx})">×</button>
-            <span class="init-label-text">Init</span>
-            <input type="number" data-focus-key="creature-init-${idx}" class="hp-input inline-init-input" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
+            <label for="creature-init-${idx}" class="init-label-text">Init</label>
+            <input type="number" 
+                   id="creature-init-${idx}"
+                   name="creature-init-${idx}"
+                   data-focus-key="creature-init-${idx}" 
+                   class="hp-input inline-init-input" 
+                   value="${c.initRoll}" 
+                   oninput="updateCreatureInitiativeInline(${idx}, this.value)">
         </div>
         
         <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
@@ -313,12 +319,29 @@ function renderTrackerRow(c, idx, rosterData) {
         
         <div class="tracker-cell hp-col ${statusClass}" data-index="${idx}">
             <span class="hp-badge" draggable="false">
-                <input type="number" data-focus-key="creature-hp-${idx}" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
+                <input type="number" 
+                       id="creature-hp-${idx}"
+                       name="creature-hp-${idx}"
+                       aria-label="Creature HP"
+                       data-focus-key="creature-hp-${idx}" 
+                       class="hp-input" 
+                       value="${c.hp}" 
+                       data-max="${c.maxHp}" 
+                       oninput="updateCreatureHpInline(${idx}, this.value)">
                 <span class="text-muted">/ ${c.maxHp} HP</span>
             </span>
+            
             <span class="text-muted font-weight-normal mx-4">|</span>
+            
             <span class="subdual-badge subdual-text-wrapper" draggable="false">
-                Sub: <input type="number" data-focus-key="creature-sub-${idx}" class="hp-input inline-sub-input" value="${c.subdual}" oninput="updateCreatureSubdualInline(${idx}, this.value)">
+                <label for="creature-sub-${idx}">Sub:</label> 
+                <input type="number" 
+                       id="creature-sub-${idx}"
+                       name="creature-sub-${idx}"
+                       data-focus-key="creature-sub-${idx}" 
+                       class="hp-input inline-sub-input" 
+                       value="${c.subdual}" 
+                       oninput="updateCreatureSubdualInline(${idx}, this.value)">
             </span>
         </div>
     `;
