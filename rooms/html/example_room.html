@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
-    <title>Area 4: The Whispering Ossuary</title>
+    <title>Encounter Module Template</title>
 </head>
 <body>
     <div class="container">
@@ -15,210 +15,193 @@
         import '../js/interactions.js';
         
         const roomData = {
-          // ==========================================
+          // ==================================================================
           // CORE HEADER INFO
-          // ==========================================
+          // ==================================================================
           
-          /* [string] Main headline. Serves as the strict unique ID for CSV database lookups. */
-          "title": `Area 4: The Whispering Ossuary`,
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": ``,
           
-          /* [string] (Optional) Subordinate label attached to the header title. 
-             Note: The rendering engine automatically appends Calculated Combat Level (CL) 
-             and Experience Points (XP) metrics to this string dynamically. */
-          "subtitle": `Dungeon Level 2`,
+          /* [String] (Optional) Descriptive contextual subtitle or structural tag.
+             NOTE: The rendering engine automatically calculates and appends the final 
+             Combat Level (CL) and total calculated Encounter XP thresholds directly to 
+             the end of this string inside the UI view. */
+          "subtitle": ``,
 
-          // ==========================================
+          // ==================================================================
           // NARRATIVE & INITIAL ABILITY CHECKS
-          // ==========================================
+          // ==================================================================
           
-          /* [string] (Optional) Block text displayed inside a styled box for DM flavor descriptions. 
-             PRO TIP: You can use HTML inline markdown (like <strong> or <em>) to emphasize details. */
-          "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of <strong>black liquid</strong> that remains unnaturally still.`,
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": ``,
           
-          /* [array of objects] (Optional) Quick-reference skill/saving throws rolled immediately upon entry. 
-             Renders an integrated card layout pairing a custom prompt with discrete branches. */
+          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
+             immediately upon entering the area or interacting with the initial description.
+             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
           "initialReadAloudChecks": [
             {
-              "type": `Spot Check`, // Type of check or save to display on the badge
-              "dc": `17`,           // Difficulty Class value string
-              "prompt": `Looking closely at the surface tension of the center pool...`, // (Optional) Additional contextual prompt
-              "success": `You notice the shallow liquid in the center isn't water—it has an oily sheen and clings to the stone like heavy grease.`,
-              "failure": `The fluid appears to be ordinary, stagnant groundwater.`
+              "type": ``, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
+              "dc": ``,   // [String/Number] The target difficulty class baseline metric threshold
+              "prompt": ``, // [Markdown String] (Optional) Contextual setup text establishing what the check represents.
+              "success": ``, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
+              "failure": ``  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
             },
             {
-              "type": `Knowledge (Religion)`,
-              "dc": `20`,
-              // prompt omitted intentionally here to show layout adaptability with no prompt text
-              "success": `The skull patterns match the profane funereal rites of Nerull, God of Death. This room is consecrated unholy ground.`,
-              "failure": `You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin.`
-            },
-            {
-              "type": `Listen Check`,
-              "dc": `14`,
-              "prompt": `Pausing to monitor the ambient soundscape of the catacomb...`,
-              "success": `Beneath the dripping of distant water, you catch a faint, synchronous grinding sound—like stone scraping bone.`,
-              "failure": `The room remains completely quiet.`
+              "type": ``,
+              "dc": ``,
+              /* Contextual prompt omitted intentionally here to show layout adaptability. 
+                 If left blank or omitted, the UI card cleanly collapses around the success/failure branches. */
+              "success": ``,
+              "failure": ``
             }
           ],
 
-          // ==========================================
+          // ==================================================================
           // ENVIRONMENT & ARCHITECTURE
-          // ==========================================
+          // ==================================================================
           
-          /* [object] Structural layouts, illumination characteristics, maps, and portals. */
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
           "environment": {
-            "dimensions": `40 ft. x 50 ft. rectangular chamber, 18 ft. vaulted ceiling`, // Overall spatial size
-            "illumination": `Darkness (unlit). The obsidian pool absorbs low-light vision beyond 10 feet.`, // Light status
+            "dimensions": ``, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": ``, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
             
-            "features": [ // [array of objects] Map points, environmental hazards, or objects of note
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
               {
-                "name": `Obsidian Pool`,
-                "desc": `Acts as difficult terrain. Filled with unholy, flammable grease. Creatures standing inside take a -2 penalty on saving throws against negative energy.`
-              },
-              {
-                "name": `Skull-Lined Walls`,
-                "desc": `Provides a +2 circumstance bonus to Hide checks for Tiny or smaller creatures due to the deep, overlapping shadows.`
+                "name": ``, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": ``  // [Markdown String] Detailed description, physical attributes, or interaction limits
               }
             ],
             
-            "doors": [ // [array of objects] Transitions, safety checks, or exit paths out of the area
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
               {
-                "location": `North Wall`,
-                "desc": `Heavy iron-banded oak door (Locked, Open Lock DC 25, Break DC 23).`
-              },
-              {
-                "location": `South Wall`,
-                "desc": `Open archway leading back to Area 3 (The Sunken Vestibule).`
+                "location": ``, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": ``      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
               }
             ]
           },
 
-          // ==========================================
+          // ==================================================================
           // DIALOGUE OPTIONS
-          // ==========================================
+          // ==================================================================
           
-          /* [array of objects] (Optional) Interaction framework for conversational branches or cues. */
+          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
+             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
           "dialogueTree": [
             {
-              "prompt": `If a player attempts to parley with the spirit before initiative or during a lull:`,
-              "speaker": `The Bleak Wraith`, // Name tag prefix for spoken response
-              "response": `Mortals tread upon the marrow of the forgotten. Turn back, or join the choir of the silent.`
-            },
-            {
-              "prompt": `Demanding passage through the locked North Door:`,
-              "speaker": `The Bleak Wraith`,
-              "response": `The key is carved from the memory of your first breath. Give it up, and the path opens.`
+              "prompt": ``,   // [String] The trigger question, approach, or topic initiated by the party.
+              "speaker": ``,  // [String] Name or role designation prefix for the responding entity.
+              "response": ``  // [Markdown String] Verbal reply or physical reaction from the speaking entity.
             }
           ],
 
-          // ==========================================
+          // ==================================================================
           // COMBATANTS & COMBAT ENGINE DATA
-          // ==========================================
+          // ==================================================================
           
-          /* [string] (Optional) Text positioning instruction displayed at the bottom of the combat card tracker. */
-          "setupPositions": `The Bleak Wraith hovers directly over the obsidian pool. The three Ossuary Skeletons begin embedded within the East and West walls, emerging instantly when the trap triggers or the Wraith commands them.`,
+          /* [Markdown String] (Optional) Setup rules, positioning guidelines, or map square assignments for creatures.
+             UI PRESENTATION: Appears directly beneath the interactive initiative tracker layout. */
+          "setupPositions": ``,
 
-          // ==========================================
+          // ==================================================================
           // STRATEGY & BEHAVIOR
-          // ==========================================
+          // ==================================================================
           
-          /* [object] (Optional) Breakdown of enemy operations, battle phases, and target priorities. */
+          /* [Object] (Optional) Automated decision loops, tactical priorities, and movement mechanics for combatants. */
           "tactics": {
-            "initialRound": `The Bleak Wraith triggers the Scythe Trap immediately if any living creature approaches within 5 feet of the obsidian pool, utilizing its incorporeal nature to phase through the mechanism safely.`, // Trigger thresholds
+            "initialRound": ``, // [Markdown String] Opening round priority, ambush triggers, or global battle field alterations.
             
-            "individual": [ // [array of objects] Specialized assignment loops for specific room threats
+            /* [Array of Objects] Specialized behavioral matrices mapped to specific creature types in the roster. */
+            "individual": [
               {
-                "name": `The Bleak Wraith`,
-                "strategy": `Flies through the floor to attack from absolute cover, targeting arcane casters with its Incorporeal Touch to drain Strength.`
-              },
-              {
-                "name": `Ossuary Skeletons`,
-                "strategy": `Form a defensive line around the obsidian pool, using Aid Another to boost the Wraith's AC or typing up martial characters.`
+                "name": ``,     // [String] Matches the exact creature type identifier name.
+                "strategy": ``  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
               }
             ]
           },
           
-          /* [string] (Optional) Moral limits, flight conditions, reinforcements, or consequences of victory. */
-          "development": `If the Bleak Wraith is destroyed, the remaining skeletons immediately lose their animation framework and collapse into inert bone fragments. If turned by a Cleric, the Wraith attempts to flee through the solid stone ceiling into the upper vaults.`,
+          /* [Markdown String] (Optional) Eventualities, long-term consequences, reinforcement arrivals, or aftermath.
+             UI PRESENTATION: Automatically wrapped inside a clean, distinctive dashed-border development layout block. */
+          "development": ``,
 
-          // ==========================================
+          // ==================================================================
           // HAZARDS, TRAPS & COMPLICATION CARDS
-          // ==========================================
+          // ==================================================================
           
-          /* [array of objects] (Optional) Passive defenses or localized architectural threats. */
+          /* [Array of Objects] (Optional) Automated defenses, localized environmental dangers, or hidden traps.
+             UI PRESENTATION: Renders high-visibility threat blocks themed with an aggressive red danger palette. */
           "traps": [
             {
-              "name": `Wall-Mounted Scythe Trap`,
-              "cr": `4`,                  // Challenge Rating of the hazard
-              "trigger": `Pressure plate located in front of the obsidian pool (Search DC 22 to locate).`,
-              "reset": `Manual (Requires a repair kit and 3 rounds of work).`,
-              "searchDc": `22`,           // Rogue searching skill target
-              "disableDc": `20`,          // Disable Device manual skill check barrier
-              "effect": `+12 melee (2d4+6 / x4, heavy scythe). Attacks all targets in a 10-ft. straight line.` // Damage payload
+              "name": ``,      // [String] The identifying title of the hazard or architectural trap.
+              "cr": ``,        // [String/Number] Challenge Rating evaluation metric for threat scaling.
+              "trigger": ``,   // [Markdown String] The exact physical action or event that sets off the hazard.
+              "reset": ``,     // [String] Mechanical reset window rules (e.g., "Automatic after 1 round", "Manual", "None").
+              "searchDc": ``,  // [String/Number] The specific mechanical DC required to detect or find the hazard.
+              "disableDc": ``, // [String/Number] The specific mechanical tool/skill DC required to safely bypass or neutralize it.
+              "effect": ``     // [Markdown String] Mechanical results, damage calculation dice rolls, saves, and conditions applied.
             }
           ],
 
-          // ==========================================
+          // ==================================================================
           // REWARDS, LOOT & CONTAINER ARRAYS
-          // ==========================================
+          // ==================================================================
           
-          /* [object] (Optional) Assets acquired upon subduing or navigating the chamber room successfully. */
+          /* [Object] (Optional) Physical assets, currency, and gear available to be looted from the scene. */
           "treasure": {
-            "carried": `The Wraith carries no gear. Skeletons wield broken, rusted scimitars (worthless).`, // Direct equipment items
+            "carried": ``, // [Markdown String] Items directly equipped or carried on the person of monsters/entities.
             
-            "containers": [ // [array of objects] Locked stashes, secret tiles, loose piles, or hidden items
+            /* [Array of Objects] Stationary storage elements, hidden compartments, chests, or loose piles. */
+            "containers": [
               {
-                "name": `Bottom of the Obsidian Pool`,
-                "contents": `A submerged iron lockbox holding 420 gp, an Onyx gemstone (worth 150 gp used for Animate Dead), and a +1 Heavy Steel Shield of Light.`
+                "name": ``,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
+                "contents": ``  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
               }
             ]
           },
 
-          // ==========================================
+          // ==================================================================
           // SPECIAL DYNAMIC TRIGGER CARDS
-          // ==========================================
+          // ==================================================================
           
-          /* [array of objects] (Optional) Mid-encounter events that change the room state. 
-             Renders an alert card container styled with severity tags. Includes one example of each type
-             available in your theme suite ('danger', 'warning', 'info') to demonstrate full color ranges. */
+          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
+             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
+             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
           "specialEvents": [
             {
-              "severity": `danger`, // (Optional) High threat level card styling (Red border/accents)
-              "title": `Unraveling the Consecration`,
-              "trigger": `If a PC channels positive energy or casts Holy Word inside the room.`,
-              "readAloud": `A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.`,
-              "mechanics": [ // (Optional) Mechanical check for the event.
+              "severity": `danger`, 
+              "title": ``,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": ``,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": ``, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
                 {
-                  "type": `Will Save`,
-                  "dc": `15`,
-                  "success": `The creature resists the psychological horror of the wail.`,
-                  "failure": `The creature is Shaken (-2 on attack rolls, saving throws, and skill checks) for 1d4 rounds.`
+                  "type": ``,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": ``,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": ``, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": ``  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
                 }
               ],
-              "outcome": `The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2.`
-            },
-            {
-              "title": `Echoes of Shifting Masonry`,
-              "trigger": `When the combat stretches onto or past Round 4.`,
-              "readAloud": `The continuous weight of combat actions causes thousands of loose decorative jawbones to tumble down from the architecture, cluttering the floor boards.`,
-              "outcome": `All non-pool floor squares in the room now count as light difficult terrain (+1 square cost to move through).`
+              "outcome": `` // [Markdown String] Lasting structural environmental modifications or secondary phase effects.
             }
           ],
 
-          // ==========================================
+          // ==================================================================
           // CUSTOM EXTENSION BLOCKS
-          // ==========================================
+          // ==================================================================
           
-          /* [array of objects] (Optional) Open-ended structural extensions. 
-             Renders completely independent, customized blocks using raw HTML content. */
+          /* [Array of Objects] (Optional) Open-ended structural extensions for completely non-standard room elements.
+             UI PRESENTATION: Outputs independent structural blocks rendering entirely uninhibited custom content layout trees. */
           "additionalSections": [
             {
-              "heading": `📜 Lore & Legends`, // Heading title block text line
-              "content": `A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself.` // Interior block text markup
-            },
-            {
-              "heading": `🛠️ DM Adjustments`,
-              "content": `If your party is high-level or possesses an optimized Cleric, consider replacing the 3 basic skeletons with 2 <em>Advanced Dread Skeletons</em> to preserve the threat profile of the Consecrated unholy field.`
+              "heading": ``, // [String] Custom layout section title line.
+              "content": ``  // [Raw HTML/Markdown String] Customized text markup, custom tables, or unique rules text blocks.
             }
           ]
         };
