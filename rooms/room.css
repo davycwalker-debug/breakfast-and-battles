@@ -151,9 +151,9 @@ li {
 .env-meta-list {
     list-style: none;
     padding-left: 0;
-    display: flex;
+    display: column;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 8px;
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     padding: 14px 20px;
