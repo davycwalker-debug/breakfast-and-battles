@@ -91,11 +91,10 @@ function calculateEncounterMetrics(data) {
     let clString = "0.00";
     let xpString = "0";
 
-    if (!data.creatures || !Array.isArray(data.creatures)) {
-        return { totalPartyCount, clString, xpString };
-    }
+    // FIX: Read from the active, synchronized CSV array instead of data.creatures
+    const creatures = window.dndEngineState.liveCreatures || [];
 
-    const totalPl = data.creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
+    const totalPl = creatures.reduce((sum, c) => sum + calculatePowerLevel(c.cr), 0);
     const totalEl = calculateEncounterLevel(totalPl);
 
     if (window.dndEngineState && window.dndEngineState.partySlots) {
@@ -116,7 +115,7 @@ function calculateEncounterMetrics(data) {
     let dynamicXpAward = 0;
 
     if (averagePartyLevel > 0) {
-        dynamicXpAward = data.creatures.reduce((sum, creature) => {
+        dynamicXpAward = creatures.reduce((sum, creature) => {
             return sum + mExperience(averagePartyLevel, Number(creature.cr) || 0);
         }, 0);
     }
@@ -226,9 +225,8 @@ function renderDialogueTree(dialogueArray) {
     `;
 }
 
-function renderCombatTracker(liveTracker, baselineRoster, positions) {
+function renderCombatTracker(liveTracker, positions) {
     if (!liveTracker) return '';
-    const rosterData = baselineRoster || [];
     
     return `
         <section class="room-section combat-section">
@@ -244,7 +242,7 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
                     <div class="tracker-header-cell">Creature Name</div>
                     <div class="tracker-header-cell text-right">Health Status</div>
                     
-                    ${liveTracker.map((c, idx) => renderTrackerRow(c, idx, rosterData)).join('')}
+                    ${liveTracker.map((c, idx) => renderTrackerRow(c, idx)).join('')}
 
                     <div class="tracker-cell tracker-add-row-cap text-center">
                         <button type="button" class="btn-add-combatant" onclick="addNewCombatantEntry()">Add</button>
@@ -272,18 +270,20 @@ function renderCombatTracker(liveTracker, baselineRoster, positions) {
     `;
 }
 
-function renderTrackerRow(c, idx, rosterData) {
+function renderTrackerRow(c, idx) {
     if (c.subdual === undefined) c.subdual = 0;
     const statusClass = getTrackerStatusClass(c.hp, c.subdual);
-    const stats = rosterData.find(r => r.name === c.name);
     
-    const nameDisplay = stats ? `
+    // FIX: Look inside the state object directly for properties parsed from CSV
+    const hasStats = c.ac && c.saves && c.type;
+    
+    const nameDisplay = hasStats ? `
         <div class="tooltip-target">
             ${c.name}
             <div class="roster-tooltip">
-                <div class="tooltip-stat"><strong>AC:</strong> ${stats.ac}</div>
-                <div class="tooltip-stat"><strong>Saves:</strong> ${stats.saves}</div>
-                <div class="tooltip-stat"><strong>Type:</strong> ${stats.type}</div>
+                <div class="tooltip-stat"><strong>AC:</strong> ${c.ac}</div>
+                <div class="tooltip-stat"><strong>Saves:</strong> ${c.saves.replace(/\n/g, '<br>')}</div>
+                <div class="tooltip-stat"><strong>Type:</strong> ${c.type}</div>
             </div>
         </div>
     ` : `<span>${c.name}</span>`;
@@ -310,11 +310,22 @@ function renderTrackerRow(c, idx, rosterData) {
         </div>
         
         <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
-            <span class="status-text flag-staggered">[Staggered] </span>
-            <span class="status-text flag-dying">[Dying] </span>
-            <span class="status-text flag-dead">[Dead] </span>
-            <span class="status-text flag-unconscious">[Unconscious] </span>
-            ${nameDisplay}
+            <div class="creature-name-layout" style="display: flex; flex-direction: column; width: 100%; gap: 4px;">
+                <div>
+                    <span class="status-text flag-staggered">[Staggered] </span>
+                    <span class="status-text flag-dying">[Dying] </span>
+                    <span class="status-text flag-dead">[Dead] </span>
+                    <span class="status-text flag-unconscious">[Unconscious] </span>
+                    ${nameDisplay}
+                </div>
+                
+                <input type="text" 
+                       class="tracker-creature-note-input" 
+                       placeholder="Notes (Conditions, positions...)" 
+                       value="${c.notes || ''}" 
+                       oninput="window.dndEngineState.liveCreatures[${idx}].notes = this.value"
+                       style="background: transparent; border: none; border-bottom: 1px dashed #555; color: #aaa; font-size: 0.75rem; padding: 2px 0; width: 90%; outline: none;">
+            </div>
         </div>
         
         <div class="tracker-cell hp-col ${statusClass}" data-index="${idx}">
