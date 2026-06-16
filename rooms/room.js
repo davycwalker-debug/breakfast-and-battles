@@ -17,51 +17,10 @@ window.dndEngineState = window.dndEngineState || {
  * Main Execution Entry Point
  * Initializes state storage structures and executes DOM tree rendering.
  */
-function renderRoomTemplate(containerId, data) {
+async function renderRoomTemplate(containerId, data) {
     injectEngineStyles();
 
-    // 1. Structural State Cache Synchronization
-    if (!window.dndEngineState.initialized || window.dndEngineState.currentContainerId !== containerId) {
-        window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
-            ...JSON.parse(JSON.stringify(c)),
-            subdual: c.subdual || 0 
-        })) : [];
-
-        window.dndEngineState.xpMultiplierText = data.multiplierDefault !== undefined ? String(data.multiplierDefault) : "1.0";
-        const multStr = window.dndEngineState.xpMultiplierText.trim();
-        
-        // Matches an exact pattern: optional spaces, digits, a slash, and digits (e.g., "1/2" or " 2 / 3 ")
-        const fractionMatch = multStr.match(/^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/);
-
-        if (fractionMatch) {
-            const n = parseFloat(fractionMatch[1]);
-            const d = parseFloat(fractionMatch[2]);
-            if (d !== 0) window.dndEngineState.xpMultiplier = n / d;
-        } else {
-            const parsed = parseFloat(multStr);
-            // Only update the mathematical multiplier if it resolves to a clean, usable float
-            if (!isNaN(parsed)) {
-                window.dndEngineState.xpMultiplier = parsed;
-            }
-        }
-        
-        window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
-
-        if (data.partyDefaults && Array.isArray(data.partyDefaults)) {
-            const loops = Math.min(data.partyDefaults.length, 6); // Cap at 6 slots max
-            for (let i = 0; i < loops; i++) {
-                const incoming = data.partyDefaults[i];
-                if (incoming) {
-                    window.dndEngineState.partySlots[i].count = incoming.count !== undefined ? incoming.count : '';
-                    window.dndEngineState.partySlots[i].ecl = incoming.ecl !== undefined ? incoming.ecl : '';
-                }
-            }
-        }
-        
-        window.dndEngineState.currentContainerId = containerId;
-        window.dndEngineState.rawBaselineData = data;
-        window.dndEngineState.initialized = true;
-    }
+    await syncEngineStateWithCsv(containerId, data);
 
     const container = document.getElementById(containerId);
     if (!container) return console.error(`Target container element ID "${containerId}" was not found.`);
@@ -798,6 +757,115 @@ function mExperience(x, y) {
     else if (y - x > 7) iReturn = 0;
     
     return iReturn;
+}
+
+/**
+ * Helper Parser: Finds a single multiplier value matching a room title.
+ */
+function findMultiplierFromCsv(csvText, targetTitle) {
+    if (!csvText) return "1.0";
+    const lines = csvText.split('\n');
+    for (let i = 1; i < lines.length; i++) {
+        const row = lines[i].split(',');
+        if (row.length >= 2) {
+            const currentTitle = row[0].trim();
+            if (currentTitle === targetTitle) return row[1].trim();
+        }
+    }
+    return "1.0"; 
+}
+
+/**
+ * Helper Parser: Gathers up to 6 party configurations matching a room title.
+ */
+function findPartyDefaultsFromCsv(csvText, targetTitle) {
+    const matches = [];
+    if (!csvText) return matches;
+    const lines = csvText.split('\n');
+    for (let i = 1; i < lines.length; i++) {
+        const row = lines[i].split(',');
+        if (row.length >= 3) {
+            const currentTitle = row[0].trim();
+            if (currentTitle === targetTitle) {
+                matches.push({
+                    count: row[1].trim() !== "" ? Number(row[1].trim()) : "",
+                    ecl: row[2].trim() !== "" ? Number(row[2].trim()) : ""
+                });
+                if (matches.length === 6) break;
+            }
+        }
+    }
+    return matches;
+}
+
+/**
+ * Core Initialization State Engine Layer
+ * Call this function at the absolute top of your rendering workflow.
+ */
+async function syncEngineStateWithCsv(containerId, data) {
+    // Check if we need to synchronize the engine cache context
+    if (!window.dndEngineState.initialized || window.dndEngineState.currentContainerId !== containerId) {
+        
+        // Setup initial static state variables from local JSON parameters
+        window.dndEngineState.liveCreatures = data.creatures ? data.creatures.map(c => ({
+            ...JSON.parse(JSON.stringify(c)),
+            subdual: c.subdual || 0 
+        })) : [];
+
+        const targetTitle = data.title || '';
+        let multiplierCsvText = "";
+        let partyCsvText = "";
+
+        // Fetch read-only configuration layers directly from GitHub Pages static paths
+        try {
+            const [multResponse, partyResponse] = await Promise.all([
+                fetch('./multiplier.csv').then(res => res.ok ? res.text() : ""),
+                fetch('./party.csv').then(res => res.ok ? res.text() : "")
+            ]);
+            multiplierCsvText = multResponse;
+            partyCsvText = partyResponse;
+        } catch (error) {
+            console.error("DndEngine State Error: Unable to extract CSV database defaults.", error);
+        }
+
+        // --- Assign Multiplier Defaults ---
+        const lookupMultiplier = findMultiplierFromCsv(multiplierCsvText, targetTitle);
+        window.dndEngineState.xpMultiplierText = String(lookupMultiplier);
+        
+        const multStr = window.dndEngineState.xpMultiplierText.trim();
+        const fractionMatch = multStr.match(/^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/);
+
+        if (fractionMatch) {
+            const n = parseFloat(fractionMatch[1]);
+            const d = parseFloat(fractionMatch[2]);
+            if (d !== 0) window.dndEngineState.xpMultiplier = n / d;
+        } else {
+            const parsed = parseFloat(multStr);
+            if (!isNaN(parsed)) window.dndEngineState.xpMultiplier = parsed;
+        }
+        
+        // Seed default empty blocks to absorb UI mapping errors
+        window.dndEngineState.partySlots = Array.from({ length: 6 }, () => ({ count: '', ecl: '' }));
+
+        // --- Assign Party Matrix Row Defaults ---
+        const csvPartyDefaults = findPartyDefaultsFromCsv(partyCsvText, targetTitle);
+
+        if (csvPartyDefaults && csvPartyDefaults.length > 0) {
+            const loops = Math.min(csvPartyDefaults.length, 6);
+            for (let i = 0; i < loops; i++) {
+                const incoming = csvPartyDefaults[i];
+                if (incoming) {
+                    window.dndEngineState.partySlots[i].count = incoming.count !== undefined ? incoming.count : '';
+                    window.dndEngineState.partySlots[i].ecl = incoming.ecl !== undefined ? incoming.ecl : '';
+                }
+            }
+        }
+        
+        // Finalize initial tracking locks
+        window.dndEngineState.currentContainerId = containerId;
+        window.dndEngineState.rawBaselineData = data;
+        window.dndEngineState.initialized = true;
+    }
 }
 
 /**
