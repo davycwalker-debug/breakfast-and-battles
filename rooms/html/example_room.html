@@ -10,8 +10,10 @@
     <div class="container">
         <div id="encounter-output"></div>
     </div>
-    <script src="../room.js"></script>
-    <script>
+    <script type="module">
+        import { renderRoomTemplate } from '../renderer.js';
+        import '../interactions.js';
+        
         const roomData = {
           "title": `Area 4: The Whispering Ossuary`,
           "subtitle": `Dungeon Level 2`,
