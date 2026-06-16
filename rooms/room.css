@@ -589,7 +589,7 @@ li {
 }
 
 /* ==========================================================================
-   7. PARTY MATRIX (MAX 3 COLUMNS, NO MEDIA QUERIES)
+   7. PARTY MATRIX
    ========================================================================== */
 
 .party-matrix-section {
@@ -611,21 +611,21 @@ li {
 
 .party-matrix-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     max-width: 850px; 
-    gap: 10px;
+    gap: 12px;
 }
 
 .party-matrix-row {
     background: var(--card-inner);
     border: 1px solid var(--border-muted);
     border-radius: 6px;
-    padding: 8px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 8px 12px;
+    
+    display: grid;
+    grid-template-columns: 1.5rem 1fr 1fr 1.2fr; 
     gap: 8px;
-    flex-wrap: wrap; 
+    align-items: center;
 }
 
 .matrix-cell-num {
@@ -633,14 +633,16 @@ li {
     color: var(--accent-gold);
     font-family: monospace;
     font-weight: 700;
-    min-width: 15px;
 }
 
 .matrix-input-group {
     display: flex;
     align-items: center;
-    gap: 4px;
-    flex: 1 1 auto; 
+    gap: 6px;
+    justify-content: flex-start;
+}
+
+.row-xp-display-group {
     justify-content: flex-end;
 }
 
@@ -650,6 +652,21 @@ li {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* --- DYNAMIC XP DISPLAY CHIP --- */
+.matrix-xp-output {
+    font-weight: bold;
+    color: #4caf50; 
+    padding: 2px 6px;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.15);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: monospace;
+    text-align: center;
+    min-width: 38px;
 }
 
 .matrix-input {
@@ -665,20 +682,6 @@ li {
     font-weight: bold;
     font-size: 0.8rem;
     border-radius: 4px;
-}
-
-.matrix-input:focus {
-    outline: none;
-    border-color: var(--accent-gold);
-}
-
-.matrix-input::-webkit-outer-spin-button,
-.matrix-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.matrix-input[type=number] {
-    -moz-appearance: textfield;
 }
 
 /* ==========================================================================
