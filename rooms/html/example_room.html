@@ -31,8 +31,9 @@
           // NARRATIVE & INITIAL ABILITY CHECKS
           // ==========================================
           
-          /* [string] (Optional) Block text displayed inside a styled box for DM flavor descriptions. */
-          "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of black water that remains unnaturally still.`,
+          /* [string] (Optional) Block text displayed inside a styled box for DM flavor descriptions. 
+             PRO TIP: You can use HTML inline markdown (like <strong> or <em>) to emphasize details. */
+          "readAloud": `The oppressive scent of old dust and mineral dampness thickens as you cross the threshold. Embedded in the crumbling ashlar masonry are thousands of humanoid skulls, their hollow eye sockets tracking your light source. In the center of the chamber, a circular dais crafted from obsidian pools with a shallow, mirror-like layer of <strong>black liquid</strong> that remains unnaturally still.`,
           
           /* [array of objects] (Optional) Quick-reference skill/saving throws rolled immediately upon entry. 
              Renders an integrated card layout pairing a custom prompt with discrete branches. */
@@ -47,8 +48,16 @@
             {
               "type": `Knowledge (Religion)`,
               "dc": `20`,
+              // prompt omitted intentionally here to show layout adaptability with no prompt text
               "success": `The skull patterns match the profane funereal rites of Nerull, God of Death. This room is consecrated unholy ground.`,
               "failure": `You recognize the ossuary style as exceptionally old, but can't pin down its specific religious origin.`
+            },
+            {
+              "type": `Listen Check`,
+              "dc": `14`,
+              "prompt": `Pausing to monitor the ambient soundscape of the catacomb...`,
+              "success": `Beneath the dripping of distant water, you catch a faint, synchronous grinding sound—like stone scraping bone.`,
+              "failure": `The room remains completely quiet.`
             }
           ],
 
@@ -114,7 +123,7 @@
               "initRoll": 21,                          // [number] Initial order placement sorting metric
               "hp": 44,                                // [number] Current running tracking health pools
               "maxHp": 44,                             // [number] Static reference threshold
-              "subdual": 0,                            // [number] (Optional) Stagger/unconscious tracing baseline
+              "subdual": 0,                            // [number] Stagger/unconscious tracing baseline
               "notes": `Hovering 5 feet over the unholy grease pool.`, // (Optional) Initial tracking annotations
               
               // --- Hover Tooltip System Sub-Properties ---
@@ -135,8 +144,21 @@
               "ac": `15 (+2 Dex, +3 natural)`,
               "saves": `Fort +0 / Ref +2 / Will +2`,
               "type": `Undead (Humanoid Skeleton)`,
-              "cr": 2,
+              "cr": 1, // Whole number verification target for tracker evaluation
               "link": `https://www.d20srd.org/srd/monsters/skeleton.htm`
+            },
+            {
+              "name": `Swarm of Animating Shards`,
+              "initRoll": 8,
+              "hp": 9,
+              "maxHp": 9,
+              "subdual": 2, // Testing initial subdual damage layout processing
+              "notes": `Composed of loose fragments broken off during combat.`,
+              "ac": `12 (+2 Dex), touch 12, flat-footed 10`,
+              "saves": `Fort +1 / Ref +1 / Will -1`,
+              "type": `Undead (Swarm, Tiny)`,
+              "cr": `1/2`, // Extends and exercises fractional string parsing loops within findCreaturesFromCsv math blocks
+              "link": null // Evaluates fallback layout configuration when no link is provided
             }
           ],
           
@@ -204,15 +226,15 @@
           // ==========================================
           
           /* [array of objects] (Optional) Mid-encounter events that change the room state. 
-             Renders an alert card container styled with severity tags ('info', 'warning', or 'danger'). */
+             Renders an alert card container styled with severity tags. Includes one example of each type
+             available in your theme suite ('danger', 'warning', 'info') to demonstrate full color ranges. */
           "specialEvents": [
             {
-              "severity": `danger`, // Theme engine styles: 'info' (Blue), 'warning' (Orange), or 'danger' (Red)
+              "severity": `danger`, // High threat level card styling (Red border/accents)
               "title": `Unraveling the Consecration`,
               "trigger": `If a PC channels positive energy or casts Holy Word inside the room.`,
               "readAloud": `A sharp crack rings out like fracturing ice. The skulls lining the walls begin to wail in unison as a wave of foul crimson mist leaks from their jaws.`,
-              
-              "mechanics": [ // [array of objects] Supporting mechanical challenges inside the special event card
+              "mechanics": [ 
                 {
                   "type": `Will Save`,
                   "dc": `15`,
@@ -221,6 +243,29 @@
                 }
               ],
               "outcome": `The obsidian pool catches fire with a cold, blue flame. The room loses its Consecrated properties, and the Wraith's deflection bonus drops by 2.`
+            },
+            {
+              "severity": `warning`, // Moderate/Tactical alert styling (Orange border/accents)
+              "title": `Igniting the Grease`,
+              "trigger": `Any open flame or fire attack interacting with the Obsidian Pool surface area.`,
+              "readAloud": `A low roar passes over the chamber floor as the greasy layer catches fire instantly, sending thick oily smoke curling toward the vaulted ceiling.`,
+              "mechanics": [
+                {
+                  "type": `Reflex Save`,
+                  "dc": `13`,
+                  "success": `The creature leaps clear of the expanding flames and takes no damage.`,
+                  "failure": `The creature takes 1d6 fire damage and catches fire directly.`
+                }
+              ],
+              "outcome": `The entire central pool space transforms into a hazardous field of white-hot columns dealing 1d6 ongoing thermal fire damage.`
+            },
+            {
+              "severity": `info`, // Exploration note or tactical update styling (Blue border/accents)
+              "title": `Echoes of Shifting Masonry`,
+              "trigger": `When the combat stretches onto or past Round 4.`,
+              "readAloud": `The continuous weight of combat actions causes thousands of loose decorative jawbones to tumble down from the architecture, cluttering the floor boards.`,
+              "mechanics": [], // Empty array validates fallback clean presentation styling when a card has no dice tests
+              "outcome": `All non-pool floor squares in the room now count as light difficult terrain (+1 square cost to move through).`
             }
           ],
 
@@ -234,6 +279,10 @@
             {
               "heading": `📜 Lore & Legends`, // Heading title block text line
               "content": `A Bardic Knowledge check (DC 18) reveals that this room was once the tomb of High Priest Malakar, who attempted to trade the souls of his entire congregation for immortality. He was betrayed, and his spirit was bound into the architecture itself.` // Interior block text markup
+            },
+            {
+              "heading": `🛠️ DM Adjustments`,
+              "content": `If your party is high-level or possesses an optimized Cleric, consider replacing the 3 basic skeletons with 2 <em>Advanced Dread Skeletons</em> to preserve the threat profile of the Consecrated unholy field.`
             }
           ]
         };
