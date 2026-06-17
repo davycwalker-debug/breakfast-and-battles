@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 4a: The Archer's Gallery</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==========================================
+          // CORE HEADER INFO
+          // ==========================================
+          
+          "title": `Area 4a: The Archer's Gallery`,
+
+          // ==========================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==========================================
+          
+          "readAloud": `The secret door slides aside to reveal a narrow passage descending a flight of stairs before opening into a small, cold stone chamber. 
+          Shafts of bright light cut through the dark, dust-moted air from a series of vertical arrow slits.<br><br>
+          One massive, heavily muscled orc occupies the room. 
+          He wears clean, well-oiled armor and is staring toward the stairs with an annoyed, defensive glare.`,
+          
+          "initialReadAloudChecks": [
+            {
+              "type": `Sense Motive`,
+              "dc": `14`,
+              "prompt": `Observing the guards' posture from the shadows of the stairway...`,
+              "success": `This warrior is brooding, clearly miserable about something.`,
+              "failure": `He looks like a large, well-equipped orc veteran who is currently highly alert and annoyed.`
+            }
+          ],
+
+          "environment": {
+            "dimensions": `20 ft. x 25 ft. room, 15 ft. ceiling.`, 
+            "illumination": `Dim light from the arrow slits mixed with heavy shadows.`, 
+            
+            "features": [
+              {
+                "name": `The Arrow Slits`,
+                "desc": `These narrow openings command the entire external approach to Area 1 and Area 2. 
+                Creatures firing through them enjoy Improved Cover (+8 AC, +4 to Reflex saves, improved evasion, and a +10 bonus on Hide checks).`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `North Wall`,
+                "desc": `A stone door leading down to Area 3 (The Rift Hall). From this side, the operating mechanism is entirely obvious and requires no check to open.`
+              }
+            ]
+          },
+
+          "setupPositions": `A single orc stands near the stone slab in the center of the room. 
+          If an alarm was explicitly raised in Area 1 or 2, he is tracking the arrow slits with his bow drawn, 
+          but remains positioned to quickly wheel around and face the secret stairs if the door opens.`,
+          
+          "development": `Krem is a member of Ulfe's favored inner circle, but he has been temporarily isolated here as punishment.
+          Because of this, he is terrified of looking weak or losing their standing. 
+          He fights with savage desperation to protect the entrance to the inner chambers.<br><br>
+          If the party eliminates this archer and subsequently withdraws from the mountain to rest, the vacancy is heavily corrected. 
+          He is replaced by one fresh orcs from Area 14.`,
+
+          "treasure": {
+            "carried": `Krem carries coinage totaling 4d6 sp and 1d10 gp and heavy iron medallions carved with the symbol of Bahgtru.`
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

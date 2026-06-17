@@ -1,14 +1,18 @@
-Location                    , Name             , InitRoll, Hp, MaxHp, Ac, Fort, Ref, Will, Type                              , Cr , Link
-Area 56: The Gulthias Tree  , Sharwyn Hucrele  , 15      ,  8,     8, 17, +2  , +1 , +2  , Medium Outsizer (Native)          , 1  , 
-Area 56: The Gulthias Tree  , Twig Blight 4    , 10      ,  7,     7, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
-Area 56: The Gulthias Tree  , Kulket           , 9       , 31,    31, 14, +7  , +3 , +0  , Medium Magical Beast              , 3  , 
-Area 56: The Gulthias Tree  , Twig Blight 1    , 6       ,  4,     4, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
-Area 56: The Gulthias Tree  , Belak the Outcast, 5       , 34,    34, 16, Ø   , +1 , +9  , Medium Undead (Augmented Humanoid), 5  , 
-Area 56: The Gulthias Tree  , Twig Blight 2    , 2       ,  6,     6, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
-Area 56: The Gulthias Tree  , Twig Blight 3    , 2       ,  5,     5, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
-Area 56: The Gulthias Tree  , Sir Braford      , 2       , 14,    14, 25, +7  , +2 , +5  , Medium Humanoid                   , 1  , 
-Area 56: The Gulthias Tree  , The Gulthias Tree, -9      , 60,    60,  9, +10 , +0 , +14 , Gargantuan Plant                  ,    , 
-Area 1: The End of the Trail, Wark             , 16      , 14,    14, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
-Area 1: The End of the Trail, Thark            , 9       ,  6,     6, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
-Area 3: The Rift Hall       , Korg             , 10      , 11,    11, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
-Area 3: The Rift Hall       , Gesh             , 8       , 14,    14, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Location                     , Name             , InitRoll, Hp, MaxHp, Ac, Fort, Ref, Will, Type                              , Cr , Link
+Area 56: The Gulthias Tree   , Sharwyn Hucrele  , 15      ,  8,     8, 17, +2  , +1 , +2  , Medium Outsizer (Native)          , 1  , 
+Area 56: The Gulthias Tree   , Twig Blight 4    , 10      ,  7,     7, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
+Area 56: The Gulthias Tree   , Kulket           , 9       , 31,    31, 14, +7  , +3 , +0  , Medium Magical Beast              , 3  , 
+Area 56: The Gulthias Tree   , Twig Blight 1    , 6       ,  4,     4, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
+Area 56: The Gulthias Tree   , Belak the Outcast, 5       , 34,    34, 16, Ø   , +1 , +9  , Medium Undead (Augmented Humanoid), 5  , 
+Area 56: The Gulthias Tree   , Twig Blight 2    , 2       ,  6,     6, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
+Area 56: The Gulthias Tree   , Twig Blight 3    , 2       ,  5,     5, 15, +3  , +1 , +0  , Small Plant                       , 1/3, https://www.realmshelps.net/monsters/block/Twig_Blight
+Area 56: The Gulthias Tree   , Sir Braford      , 2       , 14,    14, 25, +7  , +2 , +5  , Medium Humanoid                   , 1  , 
+Area 56: The Gulthias Tree   , The Gulthias Tree, -9      , 60,    60,  9, +10 , +0 , +14 , Gargantuan Plant                  ,    , 
+Area 1: The End of the Trail , Wark             , 16      , 14,    14, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 1: The End of the Trail , Thark            , 9       ,  6,     6, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 3: The Rift Hall        , Korg             , 10      , 11,    11, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 3: The Rift Hall        , Gesh             , 8       , 14,    14, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 4: The Archer's Gallery , Mug              , 12      ,  7,     7, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 4: The Archer's Gallery , Gorzk            , 24      , 14,    14, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 4: The Archer's Gallery , Vrak             , 13      ,  9,     9, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
+Area 4a: The Archer's Gallery, Krem             , 6       , 10,    10, 16, +3  , +4 , -2  , Medium Humanoid (Orc)             , 2  , 
