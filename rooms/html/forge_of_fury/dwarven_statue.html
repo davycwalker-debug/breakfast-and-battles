@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 13: Dwarven Statue</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 13: Dwarven Statue`,
+
+          "readAloud": `At the end of this passageway stands the statue of a fierce-looking dwarf in heavy mail armor. 
+          The stone warrior holds a sword in one hand and a smith's hammer in the other. 
+          The statue stands on a large stone pedestal; the whole structure is about 7 feet tall and must weigh many hundreds of pounds.`,
+
+          "environment": {
+            "dimensions": `10 ft. x 20 ft room, 20 ft. ceiling.`,
+            "illumination": `No light.`,
+            
+            "features": [
+              {
+                "name": `Dwarven Statue`,
+                "desc": `A statue of a fierce-looking dwarf in heavy mail armor. 
+                The stone warrior holds a sword in one hand and a smith's hammer in the other. 
+                The statue stands on a large stone pedestal; the whole structure is about 7 feet tall and must weigh many hundreds of pounds.`
+              }
+            ],
+            
+
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 14 (Bunkroom).`
+              },
+              {
+                "location": `South Opening`,
+                "desc": `A turn leading to Area 8 (Orc Commons).`
+              }
+            ]
+          },
+
+          "traps": [
+            {
+              "name": `Dwarven Gas`,
+              "cr": `2`,
+              "trigger": `A pressure plate in the floor about 5 feet in front of the statue triggers a gas trap.`,
+              "reset": `Automatic after 1 minute`,
+              "searchDc": `23`,
+              "disableDc": `13`,
+              "effect": `Suddenly, you feel a small click from the floor beneath your feet. 
+              The statue's bearded face slides open, rather like an oversized nutcracker, and greenish gas billows forth!<br><br>
+              Poison gas creates a 20-foot cone, initial Strength damage of 1d4 points, secondary Strength damage of 1d4 points; 
+              Fort save negates all (DC 13), second save negates secondary damage (DC 13).`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
