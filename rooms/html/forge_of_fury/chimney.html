@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 7: The Chimney</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 7: The Chimney`,
+
+          "readAloud": `A large, smoky fire crackles in the center of this room. 
+          Battered pots and kettles are stacked all over; clearly, this serves as a crude kitchen. 
+          You notice a distinct draft drawing the smoke up through a rough hole in the ceiling ofthe chamber.`,
+
+          "environment": {
+            "dimensions": `25 ft. x 20 ft. room, 80 ft. ceiling`,
+            "illumination": `Bright light from fire.`,
+            
+            "features": [
+              {
+                "name": `Chimney`,
+                "desc": `If the characters attempt to descend the chimney from above, they'll need to do some climbing. 
+                The shaft is about 80 feet high; it is irregular and rough but slippery (Climb DC 10). 
+                It's possible to anchor a rope at the top of the shaft and climb down the rope (DC 5). 
+                If a character fails his Climb check by 5 or more, he may make one Climb check to catch himself (DC 20) or fall the rest of the way down the chimney, 
+                incurring standard falling damage, plus 1d6 due to the hot coals. 
+                A careful climber can easily avoid the fire on the way down. 
+                Note that the crash of a character into the fire brings any orcs in area 5 to investigate.`
+              }
+            ],
+
+            "doors": [
+              {
+                "location": `Northwestern Hallway`,
+                "desc": `This hallway leads to Area 5 (Orc Cave).` 
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

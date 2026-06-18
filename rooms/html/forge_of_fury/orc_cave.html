@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 5: Orc Cave</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 5: Orc Cave`,
+
+          "readAloud": `This chamber is a natural cave with carefully smoothed walls and floor. 
+          Wet stone gleams, and you can discern at least four exits leading off into darkness. 
+          Red coals glow in the darkness of the far righthand passageway, and a crude wooden cage bars the closer right-hand passageway. 
+          The room is littered with orcish sleeping furs, loot, and rubbish. 
+          As you enter, two humans jump up from where they were curled up on the floor behind the wooden cage and begin crying for help.`,
+
+          "environment": {
+            "dimensions": `45 ft. x 25 ft. cave, 45 ft. ceiling`,
+            "illumination": `No light.`,
+
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 3 (The Rift Hall).`
+              },
+              {
+                "location": `North Hallway`,
+                "desc": `This hallway leads to Area 8 (Orc Commons).`
+              },
+              {
+                "location": `South Cage Door`,
+                "desc": `Opening the cage door to Area 6 (Prisoner Cave) requires an Open Lock check (DC 13), the key from Old Yarrack's pocket, or a sharp axe and a little time.`
+              },
+              {
+                "location": `Southeast Hallway`,
+                "desc": `This hallway leads to Area 7 (The Chimney).` 
+              },
+              {
+                "location": `Northeast Hallway`,
+                "desc": `This hallway leads to Area 8 (Orc Commons).`
+              }
+            ]
+          },
+
+          "treasure": {
+            "containers": [
+              {
+                "name": `Crates and Sacks`,
+                "contents": `The crates and sacks in this room contain mundane supplies flour, grain, nails, and so on. 
+                The total value is about 20 gp for about 500 pounds of material. 
+                Additionally, if characters are held captive in area 6, their equipment rests within an unlocked chest here.`
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

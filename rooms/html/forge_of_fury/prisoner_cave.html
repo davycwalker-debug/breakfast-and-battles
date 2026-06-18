@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 6: Prisoner Cave</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 6: Prisoner Cave`,
+
+          "readAloud": `A row of rough-hewn sapling trunks forms a crude but serviceable cage across the mouth of this small cave. 
+          A door locked with an iron padlock secures the room. Inside, you see two filthy prisoners dressed in tattered rags, crowding close to the door. 
+          "Thank Yondalla!" the first one cries out. "We're rescued!`,
+
+          "environment": {
+            "dimensions": `15 ft. x 15 ft. cave, 10 ft. ceiling`,
+            "illumination": `No light.`,
+
+            "doors": [
+              {
+                "location": `Northern Cage Door`,
+                "desc": `Opening the cage door to Area 6 (Prisoner Cave) requires an Open Lock check (DC 13), the key from Old Yarrack's pocket, or a sharp axe and a little time.`
+              }
+            ]
+          },
+
+          "development": `Any characters captured by the orcs eventually wind up in the cage in area 6, unless they demonstrate that they're too much trouble to be left alive.`,
+
+          "additionalSections": [
+            {
+              "heading": `Escort Mission`, // [String] Custom layout section title line.
+              "content": `If the characters free the prisoners and escort them back to their homes (a trip of about a day's travel each way) 
+              the travelers' families reward the heroes with four potions of cure light wounds. 
+              Taking the time to see Geradil and Courana to safety allows the monsters a chance to prepare for the characters' next visit.`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

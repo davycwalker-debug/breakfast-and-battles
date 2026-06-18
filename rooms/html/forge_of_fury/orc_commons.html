@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 8: Orc Commons</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 8: Orc Commons`,
+          
+          "readAloud": `Haphazard stacks of crates,barrels, sacks, and bundles litter this long, narrow cavern. 
+          The orcs appeared to have had some success in their raids of the small settlements and mountain roads in the area.
+          To the north, two finished stone passageways lead cast and west; to the south, an old well is full of murky water.`,
+
+          "environment": {
+            "dimensions": `90 ft. x 45 ft. room angled from northwest to southeast, connected to 95 ft. x 10 ft. hallway to the north, 30 ft. ceiling`,
+            "illumination": `No light.`,
+            
+            "doors": [
+              {
+                "location": `East Hallway`,
+                "desc": `The passage leading east to Area 10 (The Grand Stair) is completely blocked by tightly packed crates and sacks of flour. 
+                The orcs blocked this off to prevent the stirges in area 10 from getting out. 
+                If the characters move this material out of the way, they find that the passage leads another 20 feet to the east, 
+                ending in a iron gate stuffed with straw pallets.<br><br>
+                The iron gate blocks entry. Its lock is rusted shut; it can be picked with an Open Lock (DC 23), or forced open with a Strength check (DC 15). 
+                The orcs stuffed it with blankets and pallets to make it stirge-proof.`
+              },
+              {
+                "location": `Southeast Hallway (Secret)`,
+                "desc": `The passage to the southeast leads to a secret door, cleverly constructed to resemble the natural rock ofthe cave. 
+                A successful Search check (DC 18) discovers the door.`
+              },
+              {
+                "location": `Southwest Hallway`,
+                "desc": `This hallway leads to Area 5 (Orc Cave).`
+              },
+              {
+                "location": `Northwest Hallway`,
+                "desc": `This hallway leads to Area 5 (Orc Cave).`
+              },
+              {
+                "location": `North Hallway East Door`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 11 (Orc Quarters).`
+              },
+              {
+                "location": `North Hallway Southwest Door`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 12 (Great Ulfe).`
+              },
+              {
+                "location": `North Hallway Northwest Opening`,
+                "desc": `A turn leading to Area 13 (Dwarven Statue).`
+              }
+            ]
+          },
+
+          "treasure": {
+            "containers": [
+              {
+                "name": `Small Lockbox`,
+                "contents": `A small locked strongbox hidden behind a loose stone contains 180 gp and a flask of holy water.`
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
