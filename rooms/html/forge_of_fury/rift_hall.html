@@ -33,6 +33,52 @@
               "success": `Through the monochrome lens of your darkvision, the opposite platform appears only in stark, flat shades of ash and charcoal. 
               In the deep gloom of the far wall, two porcine humanoids stand watch before a matching stone door.`,
               "failure": `You're distracted by the rope bridge and don't see anything else.`
+            },
+            {
+              "type": `Listen Check`,
+              "dc": `20`,
+              "prompt": `The two sentries stand near the far pillars, arguing in hushed but intense guttural tones over the roar of the water below.`,
+              "success": `They are oblivious to your presence, their guttural arguments cutting sharply across the void, amplified by the cavern's acoustics.<br><br>
+              The older of the two wears a dented breastplate. 
+              Even in the colorless dark, you can make out the scratched, defaced outline of a holy symbol on his chest. He spits into the abyss.<br><br>
+              'Look at this bridge, Lok,' he grunts, his voice carrying over the rushing water as he yanks a guide rope with a calloused hand. 
+              'One bad winter and the whole thing rots through. And who do they send to fix it? Us. Every time.'<br><br>
+              The younger orc, Lok, stands perfectly rigid behind a boulder, holding a longbow at a textbook parade rest. 
+              His head is held high, his jaw thrust forward so his tusks gleam in the dimness.<br><br>
+              'It is a sacred duty, Vren,' Lok snaps, the zealotry sharp in his tone. 'We guard the throat of the Mountain Door. 
+              If the Great Ulfe trusts us with the chasm, it means we are the shield of the Chosen.'<br><br>
+              Vren lets out a dry, hacking laugh that dissolves into a cough. 
+              He leans his weight heavily against a nearby stone pillar, shifting the heavy falchion at his hip.<br><br>
+              'The shield? Kid, you've got rocks in your skull. Ulfe doesn't know your name. 
+              He doesn't even know my name, and I'm the one who opened the armory doors for his boys during the scramble.'<br><br>
+              Lok turns his head just enough to glare across the camp, his shoulders bunching with obvious disgust.<br><br>
+              'You did that to save your own skin because you saw Old Yarrack losing his grip. 
+              You thought you'd get a seat at the high table next to the giant. Instead, you're out here on the ropes with the rest of the dregs.'<br><br>
+              Vren's posture stiffens. He steps away from the pillar, his hand dropping flat against the hilt of his blade.<br><br>
+              'Watch your tongue, boy. I was breaking skulls under Yarrack while you were still weeping over your first training scar. 
+              I didn't save my skin, I chose the winning side. How was I supposed to know the old man would just... walk away and keep his room? 
+              How was I supposed to know Ulfe would just sit in the dark and wrestle dogs all day?'<br><br>
+              'Because he is a divine instrument!' Lok declares, his voice rising, echoing off the high ceiling. <br><br>
+              'Gruumsh speaks through his mass! He doesn't need to hand out favors like a weak human chieftain. He tests us. He is watching.'<br><br>
+              Vren scoffs, waving a dismissive, heavy hand.<br><br>
+              'The only thing Ulfe watches is the grease dripping off a roasted boar leg. 
+              If he's a divine instrument, then I'm an elf's uncle.'<br><br>
+              'Do not blaspheme!' Lok steps out from behind his rock, his chest puffed out aggressively toward his companion. <br><br>
+              'I am not like the others in this rotation. Thark is a coward who whimpered under Burdug's skirt, and Wark is so lazy he'd sleep through a dwarven raid. 
+              They deserve to freeze outside. But me? I put the hours in. I keep my form tight. 
+              When the Great Ulfe sees my discipline, he's going to move me up. Next month, I'll be in the Archers Gallery, just you wait. 
+              I'll be looking down on you from the slits.'<br><br>
+              Vren stares at the young warrior for a long, silent moment. 
+              Slowly, the tension leaves the veteran's shoulders, his posture slumping into something heavy and weary. 
+              He walks back to his pillar and slides down against the stone, pulling his thick cloak tightly around himself.<br><br>
+              'Yeah. The Gallery,' Vren murmurs, his head tilting aimlessly toward the swaying ropes of the bridge. 
+              'That's what they told me, too. 'Keep your edge sharp, Vren. Do your reps, Vren.' 
+              Then a six-hundred-pound monster walks into your cave, snaps a guy's back for talking too loud, and suddenly the rules don't matter anymore.'<br><br>
+              Lok turns his gaze down into the dark chasm, his hands gripping his bow so fiercely the weapon trembles.<br><br>
+              'They matter to me. I'm better than the dregs of this tribe. I'll prove it to him.'<br><br>
+              Vren closes his eyes, letting his head rest back against the cold stone.<br><br>
+              'Sure you will, kid. Just make sure you don't trip on the rope. Nobody's coming down there to fish you out.'<br><br>`,
+              "failure": `The roaring water drowns out the words, sounding like general, low-intensity grumbling.`
             }
           ],
 
@@ -99,62 +145,7 @@
 
           "treasure": {
             "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`
-          },
-
-          "specialEvents": [
-            {
-              "title": `Overheard Insecurities`,
-              "trigger": `If a PC approaches stealthily or listens across the chasm before combat begins.`,
-              "readAloud": `The two sentries stand near the far pillars, arguing in hushed but intense guttural tones over the roar of the water below.`,
-              "mechanics": [
-                {
-                  "type": `Listen Check`,
-                  "dc": `20`,
-                  "success": `They are oblivious to your presence, their guttural arguments cutting sharply across the void, amplified by the cavern's acoustics.<br><br>
-                  The older of the two wears a dented breastplate. 
-                  Even in the colorless dark, you can make out the scratched, defaced outline of a holy symbol on his chest. He spits into the abyss.<br><br>
-                  'Look at this bridge, Lok,' he grunts, his voice carrying over the rushing water as he yanks a guide rope with a calloused hand. 
-                  'One bad winter and the whole thing rots through. And who do they send to fix it? Us. Every time.'<br><br>
-                  The younger orc, Lok, stands perfectly rigid behind a boulder, holding a longbow at a textbook parade rest. 
-                  His head is held high, his jaw thrust forward so his tusks gleam in the dimness.<br><br>
-                  'It is a sacred duty, Vren,' Lok snaps, the zealotry sharp in his tone. 'We guard the throat of the Mountain Door. 
-                  If the Great Ulfe trusts us with the chasm, it means we are the shield of the Chosen.'<br><br>
-                  Vren lets out a dry, hacking laugh that dissolves into a cough. 
-                  He leans his weight heavily against a nearby stone pillar, shifting the heavy falchion at his hip.<br><br>
-                  'The shield? Kid, you've got rocks in your skull. Ulfe doesn't know your name. 
-                  He doesn't even know my name, and I'm the one who opened the armory doors for his boys during the scramble.'<br><br>
-                  Lok turns his head just enough to glare across the camp, his shoulders bunching with obvious disgust.<br><br>
-                  'You did that to save your own skin because you saw Old Yarrack losing his grip. 
-                  You thought you'd get a seat at the high table next to the giant. Instead, you're out here on the ropes with the rest of the dregs.'<br><br>
-                  Vren's posture stiffens. He steps away from the pillar, his hand dropping flat against the hilt of his blade.<br><br>
-                  'Watch your tongue, boy. I was breaking skulls under Yarrack while you were still weeping over your first training scar. 
-                  I didn't save my skin, I chose the winning side. How was I supposed to know the old man would just... walk away and keep his room? 
-                  How was I supposed to know Ulfe would just sit in the dark and wrestle dogs all day?'<br><br>
-                  'Because he is a divine instrument!' Lok declares, his voice rising, echoing off the high ceiling. <br><br>
-                  'Gruumsh speaks through his mass! He doesn't need to hand out favors like a weak human chieftain. He tests us. He is watching.'<br><br>
-                  Vren scoffs, waving a dismissive, heavy hand.<br><br>
-                  'The only thing Ulfe watches is the grease dripping off a roasted boar leg. 
-                  If he's a divine instrument, then I'm an elf's uncle.'<br><br>
-                  'Do not blaspheme!' Lok steps out from behind his rock, his chest puffed out aggressively toward his companion. <br><br>
-                  'I am not like the others in this rotation. Thark is a coward who whimpered under Burdug's skirt, and Wark is so lazy he'd sleep through a dwarven raid. 
-                  They deserve to freeze outside. But me? I put the hours in. I keep my form tight. 
-                  When the Great Ulfe sees my discipline, he's going to move me up. Next month, I'll be in the Archers Gallery, just you wait. 
-                  I'll be looking down on you from the slits.'<br><br>
-                  Vren stares at the young warrior for a long, silent moment. 
-                  Slowly, the tension leaves the veteran's shoulders, his posture slumping into something heavy and weary. 
-                  He walks back to his pillar and slides down against the stone, pulling his thick cloak tightly around himself.<br><br>
-                  'Yeah. The Gallery,' Vren murmurs, his head tilting aimlessly toward the swaying ropes of the bridge. 
-                  'That's what they told me, too. 'Keep your edge sharp, Vren. Do your reps, Vren.' 
-                  Then a six-hundred-pound monster walks into your cave, snaps a guy's back for talking too loud, and suddenly the rules don't matter anymore.'<br><br>
-                  Lok turns his gaze down into the dark chasm, his hands gripping his bow so fiercely the weapon trembles.<br><br>
-                  'They matter to me. I'm better than the dregs of this tribe. I'll prove it to him.'<br><br>
-                  Vren closes his eyes, letting his head rest back against the cold stone.<br><br>
-                  'Sure you will, kid. Just make sure you don't trip on the rope. Nobody's coming down there to fish you out.'<br><br>`,
-                  "failure": `The roaring water drowns out the words, sounding like general, low-intensity grumbling.`
-                }
-              ]
-            }
-          ]
+          }
         };
 
         renderRoomTemplate('encounter-output', roomData);

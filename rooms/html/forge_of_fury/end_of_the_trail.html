@@ -24,6 +24,51 @@
           Up ahead, the path opens onto a wide ledge before doubling back sharply into the darkness of the mountainside.
           Two heavily muscled orcs in rusted armor stand watch on the exposed flat. 
           Clutching longbows and constantly shifting their weight, they stare into the glaring heat rising from the Dun Hills below.`,
+
+          "initialReadAloudChecks": [
+            {
+              "type": `Listen Check`,
+              "dc": `9`,
+              "prompt": `The two speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
+              "success": `Crouched low behind a outcrop of jagged scree, you manage to tune out the whistling mountain wind and catch their low, grumbling conversation.<br><br>
+              With a greasy forearm, the first orc wipes his face.<br><br>
+              'I hate the sun. I hate the sky. I hate whoever it was decided trees were a good idea,' he mutters. 
+              'My eyes feel like they've been rubbed with rock salt.'<br><br>
+              Leaning heavily against the rock wall, his companion lets his heavy bow drop into the dust and unleashes a jaw-cracking yawn.<br><br>
+              'Then close 'em. That's what I do. Just blink real slow. Like, ten minutes a blink.'<br><br>
+              The sweaty orc glares, yanking his filthy leather hood down until it practically rests on his tusks.<br><br>
+              'And get my throat slit by a wandering bandit? No thanks. 
+              If I die out here, Old Yarrack will find a way to drag my corpse back around the bend just to make me do extra chore rotations.'<br><br>
+              Sliding a few inches down the rock, his companion locks his newly freed hands behind his head, propping his helmet against the stone.<br><br>
+              'Yarrack's a fossil. Always shouting about discipline—it's exhausting. I'm tired just looking at him. But then, he's always had it out for you. 
+              Siding with Burdug? Really? She can't even pull back her bow string.'<br><br>
+              Scowling, the first orc aggressively jerks the heavy falchion on his belt to a sharper angle.<br><br>
+              'Drop it, Wark. It made sense at the time. You work the angles, you get more results for less sweat. It was smart.'<br><br>
+              Snapping out of his slouch with boots crunching loudly on the gravel, Wark steps forward, shoving his face directly into his companion's space.<br><br>
+              'Yeah, well, 'smart' got you a one-way ticket to standing in the dirt with me, Thark. Look at us. Absolute legends of the tribe. The vanguard. The elite.'<br><br>
+              Thark grimaces, using the back of a filthy glove to aggressively wipe his brow.<br><br>
+              'Don't remind me. We should be sitting on cushions inside right now. We're the ones who brought him out of the hills. 
+              We were supposed to be blood-brothers by now, living the good life.'<br><br>
+              Kicking a loose pebble off the ledge, Wark watches it plummet into the heat rise below.<br><br>
+              'Instead, the big bastard takes the throne, eats a whole mountain goat, and kicks us out into the sun. Useless.'<br><br>
+              Thark's eyes go wide. Freezing, he stiffens like a board. His gaze darts frantically toward the high crags overlooking the ledge.<br><br>
+              'Well... he is blessed by Gruumsh,' Thark says, his voice suddenly lifting, ringing out artificially loud over the canyon. 
+              'Obviously. Look at the size of him. A divine instrument. Clearly.'<br><br>
+              Slumping back into his patch of shade against the cliff, Wark lets out a lazy, mocking laugh.<br><br>
+              'Oh, absolutely. Divine. The way he fell asleep mid-sentence yesterday and spilled ale all over his chest? Pure holiness. Truly inspiring.'<br><br>
+              Thark keeps his eyes glued to the rocks above, listening intently for any shifting gravel. 
+              Hearing nothing but the wind, he steps closer to Wark, dropping his voice to a harsh, hurried whisper.<br><br>
+              'Shut up, Wark! Someone will hear you. You want your spine turned into a pretzel like poor Toof? Just say the line. He's the Chosen.'<br><br>
+              Wark doesn't even bother to lift his chin from his chest.<br><br>
+              'Fine, fine. All hail the big guy. May his nap be peaceful and his meat be fatty. 
+              I just wish the 'Chosen' would choose to let us inside. My boots are full of gravel.'<br><br>
+              Thark's shoulders drop as he turns back to face the vast emptiness of the canyon, squinting through the glare.<br><br>
+              'Next shift change is in two hours. If the Rift Hall boys are late again, I'm putting a blunt arrow through someone's ear.'<br><br>
+              Wark chuckles, letting his head loll to the side as he settles back into the shadows.<br><br>
+              'Don't bother. Just close your eyes, Thark. If we ignore the sun, maybe it'll go away.'`,
+              "failure": `The words are lost to the wind, sounding like general, low-intensity grumbling about work.`
+            }
+          ],
           
           "environment": {
             "dimensions": `95 ft. x 10 ft. path opening up to a 35 ft. x 30 ft. ledge.`, 
@@ -90,54 +135,6 @@
                   "dc": `13`,
                   "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
                   "failure": `nothing stands out to you.`
-                }
-              ]
-            },
-            {
-              "title": `Overheard Griping`,
-              "trigger": `If a PC approaches stealthily and spends a moment listening to the guards.`,
-              "readAloud": `The two speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
-              "mechanics": [
-                {
-                  "type": `Listen Check`,
-                  "dc": `9`,
-                  "success": `Crouched low behind a outcrop of jagged scree, you manage to tune out the whistling mountain wind and catch their low, grumbling conversation.<br><br>
-                  With a greasy forearm, the first orc wipes his face.<br><br>
-                  'I hate the sun. I hate the sky. I hate whoever it was decided trees were a good idea,' he mutters. 
-                  'My eyes feel like they've been rubbed with rock salt.'<br><br>
-                  Leaning heavily against the rock wall, his companion lets his heavy bow drop into the dust and unleashes a jaw-cracking yawn.<br><br>
-                  'Then close 'em. That's what I do. Just blink real slow. Like, ten minutes a blink.'<br><br>
-                  The sweaty orc glares, yanking his filthy leather hood down until it practically rests on his tusks.<br><br>
-                  'And get my throat slit by a wandering bandit? No thanks. 
-                  If I die out here, Old Yarrack will find a way to drag my corpse back around the bend just to make me do extra chore rotations.'<br><br>
-                  Sliding a few inches down the rock, his companion locks his newly freed hands behind his head, propping his helmet against the stone.<br><br>
-                  'Yarrack's a fossil. Always shouting about discipline—it's exhausting. I'm tired just looking at him. But then, he's always had it out for you. 
-                  Siding with Burdug? Really? She can't even pull back her bow string.'<br><br>
-                  Scowling, the first orc aggressively jerks the heavy falchion on his belt to a sharper angle.<br><br>
-                  'Drop it, Wark. It made sense at the time. You work the angles, you get more results for less sweat. It was smart.'<br><br>
-                  Snapping out of his slouch with boots crunching loudly on the gravel, Wark steps forward, shoving his face directly into his companion's space.<br><br>
-                  'Yeah, well, 'smart' got you a one-way ticket to standing in the dirt with me, Thark. Look at us. Absolute legends of the tribe. The vanguard. The elite.'<br><br>
-                  Thark grimaces, using the back of a filthy glove to aggressively wipe his brow.<br><br>
-                  'Don't remind me. We should be sitting on cushions inside right now. We're the ones who brought him out of the hills. 
-                  We were supposed to be blood-brothers by now, living the good life.'<br><br>
-                  Kicking a loose pebble off the ledge, Wark watches it plummet into the heat rise below.<br><br>
-                  'Instead, the big bastard takes the throne, eats a whole mountain goat, and kicks us out into the sun. Useless.'<br><br>
-                  Thark's eyes go wide. Freezing, he stiffens like a board. His gaze darts frantically toward the high crags overlooking the ledge.<br><br>
-                  'Well... he is blessed by Gruumsh,' Thark says, his voice suddenly lifting, ringing out artificially loud over the canyon. 
-                  'Obviously. Look at the size of him. A divine instrument. Clearly.'<br><br>
-                  Slumping back into his patch of shade against the cliff, Wark lets out a lazy, mocking laugh.<br><br>
-                  'Oh, absolutely. Divine. The way he fell asleep mid-sentence yesterday and spilled ale all over his chest? Pure holiness. Truly inspiring.'<br><br>
-                  Thark keeps his eyes glued to the rocks above, listening intently for any shifting gravel. 
-                  Hearing nothing but the wind, he steps closer to Wark, dropping his voice to a harsh, hurried whisper.<br><br>
-                  'Shut up, Wark! Someone will hear you. You want your spine turned into a pretzel like poor Toof? Just say the line. He's the Chosen.'<br><br>
-                  Wark doesn't even bother to lift his chin from his chest.<br><br>
-                  'Fine, fine. All hail the big guy. May his nap be peaceful and his meat be fatty. 
-                  I just wish the 'Chosen' would choose to let us inside. My boots are full of gravel.'<br><br>
-                  Thark's shoulders drop as he turns back to face the vast emptiness of the canyon, squinting through the glare.<br><br>
-                  'Next shift change is in two hours. If the Rift Hall boys are late again, I'm putting a blunt arrow through someone's ear.'<br><br>
-                  Wark chuckles, letting his head loll to the side as he settles back into the shadows.<br><br>
-                  'Don't bother. Just close your eyes, Thark. If we ignore the sun, maybe it'll go away.'`,
-                  "failure": `The words are lost to the wind, sounding like general, low-intensity grumbling about work.`
                 }
               ]
             }
