@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 10: The Grand Stair</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 10: The Grand Stair`,
+
+          "readAloud": `The ceiling soars 30 feet high in the center of this impressive chamber, and the walls are carved in images of dwarves at their forges. 
+          Two large stone doors exit to the north and south. Several old skeletons lie scattered near the northern door. 
+          A gate of wrought iron stands in the western wall. In the center of the floor, a natural rift descends sharply. 
+          Dozens of stone steps lead down into darkness. Fromfar below you can hear the distant sound of running water, and a curious buzzing sound.`,
+
+          "environment": {
+            "dimensions": `90 ft. x 35 ft. room angling in to 15 ft. at the ends, 30 ft. ceiling`,
+            "illumination": `No light.`,
+            
+            "features": [
+              {
+                "name": `Skeletons`,
+                "desc": `The skeletons are orcs killed by the trap during the end of the old battle; 
+                they're dressed in the rusted remnants of chain hauberks that show signs of severe scorching. 
+                Rusted axe-heads lie near the bodies, with no sign of the weapons' hafts.`
+              }
+            ],
+
+            "doors": [
+              {
+                "location": `South Door (Locked)`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 9 (Orc Shaman). The door to area 9 is locked from the other side.
+                Characters in this room can pick the lock (Open Lock DC 23), but only by pushing the key out first (this warns Burdug that someone's coming).`
+              },
+              {
+                "location": `North Door (Trapped)`,
+                "desc": `The door to the north is a deadly trap. The door is carved in the image of a glowering dwarven face. 
+                On either side of the northern door, eight small spouts about 10 feet above the floor are carefully worked into the stonework design 
+                (The small circles on the map mark their location). These spouts are part of the fire trap, 
+                but they might be spotted by any character using a Search check (DC 18) on these wall sections.`
+              },
+              {
+                "location": `West Door (Locked; Blocked)`,
+                "desc": `The iron gate blocks entry. Its lock is rusted shut; it can be picked with an Open Lock (DC 23), or forced open with a Strength check (DC 15). 
+                The orcs stuffed it with blankets and pallets to make it stirge-proof.<br><br>
+                The passage leading east to Area 8 (Orc Commons) is completely blocked by tightly packed crates and sacks of flour. 
+                The orcs blocked this off to prevent the stirges in area 10 from getting out. 
+                If the characters move this material out of the way, they find that the passage leads another 20 feet to the east, 
+                ending in a iron gate stuffed with straw pallets.`
+              },
+              {
+                "location": `Center Rift`,
+                "desc": `This rift descends to Area 15 (Cold Stream).`
+              },
+            ]
+          },
+
+          "setupPositions": `4 stiges in the stairwell.`,
+
+          "tactics": {
+            "individual": [
+              {
+                "name": `Stirges`,
+                "strategy": `If a stirge attaches to a victim via touch attack, 
+                it causes 1d4 points of Constitution damage per round until it has drained 4 points, 
+                and its AC decreases to AC 12. Sated stirges flap off to digest their meal down in area 17 of the Glitterhame.`
+              }
+            ]
+          },
+
+          "traps": [
+            {
+              "name": `Fire Trap`,
+              "cr": `2`,
+              "trigger": `Opening the door to the north triggers a murderous trap.`,
+              "reset": `If the characters allow the door to the trap room to shut, the trap resets. Fortunately, it only has enough fuel for only one more spray.`,
+              "searchDc": `23`,
+              "disableDc": `23`,
+              "effect": `When the door is pulled open, a counterweight mechanism pumps burning alchemist's fire from the spouts, 
+              dousing any character standing north of the dotted line marked on the map.<br><br>
+              Alchemist's fire causes 4d6 points of damage in first round, then causes 1d6 points of damage each round after that until 10 rounds pass; 
+              Reflex save each round halves damage first round and negates damage after first round (DC 23), no saves needed after first successful save.<br><br>
+              Burning characters can be extinguished by the actions of their comrades. 
+              After the door is opened, the counterweight pulls it shut again in 2 rounds. 
+              Fast-thinking characters can jam it open to inspect the small room behind it. 
+              The only contents of the trap room are the counterweight mechanism, piping for the alchemist's fire, 
+              and two almost-empty copper drums containing about 20 gallons of reagents for alchemist's fire 
+              (the liquids are mixed and then sprayed out, as alchemist's fire ignites on contact with air). 
+              Piping runs out through the small channels to the southeast and southwest to the spouts overlooking the kill zone.<br><br>
+              To manufacture alchemist's fire from the reagents in the tanks, the characters must first puncture and drain each tank, then combine the reagents safely. 
+              This requires about 2 hours of tedious work, and a successful Craft (Alchemy) check (DC 18) to recover 3d4 batches of alchemist's fire. 
+              If the character fails the Alchemy check, the reagents ignite during the process and burn away. 
+              If the character fails by 5 or more, he's caught in the fire and suffers the normal effects for being struck by alchemist's fire.`
+            }
+          ],
+
+          "specialEvents": [
+            {
+              "severity": `danger`, 
+              "title": `Stirge Ambush`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": `If the characters make any sounds, allow the stirges to make a Listen check.`,
+              "readAloud": `The buzzing grows louder, and then four large flyingthings birds, insects, bats, it's hard to say emerge from the stairwell and arrow toward you!`,
+  
+              "outcome": `Roll initiative!`
+            }
+          ],
+
+          "additionalSections": [
+            {
+              "heading": `Stire Deterrent`,
+              "content": `Large quantities of smoke or fire discourage the stirges and keep them from approaching within 5 feet of the source of the smoke 
+          (a single torch or lantern is not enough). 
+          Characters set on fire by the trap described below don't have to worry about the stirges.`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
