@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 11: Orc Quarters</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 11: Orc Quarters`,
+          
+          "readAloud": `Barrels, crates, and sacks of foodstuffs line the walls of this chamber. 
+          Among the loot, four oversized straw pallets and other simple furnishings show that this room now serves as a bunkroom. 
+          Four bestial humanoids with feral eyes are cleaning their weapons and mending their gear; 
+          they spring to their feet and roar in challenge!`,
+
+          "environment": {
+            "dimensions": `30 ft. x 30 ft. room, 15 ft. ceiling`,
+            "illumination": `No light`,
+            
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 8 (Orc Commons).`
+              }
+            ]
+          },
+
+          "setupPositions": `4 orcs lounge around the room.`,
+
+          "development": `If the characters raid the complex and depart, two of these orcs will be posted to area 2 to guard the entrance of the dungeon against future attacks.`,
+          
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`,
+            
+            "containers": [
+              {
+                "name": `Iron Cauldron`,
+                "contents": `The orcs have 210 gp stashed in an old iron cauldron hidden under one vermin-infested bed.`
+              },
+              {
+                "name": `Bedding`,
+                "contents": `A small pouch concealed in another orc's bedding contains a topazworth 200 gp and two onyx stones worth 50 gp each.`
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
