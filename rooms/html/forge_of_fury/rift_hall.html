@@ -17,30 +17,22 @@
         const roomData = {
           "title": `Area 3: The Rift Hall`,
 
-          "readAloud": `The great door opens into a large hall. 
-          You are standing on a narrow ledge overlooking a deep, dark crevasse that cuts the room in two, 
-          completely obstructing passage to the opposite side. 
-          A dangerous looking rope bridge, frayed and thin, spans the gap. 
-          Water gurgles and rushes somewhere far below. 
-          Two copper braziers burn brightly on either side of the door, illuminating this half of the room. 
-          You can just barely make out the opposite platform on the other side of the chasm.`,
+          "readAloud": `The great door open into a vast hall. 
+          You press yourself against the cold stone of the inner doorframe, keeping to the shadows. 
+          Just a few paces ahead, a narrow ledge overlooks a deep, vertical crevasse that cuts the room in two, shearing away any path to the opposite side.<br><br>
+          A frayed, dangerously thin rope bridge spans the gulf. Somewhere far below, water gurgles and rushes, its muffled roar echoing up the stone walls.
+          Twin copper braziers burn brightly on either side of the doorway, casting a warm glow over your half of the ledge. 
+          Beyond their firelight, the far side of the chasm swallows all color. 
+          `,
           
           "initialReadAloudChecks": [
             {
               "type": `Spot Check`,
               "dc": `0`,
               "prompt": `You look beyond the rope bridge...`,
-              "success": `In the shadows of the natural rock of the chamber's far side, two porcine humanoids stand watch before another stone door. 
-              They snarl a challenge, revealing yellowed tusks, and raise their bows to fire on you!`,
+              "success": `Through the monochrome lens of your darkvision, the opposite platform appears only in stark, flat shades of ash and charcoal. 
+              In the deep gloom of the far wall, two porcine humanoids stand watch before a matching stone door.`,
               "failure": `You're distracted by the rope bridge and don't see anything else.`
-            },
-            {
-              "type": `Sense Motive`,
-              "dc": `12`,
-              "prompt": `Observing the guards' aggressive posturing across the chasm...`,
-              "success": `They are bouncing on their toes and aggressively flexing their arms as they pull their bows. 
-              Their movements look overly performative and hyperactive, suggesting they are overcompensating with intense bravado rather than exhibiting calm, disciplined readiness.`,
-              "failure": `They look like standard, highly aggressive orc sentries.`
             }
           ],
 
@@ -118,37 +110,47 @@
                 {
                   "type": `Listen Check`,
                   "dc": `20`,
-                  "success": `You manage to tune out the roaring water and catch their defensive bickering clearly.<br><br>
-                  <strong>Korg:</strong> "...did you see the way Yarrack looked at me when I brought him those iron bolts? 
-                  He did that little clicking thing with his tongue. 
-                  He thinks because my forearms aren't the size of hams, I don't respect the traditional grind."<br><br>
-                  <strong>Gesh:</strong> "Forget Yarrack. Yarrack's done. 
-                  He spent an hour yesterday screaming at the bunkroom boys about 'mind-muscle connection' and old-school volume. 
-                  Old man belongs in a retirement cavern. The Great Ulfe didn't lift a single boulder to get those traps. It's all genetics, bro. 
-                  We just gotta hang around the council room enough and some of that mass has gotta rub off."<br><br>
-                  <strong>Korg:</strong> "I know, but Burdug's guys keep leaving those charcoal charts on the wall. 
-                  One of them told me my bow draw form was 'grossly unoptimized for maximum upper-back activation.' It messed with my head, Gesh. 
-                  What if my lats <em>are</em> sleeping?"<br><br>
-                  <strong>Gesh:</strong> "They're trying to mind-trick you because they can't handle real weight. Keep flexing. 
-                  If anyone comes across that bridge, we pin 'em to the wood. 
-                  Ulfe sees us holding the line, we're guaranteed a spot in the inner circle. No more bridge duty."`,
+                  "success": `They are oblivious to your presence, their guttural arguments cutting sharply across the void, amplified by the cavern's acoustics.<br><br>
+                  The older of the two wears a dented breastplate. 
+                  Even in the colorless dark, you can make out the scratched, defaced outline of a holy symbol on his chest. He spits into the abyss.<br><br>
+                  "Look at this bridge, Lok," he grunts, his voice carrying over the rushing water as he yanks a guide rope with a calloused hand. 
+                  "One bad winter and the whole thing rots through. And who do they send to fix it? Us. Every time."<br><br>
+                  The younger orc, Lok, stands perfectly rigid behind a boulder, holding a longbow at a textbook parade rest. 
+                  His head is held high, his jaw thrust forward so his tusks gleam in the dimness.<br><br>
+                  "It is a sacred duty, Vren," Lok snaps, the zealotry sharp in his tone. "We guard the throat of the Mountain Door. 
+                  If the Great Ulfe trusts us with the chasm, it means we are the shield of the Chosen."<br><br>
+                  Vren lets out a dry, hacking laugh that dissolves into a cough. 
+                  He leans his weight heavily against a nearby stone pillar, shifting the heavy falchion at his hip.<br><br>
+                  "The shield? Kid, you've got rocks in your skull. Ulfe doesn't know your name. 
+                  He doesn't even know my name, and I'm the one who opened the armory doors for his boys during the scramble."<br><br>
+                  Lok turns his head just enough to glare across the camp, his shoulders bunching with obvious disgust.<br><br>
+                  "You did that to save your own skin because you saw Old Yarrack losing his grip. 
+                  You thought you'd get a seat at the high table next to the giant. Instead, you're out here on the ropes with the rest of the dregs."<br><br>
+                  Vren's posture stiffens. He steps away from the pillar, his hand dropping flat against the hilt of his blade.<br><br>
+                  "Watch your tongue, boy. I was breaking skulls under Yarrack while you were still weeping over your first training scar. 
+                  I didn't save my skin, I chose the winning side. How was I supposed to know the old man would just... walk away and keep his room? 
+                  How was I supposed to know Ulfe would just sit in the dark and wrestle dogs all day?"<br><br>
+                  "Because he is a divine instrument!" Lok declares, his voice rising, echoing off the high ceiling. <br><br>
+                  "Gruumsh speaks through his mass! He doesn't need to hand out favors like a weak human chieftain. He tests us. He is watching."<br><br>
+                  Vren scoffs, waving a dismissive, heavy hand.<br><br>
+                  "The only thing Ulfe watches is the grease dripping off a roasted boar leg. 
+                  If he's a divine instrument, then I'm an elf's uncle."<br><br>
+                  "Do not blaspheme!" Lok steps out from behind his rock, his chest puffed out aggressively toward his companion. <br><br>
+                  "I am not like the others in this rotation. Thark is a coward who whimpered under Burdug's skirt, and Wark is so lazy he'd sleep through a dwarven raid. 
+                  They deserve to freeze outside. But me? I put the hours in. I keep my form tight. 
+                  When the Great Ulfe sees my discipline, he's going to move me up. Next month, I'll be in the Archers Gallery, just you wait. 
+                  I'll be looking down on you from the slits."<br><br>
+                  Vren stares at the young warrior for a long, silent moment. 
+                  Slowly, the tension leaves the veteran's shoulders, his posture slumping into something heavy and weary. 
+                  He walks back to his pillar and slides down against the stone, pulling his thick cloak tightly around himself.<br><br>
+                  "Yeah. The Gallery," Vren murmurs, his head tilting aimlessly toward the swaying ropes of the bridge. 
+                  "That's what they told me, too. 'Keep your edge sharp, Vren. Do your reps, Vren.' 
+                  Then a six-hundred-pound monster walks into your cave, snaps a guy's back for talking too loud, and suddenly the rules don't matter anymore."<br><br>
+                  Lok turns his gaze down into the dark chasm, his hands gripping his bow so fiercely the weapon trembles.<br><br>
+                  "They matter to me. I'm better than the dregs of this tribe. I'll prove it to him."<br><br>
+                  Vren closes his eyes, letting his head rest back against the cold stone.<br><br>
+                  "Sure you will, kid. Just make sure you don't trip on the rope. Nobody's coming down there to fish you out."<br><br>`,
                   "failure": `The roaring water drowns out the words, sounding like general, low-intensity grumbling.`
-                }
-              ]
-            },
-            {
-              "title": `Exploiting the Clout-Chasers`,
-              "trigger": `If a character shouts across the chasm to parley, trick, or bluff the archers instead of initiating combat.`,
-              "readAloud": `The two archers lower their bows slightly, exchanging wide-eyed, defensive glances as your voice echoes through the cavern hall.`,
-              "mechanics": [
-                {
-                  "type": `Bluff or Intimidation Check (+4 circumstance if Overheard Insecurities event completed successfully)`,
-                  "dc": `16`,
-                  "success": `The speaker successfully preys upon the guards' deep professional imposter syndrome. 
-                  Confused and deeply insecure about their form and standing, Korg stammers and lowers his weapon entirely. <br><br>
-                  They decline to cut the bridge ropes and hold their fire, allowing the party to negotiate or cross safely, 
-                  provided the party guarantees not to tell the rest of the camp that they let the party pass.`,
-                  "failure": `The guards grow paranoid that they are being mocked. Worried about looking weak, they shout a war cry and open fire.`
                 }
               ]
             }

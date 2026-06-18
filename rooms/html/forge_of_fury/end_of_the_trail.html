@@ -17,26 +17,13 @@
         const roomData = {
           "title": `Area 1: The End of the Trail`,
           
-          "readAloud": `The mountain path climbs up one last, steep switchback toward a bare shoulder of rock. 
-          The hillside rises sharply on your right, while a precipitous drop on your left offers a spectacular view of the jagged canyon floor far below. <br><br>
-          Debris and rubbish lie scattered over the last hundred yards of the trail like the remnants of a poorly managed campsite. 
-          Discarded waterskins, fragments of charred bone, and splintered kegs have been tossed carelessly over the cliffside. 
-          Up ahead, the path opens onto a wide ledge before doubling back sharply into the darkness of the mountainside.<br><br>
-          Two heavily muscled orcs in scale armor stand watch on the ledge. 
-          They are completely inattentive, slouched over their weapons, 
-          and radiating a level of profound boredom that suggests they are currently contemplating the sheer misery of their shift.`,
-          
-          "initialReadAloudChecks": [
-            {
-              "type": `Sense Motive`,
-              "dc": `14`,
-              "prompt": `Observing the guards' body language from a distance...`,
-              "success": `The sentries exhibit a total lack of discipline. They aren't scanning the approach; 
-              they are slumped heavily against the stone, moving with sluggish, fatigued physical reactions. 
-              They look less like terrifying raiders and more like line talent who completely detest their assignment.`,
-              "failure": `They look like standard, albeit exceptionally lazy, sentries.`
-            }
-          ],
+          "readAloud": `The mountain path climbs up one last, steep switchback toward a bare shoulder of grey rock. 
+          The hillside rises sharply on your right, pressing you hard against the stone, 
+          while a precipitous drop on your left offers a spectacular view of the jagged canyon floor far below.
+          Discarded waterskins, fragments of charred marrow bone, and splintered kegs litter the edge, tossed carelessly over the cliffside. 
+          Up ahead, the path opens onto a wide ledge before doubling back sharply into the darkness of the mountainside.
+          Two heavily muscled orcs in rusted armor stand watch on the exposed flat. 
+          Clutching longbows and constantly shifting their weight, they stare into the glaring heat rising from the Dun Hills below.`,
           
           "environment": {
             "dimensions": `95 ft. x 10 ft. path opening up to a 35 ft. x 30 ft. ledge.`, 
@@ -67,10 +54,8 @@
           },
           
           "setupPositions": `Wark and Thark are standing in the northwest corner of the ledge.
-          They are in position to see the pathway leading up, 
-          but are not paying attention and receive a -4 penalty to Spot and Listen checks.<br><br>
-          Wark and Thark are not the only enemies here; 
-          archers positioned in area 4 can freely take potshots at the characters.`,
+          They are in position to see the pathway leading up, but are not paying attention and receive a -4 penalty to Spot and Listen checks.<br><br>
+          Wark and Thark are not the only enemies here; archers positioned in area 4 can freely take potshots at the characters.`,
           
           "development": `If attacked or confronted by more than one visible character without prior negotiation, 
           Wark and Thark call out a warning to the orcs in area 4 as soon as they get a chance to act.
@@ -111,43 +96,48 @@
             {
               "title": `Overheard Griping`,
               "trigger": `If a PC approaches stealthily and spends a moment listening to the guards.`,
-              "readAloud": `The two sentries speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
+              "readAloud": `The two speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
               "mechanics": [
                 {
                   "type": `Listen Check`,
                   "dc": `9`,
-                  "success": `You manage to tune out the mountain wind and catch their low, grumbling conversation perfectly.<br><br>
-                  <strong>Thark:</strong> "...still can't believe it. We're the ones who found him in the woods. We brought him here. 
-                  We told Yarrack, 'Look at the size of this guy, he's a total freak.' We practically handed him the tribe."<br><br>
-                  <strong>Wark:</strong> "And now we're pacing back and forth in the sun. I've been walking for six hours, Thark. 
-                  My legs feel like wet noodles. I'm practically evaporating."<br><br>
-                  <strong>Thark:</strong> "Exactly! He's a complete fraud. He doesn't even do anything! 
-                  He just sits in his quarters eating whole boars and baby-talking his stupid dogs while we're out here walking off our breakfast. 
-                  Yarrack made us carry literal boulders up the mountain and Burdug made us draw circles on the wall just to look at a barbell, 
-                  but at least they made us do something."<br><br>
-                  <strong>Wark:</strong> "Ulfe doesn't care about the grind. He just wants to pet his little puppies. 
-                  Honestly, if someone brought me a decent slab of cured venison right now, I'd let a whole army of Dwarves walk right past the slits. 
-                  I can't keep doing this cardio."`,
+                  "success": `Crouched low behind a outcrop of jagged scree, you manage to tune out the whistling mountain wind and catch their low, grumbling conversation.<br><br>
+                  With a greasy forearm, the first orc wipes his face.<br><br>
+                  "I hate the sun. I hate the sky. I hate whoever it was decided trees were a good idea," he mutters. 
+                  "My eyes feel like they've been rubbed with rock salt."<br><br>
+                  Leaning heavily against the rock wall, his companion lets his heavy bow drop into the dust and unleashes a jaw-cracking yawn.<br><br>
+                  "Then close 'em. That's what I do. Just blink real slow. Like, ten minutes a blink."<br><br>
+                  The sweaty orc glares, yanking his filthy leather hood down until it practically rests on his tusks.<br><br>
+                  "And get my throat slit by a wandering bandit? No thanks. 
+                  If I die out here, Old Yarrack will find a way to drag my corpse back around the bend just to make me do extra chore rotations."<br><br>
+                  Sliding a few inches down the rock, his companion locks his newly freed hands behind his head, propping his helmet against the stone.<br><br>
+                  "Yarrack's a fossil. Always shouting about discipline—it's exhausting. I'm tired just looking at him. But then, he's always had it out for you. 
+                  Siding with Burdug? Really? She can't even pull back her bow string."<br><br>
+                  Scowling, the first orc aggressively jerks the heavy falchion on his belt to a sharper angle.<br><br>
+                  "Drop it, Wark. It made sense at the time. You work the angles, you get more results for less sweat. It was smart."<br><br>
+                  Snapping out of his slouch with boots crunching loudly on the gravel, Wark steps forward, shoving his face directly into his companion's space.<br><br>
+                  "Yeah, well, 'smart' got you a one-way ticket to standing in the dirt with me, Thark. Look at us. Absolute legends of the tribe. The vanguard. The elite."<br><br>
+                  Thark grimaces, using the back of a filthy glove to aggressively wipe his brow.<br><br>
+                  "Don't remind me. We should be sitting on cushions inside right now. We're the ones who brought him out of the hills. 
+                  We were supposed to be blood-brothers by now, living the good life."<br><br>
+                  Kicking a loose pebble off the ledge, Wark watches it plummet into the heat rise below.<br><br>
+                  "Instead, the big bastard takes the throne, eats a whole mountain goat, and kicks us out into the sun. Useless."<br><br>
+                  Thark's eyes go wide. Freezing, he stiffens like a board. His gaze darts frantically toward the high crags overlooking the ledge.<br><br>
+                  "Well... he is blessed by Gruumsh," Thark says, his voice suddenly lifting, ringing out artificially loud over the canyon. 
+                  "Obviously. Look at the size of him. A divine instrument. Clearly."<br><br>
+                  Slumping back into his patch of shade against the cliff, Wark lets out a lazy, mocking laugh.<br><br>
+                  "Oh, absolutely. Divine. The way he fell asleep mid-sentence yesterday and spilled ale all over his chest? Pure holiness. Truly inspiring."<br><br>
+                  Thark keeps his eyes glued to the rocks above, listening intently for any shifting gravel. 
+                  Hearing nothing but the wind, he steps closer to Wark, dropping his voice to a harsh, hurried whisper.<br><br>
+                  "Shut up, Wark! Someone will hear you. You want your spine turned into a pretzel like poor Toof? Just say the line. He's the Chosen."<br><br>
+                  Wark doesn't even bother to lift his chin from his chest.<br><br>
+                  "Fine, fine. All hail the big guy. May his nap be peaceful and his meat be fatty. 
+                  I just wish the 'Chosen' would choose to let us inside. My boots are full of gravel."<br><br>
+                  Thark's shoulders drop as he turns back to face the vast emptiness of the canyon, squinting through the glare.<br><br>
+                  "Next shift change is in two hours. If the Rift Hall boys are late again, I'm putting a blunt arrow through someone's ear."<br><br>
+                  Wark chuckles, letting his head loll to the side as he settles back into the shadows.<br><br>
+                  "Don't bother. Just close your eyes, Thark. If we ignore the sun, maybe it'll go away."`,
                   "failure": `The words are lost to the wind, sounding like general, low-intensity grumbling about work.`
-                }
-              ]
-            },
-            {
-              "title": `Exploiting the Low Totem Pole`,
-              "trigger": `If a character steps out to openly parley or offer a bribe instead of initiating combat.`,
-              "readAloud": `The two guards snap out of their slouch, shifting their weight awkwardly as their eyes lock onto you. 
-              They handle their weapons with a mix of defensive hostility and a profound desire to be literally anywhere else.`,
-              "mechanics": [
-                {
-                  "type": `Diplomacy Check (+4 circumstance if Overheard Griping event completed successfully)`,
-                  "dc": `13`,
-                  "success": `The speaker handles the confrontation smoothly without triggering immediate panic. 
-                  Wark inspects the bribe, looks up at the sky, and sighs. 'You know what? I'm declaring this an unscheduled rest day.' <br><br>
-                  They deliberately decline to call out a warning to the archers in Area 4, allowing the party to pass down the southern ledge unmolested. 
-                  Before turning their attention entirely to the food, Thark spits over the edge and mutters, 
-                  'Watch yourself inside. The boss cares more about his pets than his actual soldiers. The whole camp is a powder keg right now.'`,
-                  "failure": `The guards grow paranoid that their blatant negligence will be spotted by the archers overhead in Area 4. 
-                  Panicking, they draw weapons and sound the alarm.`
                 }
               ]
             }
