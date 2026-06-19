@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 9: Orc Shaman</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 9: Orc Shaman`,
+
+          "readAloud": `The room is cluttered with crude furnishings, and the air is hazy with the smoke of a small cooking fire. 
+          Dozens of yellowed skulls are suspended from the ceiling by fraying ropes strung through holes punched in the bone. 
+          An orc in a ragged black robe looks up from her work with her face twisted in an expression of sheer rage!`,
+
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": ``, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": ``, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": ``, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": ``  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": ``, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": ``      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+
+          // ==================================================================
+          // DIALOGUE OPTIONS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
+             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
+          "dialogueTree": [
+            {
+              "prompt": ``,   // [String] The trigger question, approach, or topic initiated by the party.
+              "speaker": ``,  // [String] Name or role designation prefix for the responding entity.
+              "response": ``  // [Markdown String] Verbal reply or physical reaction from the speaking entity.
+            }
+          ],
+
+          "setupPositions": `Two orcs guard the door, while Burdug engages writes on the west wall.`,
+
+          "tactics": {
+            "initialRound": `Burdug and two orc females attempt to repel any intruders. 
+            Even if the characters have somehow negotiated for passage through the orc-held areas, Burdug does not tolerate interruptions of any sort.`,
+            
+            /* [Array of Objects] Specialized behavioral matrices mapped to specific creature types in the roster. */
+            "individual": [
+              {
+                "name": ``,     // [String] Matches the exact creature type identifier name.
+                "strategy": ``  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
+              }
+            ]
+          },
+          
+          /* [Markdown String] (Optional) Eventualities, long-term consequences, reinforcement arrivals, or aftermath.
+             UI PRESENTATION: Automatically wrapped inside a clean, distinctive dashed-border development layout block. */
+          "development": ``,
+
+          // ==================================================================
+          // HAZARDS, TRAPS & COMPLICATION CARDS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Automated defenses, localized environmental dangers, or hidden traps.
+             UI PRESENTATION: Renders high-visibility threat blocks themed with an aggressive red danger palette. */
+          "traps": [
+            {
+              "name": ``,      // [String] The identifying title of the hazard or architectural trap.
+              "cr": ``,        // [String/Number] Challenge Rating evaluation metric for threat scaling.
+              "trigger": ``,   // [Markdown String] The exact physical action or event that sets off the hazard.
+              "reset": ``,     // [String] Mechanical reset window rules (e.g., "Automatic after 1 round", "Manual", "None").
+              "searchDc": ``,  // [String/Number] The specific mechanical DC required to detect or find the hazard.
+              "disableDc": ``, // [String/Number] The specific mechanical tool/skill DC required to safely bypass or neutralize it.
+              "effect": ``     // [Markdown String] Mechanical results, damage calculation dice rolls, saves, and conditions applied.
+            }
+          ],
+
+          // ==================================================================
+          // REWARDS, LOOT & CONTAINER ARRAYS
+          // ==================================================================
+          
+          /* [Object] (Optional) Physical assets, currency, and gear available to be looted from the scene. */
+          "treasure": {
+            "carried": ``, // [Markdown String] Items directly equipped or carried on the person of monsters/entities.
+            
+            /* [Array of Objects] Stationary storage elements, hidden compartments, chests, or loose piles. */
+            "containers": [
+              {
+                "name": ``,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
+                "contents": ``  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
+              }
+            ]
+          },
+
+          // ==================================================================
+          // SPECIAL DYNAMIC TRIGGER CARDS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
+             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
+             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
+          "specialEvents": [
+            {
+              "severity": `danger`, 
+              "title": ``,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": ``,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": ``, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
+                {
+                  "type": ``,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": ``,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": ``, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": ``  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                }
+              ],
+              "outcome": `` // [Markdown String] Lasting structural environmental modifications or secondary phase effects.
+            }
+          ],
+
+          // ==================================================================
+          // CUSTOM EXTENSION BLOCKS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Open-ended structural extensions for completely non-standard room elements.
+             UI PRESENTATION: Outputs independent structural blocks rendering entirely uninhibited custom content layout trees. */
+          "additionalSections": [
+            {
+              "heading": ``, // [String] Custom layout section title line.
+              "content": ``  // [Raw HTML/Markdown String] Customized text markup, custom tables, or unique rules text blocks.
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
