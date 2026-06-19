@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forge of Fury Mountain Door Level Interactive Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css"/>
+    
+    <style>
+        html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; background-color: #1a1a1a; overflow: hidden; }
+        .leaflet-popup-content-wrapper { background: #232323; color: white; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.45); }
+        .leaflet-popup-tip { background: #232323; }
+        #coords { position: absolute; bottom: 20px; left: 20px; z-index: 1000; background: rgba(20,20,20,0.85); color: white; padding: 10px 14px; border-radius: 12px; font-family: sans-serif; font-size: 14px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.35); pointer-events: none; }
+        .click-ripple { width: 18px; height: 18px; border-radius: 50%; background: rgba(0, 140, 255, 0.8); position: absolute; transform: translate(-50%, -50%); animation: ripple 0.8s ease-out forwards; pointer-events: none; }
+        @keyframes ripple { 0% { transform: translate(-50%, -50%) scale(0.4); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(5); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="coords">Click anywhere on the map</div>
+<div id="dm-panel" style="position: absolute; bottom: 20px; right: 20px; z-index: 1000; background: rgba(20,20,20,0.85); color: white; padding: 10px 14px; border-radius: 12px; font-family: sans-serif; font-size: 14px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.35); display: flex; gap: 8px; align-items: center;">
+    <button id="dm-toggle-btn" onclick="handleDMButtonClick()" style="background: #d62828; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">🔒 Unlock DM Layers</button>
+    <div id="dm-input-wrapper" style="display: none; gap: 6px;">
+        <input type="password" id="dm-pass" placeholder="Password" style="background: #333; color: white; border: 1px solid #444; padding: 6px; border-radius: 6px; width: 100px; font-size: 12px;">
+        <button onclick="checkDMPassword()" style="background: #2a9d8f; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">Go</button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
+<script src="../atlas.js"></script> <script>
+    initializeAtlas({
+        imgUrl: 'https://github.com/davycwalker-debug/breakfast-and-battles/blob/main/maps/images/mountain_door.png?raw=true',
+        imgWidth: 1600,
+        imgHeight: 600,
+        markers: [
+            { type: "room", encountered: false, y: 848, x: 708,  text: "The End of the Trail", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/end_of_the_trail.html" },
+            { type: "room", encountered: false, y: 1066, x: 708,  text: "The Dwarf-Door", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_door.html" },
+            { type: "room", encountered: false, y: 593, x: 708,  text: "The Rift Hall", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/rift_hall.html" },
+            { type: "room", encountered: false, y: 848, x: 866,  text: "The Archer's Gallery", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/archers_gallery.html" },
+            { type: "room", encountered: false, y: 1066, x: 866,  text: "The Archer's Gallery", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/archers_gallery_a.html" },
+            { type: "room", encountered: false, y: 1245, x: 708,  text: "Orc Cave", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_cave.html" },
+            { type: "room", encountered: false, y: 1045, x: 588,  text: "Prisoner Cave", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/prisoner_cave.html" },
+            { type: "room", encountered: false, y: 1133, x: 588,  text: "The Chimney", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/chimney.html" },
+            { type: "room", encountered: false, y: 1225, x: 845,  text: "Orc Commons", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_commons.html" },
+            { type: "room", encountered: false, y: 1220, x: 570,  text: "Orc Shaman", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_shaman.html" },
+            { type: "room", encountered: false, y: 958, x: 1045,  text: "The Grand Stair", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/grand_stair.html" },
+            { type: "room", encountered: false, y: 848, x: 1070,  text: "Orc Quarters", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_quarters.html" },
+            { type: "room", encountered: false, y: 631, x: 1028,  text: "Great Ulfe", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/great_ulfe.html" },
+            { type: "room", encountered: false, y: 229, x: 835,  text: "Dwarven Statue", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarven_statue.html" },
+            { type: "room", encountered: false, y: 229, x: 835,  text: "Bunkroom", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/bunkroom.html" }
+            
+        ]
+    });
+</script>
+</body>
+</html>
