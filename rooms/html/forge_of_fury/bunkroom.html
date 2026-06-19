@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 14: Bunkroom</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 14: Bunkroom`,
+
+          "readAloud": `The door to the northern bunkroom is thick, heavy timber, scarred by old axe-marks and stained with sweat. 
+          Pushing it open, the scent of stale ale, old iron, and dry straw hits your nose. 
+          The room is stark, filled with iron bars, heavy boulders with carved finger-grips, and with broken, shattered thighbones littering the stone floor.
+          Four massive, aging orcs stand in a semicircle, their torsos bare, revealing muscles like knotted oak and skin crisscrossed with decades of training scars. 
+          At the back of the room, sitting on a simple wooden stool, is an orc even more ancient. 
+          His tusks are yellowed, his hair is a thin mane of gray, and his plate armor is dented but meticulously oiled. 
+          He rests his heavy hands on a massive falchion planted tip-down in the stone.
+          As you step inside, the four veterans instantly block the path, their faces twisted in aggressive, brash defiance. The foremost veteran steps forward.
+          'Hold your stride, pissants,' he growls. 'This is the hall of the Fist. You don't speak to the Marshal just because you walked through a door. 
+          If you want his ear, you prove your hide can take the bite of the mountain. We have four trials for you, yeah? Trial One: The Bloodletting.'`,
+
+          "environment": {
+            "dimensions": `50 ft. x 30 ft., 15 ft. ceiling`,
+            "illumination": `No light`,
+            
+            "doors": [
+              {
+                "location": `East Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 13 (Dwarven Statue).`
+              }
+            ]
+          },
+
+          "dialogueTree": [
+            {
+              "prompt": `If the party asks about a peaceful solution:`,
+              "speaker": `Yarrack`,
+              "response": `He lets out a short, mocking bark of a laugh, resting his heavy hands on the pommel of his falchion.<br><br>
+              'Peace? You come to the bunkroom of the Fist looking for a truce? Bahgtru's law is simple: the strong crush the weak to make the tribe hard. 
+              There is no middle ground. No treaties scratched in ink. Great Ulfe rules because he broke the last warrior who spat at him. 
+              He stays on the throne until someone breaks him in return. You want peace from this mountain? Help me tear his head off. 
+              That is the only contract that clears your path.'`
+            },
+            {
+              "prompt": `If the players point out that the ogre Ulfe is stronger/bigger than him:`,
+              "speaker": `Yarrack`,
+              "response": `He narrows his single good eye, his jaw tightening without a hint of fear.<br><br>
+              'The ogre is big, yes. But fat and bone do not make a warlord. Ulfe is a dog who ran from Azarr Kul's host because he lacked the iron gut to march. 
+              He has no discipline. He sits in the dark and rots. My body is old, my gray knees lock up—I know my limits. 
+              That is why I need your muscle next to mine. Together, our weight will match his bulk and rip him from the throne.'`
+            },
+            {
+              "prompt": `If the party asks about the four veterans in the room:`,
+              "speaker": `Yarrack`,
+              "response": `He looks over at the three standing orcs, and then down at the one unconscious on the floor, nodding with gruff pride.<br><br>
+              'My old guard. Devoted to the Fist. For decades, I have driven them to lift, sweat, and bleed to keep this clan heavy. 
+              They are brash, and they like to prove their skin is thick through ugly games—as you just saw. 
+              They are angry because I chose you to be my shield-brothers for the honor duel instead of them. 
+              But their shoulders are failing, and their bones are brittle. They belong here, while we go to the high hall."`
+            },
+            {
+              "prompt": `If the party asks what happens to Burdug after he takes control:`,
+              "speaker": `Yarrack`,
+              "response": `His expression grows cold and uncompromising.<br><br>
+              'She will be stripped of her influence for however long I continue to live. Burdug is a sickness of weakness. 
+              She wants our warriors to rely on angles and leverage rather than the grit in their guts. Her ways are an insult to the Leg-Breaker. 
+              I will not kill her—she still prays to Ilneval, and the tribe needs eyes for strategy when we march—but she will sit in her dark room, 
+              scratching her little plans exactly where I tell her to. She will be a tool, nothing more. If she tries another coup, she goes into the chasm.'`
+            },
+            {
+              "prompt": `If the party threatens him:`,
+              "speaker": `Yarrack`,
+              "response": `The remaining three veterans instantly step forward, their chests puffed out, their thick arms tensing as they prepare to defend their commander to the death. 
+              Yarrack does not flinch. He steps past them, his face inches from the party's vanguard.
+              'You have a heavy fist, but do not mistake this bunkroom for an open field. We are followers of the Leg-Breaker. 
+              We do not run, and we do not beg. Before your steel can cleave my old chest, my boys and I will snap your limbs and paint these stones with your marrow. 
+              You can bleed out in a dark corner of the north hall, or you can stand as my shield-brothers and find true glory. Choose your path.'`
+            },
+            {
+              "prompt": `If the party asks about his terms for an alliance:`,
+              "speaker": `Yarrack`,
+              "response": `He points his calloused finger at two of you.<br><br>
+              'The terms are iron and blood. Great Ulfe sits on my throne because he has the raw bulk of a giant. 
+              My boys here... their knees are gray, their shoulders are failing. They do not have the mass left to stand before his axe. 
+              I need you two. You will be my shield-brothers. We march into the high hall openly. No hiding, no sorcery. 
+              We challenge the giant and his two worgs, Vak and Thrag, to an honor duel. We break them through pure power, or our bones paint his floor.'`
+            },
+            {
+              "prompt": `If the party suggests using poison or sneaking into Ulfe's room:`,
+              "speaker": `Yarrack`,
+              "response": `His expression instantly turns to iron, his gray brow furrowing in deep disgust.<br><br>
+              'Never. Cunning and clever tricks rot the strength of a tribe. 
+              That is the filth Burdug spreads with her brass wheels and her little drawings. 
+              If we kill a chieftain like thieves in the night, the tribe learns nothing but cowardice. 
+              A leader must be an apex, proven in the glare of the torches. 
+              If you use snake-tricks to take his head, I will not touch his crown, and I will not call you brothers.'`
+            },
+            {
+              "prompt": `If the party asks about Burdu's forge of the flesh:`,
+              "speaker": `Yarrack`,
+              "response": `He spits on the broken bones at his feet, his fist tightening on his hilt.<br><br>
+              'Gnomish toys. She takes our young blood and puts them on brass tracks and pulleys, telling them that angles matter more than the grit in your gut. 
+              She removes the friction! But friction is what makes an orc hard. 
+              She tried a coup with her science, and the tribe laughed her out of the room because she is small enough to throw over a wall. 
+              Then she brought the ogre in to be her muscle, and the beast stepped on her strings. She is a sickness.'`
+            },
+            {
+              "prompt": `If the party asks what happens if Ulfe just happens to die mysteriously anyway:`,
+              "speaker": `Yarrack`,
+              "response": `He narrows his eyes, a cold, practical calculation passing over his old face.<br><br>
+              'If the ogre dies in his sleep, or if the mountain caves in on his head... I will not ask who loosened the stones. 
+              The tribe will look for strength to stop the panic, and my old guard is the only wall left standing. 
+              I will take the throne by default to keep the dregs from tearing each other apart. 
+              But you will get no honors from me, and no silver from my chest. A crown stolen from a ghost carries no glory.'`
+            },
+            {
+              "prompt": `If the party has killed other orcs in the stronghold and he finds out:`,
+              "speaker": `Yarrack`,
+              "response": `He stiffens, his gaze dropping to your armor and the stains on your blades. The room goes deathly still.<br><br>
+              'I will not work with killers who cull my clan from the dark. 
+              Bahgtru demands we winnow the weak, yes, but we do it face-to-face in the Festival of Strength. 
+              I will not turn my back on you, for you have proven your hand is heavy—but our pact is dead. 
+              Leave this room, or draw your steel and let the All-Father judge our mass.'`
+            },
+            {
+              "prompt": `If the party demands payment or gold upfront:`,
+              "speaker": `Yarrack`,
+              "response": `He cracks a dry, hacking laugh.<br><br>
+              'I have no silver to give you. 
+              If you stand as my shield-brothers and we take the giant's head honorably, you will have the eternal alliance of a hardened warband. 
+              When we march on the Channath Vale, your enemies will be our enemies."`
+            },
+            {
+              "prompt": `If the party accepts his terms for the honor duel:`,
+              "speaker": `Yarrack`,
+              "response": `He slams his fist against his dented breastplate, the metal ringing loud in the small bunkroom. The remaining three veterans stomp their boots in unison.<br><br>
+              'Then let the sun tear from the sky! We march, straight into the brute's teeth. 
+              Keep your feet planted, drive your power from the earth, and let Bahgtru look down upon the slaughter. To the high hall!'`
+            }
+          ],
+          "setupPositions": `4 veteran orcs stand around the room, while Yarrack sits on a bench in the back.`,
+          
+          "tactics": {
+            "initialRound": `Yarrack assumes his Bolstering Voice stance and activates his Steady Hand and Force of Will auras.`,
+          },
+          
+          "development": `In two days, the first patrol of four orcs returns and reinforces this room. 
+          Any orcs slain in area 4 are replaced by orcs from this room. 
+          The characters might encounter as many as nine orcs in this room if they wait too long before entering the dungeon.`,
+
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`,
+
+            "containers": [
+              {
+                "name": `Loose Stone`,
+                "contents": `A loose stone on the south wall conceals a sack of 250 sp, 40 gp, and a potion of cure light wounds.`
+              }
+            ]
+          },
+
+          "specialEvents": [
+            {
+              "severity": `danger`, 
+              "title": `Bloodletting`,
+              "trigger": `If the players agree to the Trials:`,
+              "readAloud": `'Simple rules,' the veteran sneers. 
+              'No armor. No dodging. No clever trickery. I strike you once, full force. Then you strike me once, full force. 
+              We see whose marrow is thickest and who has the most life left in the frame. Step up, or get out.'`,
+              "outcome": `The ancient orc watches his veteran drop from the single, massive strike, a slow, grim smile cutting through his gray beard. 
+              He rises from his stool, his joints popping like dry twigs.
+              'Good,' he rumbles, his voice like grinding river stones. 
+              'The Leg-Breaker loves a heavy fist. You have the mass. Now, let us see if you have the stomach for a real hunt.'`
+            }
+          ],
+
+          // ==================================================================
+          // CUSTOM EXTENSION BLOCKS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Open-ended structural extensions for completely non-standard room elements.
+             UI PRESENTATION: Outputs independent structural blocks rendering entirely uninhibited custom content layout trees. */
+          "additionalSections": [
+            {
+              "heading": ``, // [String] Custom layout section title line.
+              "content": ``  // [Raw HTML/Markdown String] Customized text markup, custom tables, or unique rules text blocks.
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
