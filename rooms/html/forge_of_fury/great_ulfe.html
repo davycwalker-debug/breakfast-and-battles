@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 12: Great Ulfe</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 12: Great Ulfe`,
+
+          "readAloud": `Beyond the door lies a small chamber covered in poorly cured animal hides and illuminated by smoking torches in bronze sconces. 
+          The smell is indescribable. A monstrous creature of about 10 feet in height with warty, brown skin and greasy dark hair steps forward, a massive axe in one hand. 
+          Two huge worgs strain at chains held closely in the other hand.<br><br>
+          'You think to challenge the Great Ulfe?' the creature booms as it rushes at you. 'Vak! Thrag! At them!'
+          The humanoid drops the chains, the worgs spring forward, and the being charges with a roar of rage!`,
+
+          "environment": {
+            "dimensions": `30 ft. x 25 ft. room, 25 ft. ceiling`,
+            "illumination": `Bright light from braziers.`,
+
+            "doors": [
+              {
+                "location": `North Wall`,
+                "desc": `An ironbound door (1 in. thick; hardness 6; hp 25; AC 5; break DC 25) leading to Area 12 (Great Ulfe). 
+                If the characters try the door and fail to open it on the first go, Great Ulfe realizes he's about to be attacked. 
+                He releases the two worgs and uses a readied action (a partial charge against the first enemy to enter the room).`
+              },
+            ]
+          },
+
+          "setupPositions": `Great Ulfe stands at the center of the room, his worgs pulling at their chains towards the center of the room.`,
+
+          "development": `If the characters defeat the Great Ulfe but fail to defeat all of the orcs, one of the surviving orcs claims leadership of the tribe. 
+          If the characters kill at least thirteen orcs in addition to Ulfe, 
+          the survivors abandon the Mountain Door and head for the hills as soon as the characters leave this portion of the dungeon.`,
+
+          "treasure": {
+            "containers": [
+              {
+                "name": `Two Large Chests`,
+                "contents": `Great Ulfe keeps his treasure in two large wooden chests against the south wall. 
+                His hoard consists of 440 gp, 1,600 sp, a potion of spider climb, and a +1 rapier. 
+                (Great Ulfe thinks the rapier is just too small for an ogre to use with any dignity.)`
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
