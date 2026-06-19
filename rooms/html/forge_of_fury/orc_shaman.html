@@ -17,143 +17,258 @@
         const roomData = {
           "title": `Area 9: Orc Shaman`,
 
-          "readAloud": `The room is cluttered with crude furnishings, and the air is hazy with the smoke of a small cooking fire. 
-          Dozens of yellowed skulls are suspended from the ceiling by fraying ropes strung through holes punched in the bone. 
-          An orc in a ragged black robe looks up from her work with her face twisted in an expression of sheer rage!`,
+          "readAloud": `The wooden door opens into a large stone hall. 
+          The air carries the sharp scent of hot grease, sweat, and shaved iron. 
+          Unlike the chaotic filth of the previous caves, this room is orderly. 
+          Heavy iron frames, polished brass tracks, and counterweighted chains are bolted directly into the stone walls, completely dominating the space.<br><br>
+          Near a low wooden bench decorated with bone carvings, a smaller, wire-strong orc woman stands inspecting a complex series of brass gears. 
+          She wears clean leather armor and a iron medallion depicting a downward-pointing sword. 
+          A massive, single-edged bastard sword is strapped to her back. Two broad-shouldered half-orcs stand nearby, watching your entrance with disciplined focus.<br><br>
+          She turns, her dark eyes sizing up each of your frames with immediate, cold calculation. She does not reach for her blade. 
+          'Look at them, Xalug,' she says, her voice smooth but carrying an undeniable edge of authority. 
+          'Poor alignment. Imbalanced loads. Yet, they made it through the outer guard. Stand down, boys. If they came to bleed, they would have charged by now. 
+          Speak your peace, travelers, or step up to the iron.'`,
 
-
-          // ==================================================================
-          // ENVIRONMENT & ARCHITECTURE
-          // ==================================================================
-          
-          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
           "environment": {
-            "dimensions": ``, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
-            "illumination": ``, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            "dimensions": `35 ft. x 15 ft. room, 15 ft. ceiling`,
+            "illumination": `No light`,
             
-            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
-               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
             "features": [
               {
-                "name": ``, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
-                "desc": ``  // [Markdown String] Detailed description, physical attributes, or interaction limits
+                "name": `Hack Squat`,
+                "desc": `Two heavy iron rails are fixed to the stone at a 45-degree angle. 
+                Mounted directly on top of the dark iron are highly intricate, polished brass tracks. 
+                A heavy iron carriage sits motionless near the bottom, fitted with a backrest and shoulder pads made of coarse, black boar-hide. 
+                Massive tusks are driven into the frame near the top. 
+                Pinned to the sides of the carriage are precision-machined brass rollers resting flush against the polished tracks.`
+              },
+              {
+                "name": `Seated Leg Curl`,
+                "desc": `A tall chair made of iron plates is lined with scarred leather panels tied down with dried sinew. 
+                A thick, horizontal iron bar sits on a heavy hinge over the seat, connected to a vertical iron arm that hangs motionless. 
+                Heavy iron support struts are welded securely to the sides of the frame alongside the arm's path. 
+                Bolted beneath the iron seat is a heavy, fully enclosed iron box.`
+              },
+              {
+                "name": `Hip Thrust`,
+                "desc": `A low-set rectangular iron frame holds a flat, hide-covered bench and an angled, pitted iron footplate. 
+                A long, heavy iron lever arm curves over the bench. 
+                The main pivot joint is tightly clamped by a bright brass collar that stands out against the dark iron. 
+                The rear axle cap is decorated with the bleached skull of a giant boar.`
+              },
+              {
+                "name": `Donkey Calf Raise`,
+                "desc": `This waist-high structure features a chest support platform made of split logs wrapped in dark, spotted cat pelt. 
+                A thick iron cross-beam runs directly beneath the logs for support. 
+                A thick iron beam extends from a rear brass hinge housing, ending in a wide crossbar. 
+                The corners of the frame are reinforced with thick, L-shaped iron plates riveted into the metal, 
+                with flat reptile shoulder blades pinned over them with heavy spikes.`
+              },
+              {
+                "name": `Ab Crunch`,
+                "desc": `A tall frame is crowned by a polished human skull. 
+                It features twin vertical iron rods that are buffed bare, clean, and dry. 
+                A sliding carriage fitted with internal brass sleeve collars holds a flat chest pad and two long spikes carrying heavy iron wheels. 
+                The carriage sits completely still at the bottom of the rods.`
+              },
+              {
+                "name": `Hanging Leg Raise`,
+                "desc": `A tall tower welded together from thick, square iron bars, featuring a row of sharp teeth embedded into the leather trim of the armrests.`
+              },
+              {
+                "name": `Landmine`,
+                "desc": `A heavy, octagonal cast-iron plate sits flat on the floor. 
+                At its center is a ball-and-socket joint holding a hollow iron sleeve. 
+                A long, solid iron rod sits inside the sleeve, locked tight with a screw that has a carved bone handle. 
+                The far end of the rod holds a crossbar handle wrapped tightly in strips of raw leather.`
+              },
+              {
+                "name": `Lat Pulldown`,
+                "desc": `A tall iron beam curves up and over a low leather stool, a string of clacking finger bones hanging from the center of an overhead handlebar. 
+                A heavy, wide-grooved brass pulley is integrated into the thick iron frame, secured by a solid iron cotter pin. 
+                Threaded through the pulley is a thick, braided iron chain that runs straight down into a stack of rectangular iron plates.`
+              },
+              {
+                "name": `Lateral Raise`,
+                "desc": `An iron frame holds a padded hide seat. 
+                Large split bones are bound to the outer edges of two independent iron levers that curve outward from the rear. 
+                Where the levers meet the main frame, two bright brass flywheels sit completely motionless.`
+              },
+              {
+                "name": `Fly`,
+                "desc": `A tall, black iron structure features two exposed, heavy brass interlocking gears at the top. 
+                The gears are partially housed within a protective cage made of interlocking bone plates. 
+                Two long iron arms hang down from these gears, positioned on either side of a central leather backrest. 
+                Braided brass lines disappear into the hollow column of the frame.`
+              },
+              {
+                "name": `Incline Chest Press`,
+                "desc": `A leather-wrapped bench is set at an upward tilt inside a rugged, multi-sided iron cage, decorated at the top with a pattern of carved bone shards. 
+                Two independent arms extend forward past the bench, ending in multi-angled handles. 
+                Where the arms connect to the rear axle, custom iron collar sleeves fit tightly over the gnomish brass hubs, 
+                locked in place by solid steel pins driven through pre-drilled holes.`
+              },
+              {
+                "name": `Overhead Triceps Extension`,
+                "desc": `This iron frame features an upright post flanked by two skeletal human forearms bolted directly into the metal. 
+                Overhead, a wavy iron handlebar connects to a braided brass wire cord. 
+                The cord snakes through a small pulley down to a curved, teardrop-shaped brass cam, 
+                which connects directly to a weighted iron lever arm anchored to a heavy pivot axle near the floor.`
+              },
+              {
+                "name": `Preacher Curl`,
+                "desc": `A low stool faces a wide, slanted wooden desk wrapped in thick leather. 
+                The sides of the wood are decorated with scrimshaw patterns on inlaid ivory plates. 
+                At the base of the desk sits a wavy iron bar. The axle of the bar is attached to a heavy, notched brass wheel carrying a weight-loading peg.`
               }
             ],
             
-            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
             "doors": [
               {
-                "location": ``, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
-                "desc": ``      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+                "location": `West Wall`,
+                "desc": `This stone door leads to Area 8 (Orc Commons).`
+              },
+              {
+                "location": `North Wall (Locked)`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to Area 10 (The Grand Stair). 
+                The door is locked, but the key is resting in the door.`
               }
             ]
           },
 
-          // ==================================================================
-          // DIALOGUE OPTIONS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
-             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
           "dialogueTree": [
             {
-              "prompt": ``,   // [String] The trigger question, approach, or topic initiated by the party.
-              "speaker": ``,  // [String] Name or role designation prefix for the responding entity.
-              "response": ``  // [Markdown String] Verbal reply or physical reaction from the speaking entity.
-            }
-          ],
-
-          "setupPositions": `Two orcs guard the door, while Burdug engages writes on the west wall.`,
-
-          "tactics": {
-            "initialRound": `Burdug and two orc females attempt to repel any intruders. 
-            Even if the characters have somehow negotiated for passage through the orc-held areas, Burdug does not tolerate interruptions of any sort.`,
-            
-            /* [Array of Objects] Specialized behavioral matrices mapped to specific creature types in the roster. */
-            "individual": [
-              {
-                "name": ``,     // [String] Matches the exact creature type identifier name.
-                "strategy": ``  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
-              }
-            ]
-          },
-          
-          /* [Markdown String] (Optional) Eventualities, long-term consequences, reinforcement arrivals, or aftermath.
-             UI PRESENTATION: Automatically wrapped inside a clean, distinctive dashed-border development layout block. */
-          "development": ``,
-
-          // ==================================================================
-          // HAZARDS, TRAPS & COMPLICATION CARDS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Automated defenses, localized environmental dangers, or hidden traps.
-             UI PRESENTATION: Renders high-visibility threat blocks themed with an aggressive red danger palette. */
-          "traps": [
+              "prompt": `If the party asks about a peaceful solution:`,
+              "speaker": `Burdug`,
+              "response": `She raises an eyebrow, a slight, mocking smile playing on her tusks.<br><br>
+              'Peace? You walk into a war-lodge of Ilneval looking for a truce? The Crafty Warrior teaches that all life is an endless battle. 
+              But battle requires preparation. I have no interest in fighting you if it wastes my strength or ruins my tools. 
+              There is a way we both leave this valley richer, but it will require sharp wits, not soft words.'`
+            },
             {
-              "name": ``,      // [String] The identifying title of the hazard or architectural trap.
-              "cr": ``,        // [String/Number] Challenge Rating evaluation metric for threat scaling.
-              "trigger": ``,   // [Markdown String] The exact physical action or event that sets off the hazard.
-              "reset": ``,     // [String] Mechanical reset window rules (e.g., "Automatic after 1 round", "Manual", "None").
-              "searchDc": ``,  // [String/Number] The specific mechanical DC required to detect or find the hazard.
-              "disableDc": ``, // [String/Number] The specific mechanical tool/skill DC required to safely bypass or neutralize it.
-              "effect": ``     // [Markdown String] Mechanical results, damage calculation dice rolls, saves, and conditions applied.
+              "prompt": `If the party asks what this room is:`,
+              "speaker": `Burdug`,
+              "response": `She gestures broadly to the heavy iron structures around her.<br><br>
+              'The forge of the flesh. Old Yarrack thinks strength comes from screaming at the sky and lifting heavy logs until your spine cracks. 
+              I look at the world through the eyes of the strategist. These tracks, these pulleys, these brass wheels—they remove the friction. 
+              They allow us to isolate the muscle, to build a perfect weapon without breaking the frame. My warriors are smaller, yes, but we are built without flaws.'`
+            },
+            {
+              "prompt": `If the players point out that Ulfe is stronger/bigger than her:`,
+              "speaker": `Burdug`,
+              "response": `She scoffs, tapping the flat of her bastard sword.<br><br>
+              'A mountain of fat and bone is still just a target. Great Ulfe is large because he is an ogre, not because he is chosen. 
+              He has no discipline. He sits on his bench, eating cold grease, while his limbs rot from neglect. Mass without mind is easily toppled. 
+              A well-placed lever can lift a boulder that ten orcs cannot budge. We will be that lever.'`
+            },
+            {
+              "prompt": `If the party asks about Ulfe:`,
+              "speaker": `Burdug`,
+              "response": `Her expression sours, and she spits onto the stone floor.<br><br>
+              'A brute. A mistake. I thought I could use his size to unite the tribe under my counsel. 
+              I put him on that throne, and the moment the crown touched his brow, the idiot stopped listening. 
+              He spends his days sleeping with his worgs and breaking the backs of any warrior who questions him. He is a parasite draining our rations. 
+              He must be removed, but we must be clever about it.'`
+            },
+            {
+              "prompt": `If the party asks about Yarrack:`,
+              "speaker": `Burdug`,
+              "response": `She rolls her eyes, a look of tired annoyance crossing her face.<br><br>
+              'Yarrack is a relic. He trains his men like animals—mindless grinding, endless running, until their knees swell and their shoulders fail. 
+              He refuses to see that war has changed. He thinks my brass tracks are 'gnomish toys' because he cannot comprehend the math behind them. 
+              He lost his crown because he is old and stubborn, and now he sits in his bunkroom, plotting a revenge he doesn't have the wits to execute.'`
+            },
+            {
+              "prompt": `If the party asks about what she's proposing:`,
+              "speaker": `Burdug`,
+              "response": `She steps closer, her eyes glittering with dark intelligence.<br><br>
+              'The ogre stays in his high hall, surrounded by his beasts. 
+              If my three blades march in there, the unaligned fools in the barracks will see it as treason and turn on us. 
+              But you? You are outsiders. You bypass the main guard, slip into the high halls, and eliminate both Great Ulfe and Old Yarrack. 
+              Once the giant and the fossil are dealt with, the crown falls to me by default. 
+              I will guide the tribe with iron logic, and you will leave with your pockets heavy.'`
+            },
+            {
+              "prompt": `If the party asks about previous orc casualties caused by the party:`,
+              "speaker": `Burdug`,
+              "response": `She shrugs indifferently, looking over your weapons.<br><br>
+              'If they died in the outer halls, they were sloppy. They lacked vigilance. 
+              Ilneval weeds out the careless to preserve the horde. So long as you do not butcher my two personal guards, the rest of the tribe can be replaced. 
+              Strength is a resource; if a tool breaks, we forge a better one.'`
+            },
+            {
+              "prompt": `If the party asks about the layout:`,
+              "speaker": `Burdug`,
+              "response": `She points a calloused finger towards the door you came in from.<br><br>
+              'Head straight north from this hall into the orc commons. From there, you turn west down the long hallway. 
+              Avoid going east; the unaligned warriors are there, gambling and eating. 
+              Once you are in that western hallway, the door on the south wall leads straight to the ogre's chamber. 
+              If you keep moving to the far western wall, that door leads to Yarrack's bunkroom.'`
+            },
+            {
+              "prompt": `If the party asks about Ulfe's worgs:`,
+              "speaker": `Burdug`,
+              "response": `She nods toward one of the half-orcs, who holds up a small, sealed clay vial.<br><br>
+              'Vak and Thrag. They are vicious, and they smell blood before you even cross the threshold. 
+              My boys have brewed a potent sleeping draught. Coat a piece of fresh meat with it and toss it into their pit before you strike. 
+              If the beasts are greedy enough to swallow it, the potion will put them straight to sleep before they can sound the alarm. 
+              If they resist the draft, they will at least be sluggish when you draw your steel.'`
+            },
+            {
+              "prompt": `If the party asks what happens to Yarrack after the coup:`,
+              "speaker": `Burdug`,
+              "response": `A cold look settles over her features.<br><br>
+              'There is too much bad blood between us. He sabotaged my first coup, called my methods heresy, and reduced my influence to nothing. 
+              I will not keep him as a lieutenant, and I certainly will not take his counsel. 
+              When the ogre falls, Yarrack goes into exile, empty-handed and broken—or he goes into the ditch with the ogre. 
+              Those are his only options.'`
+            },
+            {
+              "prompt": `If the party demands payment upfront:`,
+              "speaker": `Burdug`,
+              "response": `She signals to one of the half-orcs, who brings forward a heavy, oiled leather wrap.<br><br>
+              'I do not waste gold on promises. But I can give you an edge. Train on my iron for one hour. 
+              I will personally adjust the tracks and show you how to drive the weight through the proper angle. 
+              Your blood will engorge your muscles, your posture will align, and you will strike with the strength of giants for a full day. 
+              Take the pump, kill the beast, and his hoard is yours.'`
+            },
+            {
+              "prompt": `If the party threatens her:`,
+              "speaker": `Burdug`,
+              "response": `The two half-orcs immediately step forward, their knuckles whitening on their falchions. 
+              Burdug simply smiles, a subtle arc of sparks dancing across her fingers as she grips the hilt of her bastard sword.<br><br>
+              'You are welcome to try. But I am no common brute. 
+              Before your steel can clear its leather, your eyes will deceive you, the air will turn to ash, and my boys will split you from chin to navel.
+               We can waste our blood here, or we can use it to paint the ogre's hall. Choose wisely.'`
+            },
+            {
+              "prompt": `If the party asks about the two half-orcs with her:`,
+              "speaker": `Burdug`,
+              "response": `She looks at the half-orcs with genuine pride.<br><br>
+              'My finest students. Yarrack called them weak because their blood is mixed, because they weren't born with the broad backs of pure-bloods. 
+              I took them in. I taught them how to use leverage, how to balance their weight, and how to train with purpose. 
+              Now, either one of them can out-lift any pure-blood in the barracks save Targ. They stay with me because my mind gave them their might.'`
+            },
+            {
+              "prompt": `If the party accepts her terms:`,
+              "speaker": `Burdug`,
+              "response": `She nods once, a sharp, decisive gesture, and gestures toward the heavy iron frames.
+              'Excellent. Strip your heavy packs and step up to the iron. Let us prime your muscles for the slaughter. 
+              When the giant's spine is broken, bring me his crown, and the Mountain Door will find its true mind.'`
             }
           ],
 
-          // ==================================================================
-          // REWARDS, LOOT & CONTAINER ARRAYS
-          // ==================================================================
-          
-          /* [Object] (Optional) Physical assets, currency, and gear available to be looted from the scene. */
+          "setupPositions": `Two half-orcs guard the door, while Burdug is at a bench.`,
+
           "treasure": {
-            "carried": ``, // [Markdown String] Items directly equipped or carried on the person of monsters/entities.
-            
-            /* [Array of Objects] Stationary storage elements, hidden compartments, chests, or loose piles. */
-            "containers": [
-              {
-                "name": ``,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
-                "contents": ``  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
-              }
-            ]
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`
           },
 
-          // ==================================================================
-          // SPECIAL DYNAMIC TRIGGER CARDS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
-             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
-             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
-          "specialEvents": [
-            {
-              "severity": `danger`, 
-              "title": ``,     // [String] Headline title of the changing event or mechanical notification.
-              "trigger": ``,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
-              "readAloud": ``, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
-              
-              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
-              "mechanics": [
-                {
-                  "type": ``,    // [String] Check label name (e.g., "DC 14 Reflex Save")
-                  "dc": ``,      // [String/Number] Numerical value threshold required to bypass danger.
-                  "success": ``, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
-                  "failure": ``  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
-                }
-              ],
-              "outcome": `` // [Markdown String] Lasting structural environmental modifications or secondary phase effects.
-            }
-          ],
-
-          // ==================================================================
-          // CUSTOM EXTENSION BLOCKS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Open-ended structural extensions for completely non-standard room elements.
-             UI PRESENTATION: Outputs independent structural blocks rendering entirely uninhibited custom content layout trees. */
           "additionalSections": [
             {
-              "heading": ``, // [String] Custom layout section title line.
-              "content": ``  // [Raw HTML/Markdown String] Customized text markup, custom tables, or unique rules text blocks.
+              "heading": `Get That Pump`,
+              "content": `Working out at this gym with proper supervision gives 2 Constitution damage that will heal naturally in 1 hour, 
+              and a +1d4+1 enhancement bonus to Strength that lasts for 1 day.`
             }
           ]
         };
