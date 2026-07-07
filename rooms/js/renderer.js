@@ -217,7 +217,7 @@ export function renderTrackerRow(c, idx) {
         <div class="tracker-cell init-col ${statusClass} flex-align-center-gap-8">
             <button type="button" class="btn-send-bottom remove-btn-color font-weight-bold" title="Remove Combatant" onclick="removeCombatantEntry(${idx})">×</button>
             <label for="creature-init-${idx}" class="init-label-text">Init</label>
-            <input type="number" id="creature-init-${idx}" name="creature-init-${idx}" data-focus-key="creature-init-${idx}" class="hp-input inline-init-input" value="${c.initRoll}" oninput="updateCreatureInitiativeInline(${idx}, this.value)">
+            <input type="number" id="creature-init-${idx}" name="creature-init-${idx}" data-focus-key="creature-init-${idx}" class="hp-input inline-init-input" value="${c.initRoll}" onchange="updateCreatureInitiativeInline(${idx}, this.value)">
         </div>
         <div class="tracker-cell name-col ${statusClass}" data-index="${idx}">
             <div class="creature-name-layout" style="display: flex; flex-direction: column; width: 100%; gap: 4px;">
@@ -228,18 +228,18 @@ export function renderTrackerRow(c, idx) {
                     <span class="status-text flag-unconscious">[Unconscious] </span>
                     ${nameDisplay}
                 </div>
-                <input type="text" id="creature-note-${idx}" name="creature-note-${idx}" aria-label="Notes for ${c.name}" class="tracker-creature-note-input" placeholder="Notes (Conditions, positions...)" value="${c.notes || ''}" oninput="updateCreatureNotesInline(${idx}, this.value)">
+                <input type="text" id="creature-note-${idx}" name="creature-note-${idx}" aria-label="Notes for ${c.name}" class="tracker-creature-note-input" placeholder="Notes (Conditions, positions...)" value="${c.notes || ''}" onchange="updateCreatureNotesInline(${idx}, this.value)">
             </div>
         </div>
         <div class="tracker-cell hp-col ${statusClass}" data-index="${idx}">
             <span class="hp-badge" draggable="false">
-                <input type="number" id="creature-hp-${idx}" name="creature-hp-${idx}" aria-label="Creature HP" data-focus-key="creature-hp-${idx}" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" oninput="updateCreatureHpInline(${idx}, this.value)">
+                <input type="number" id="creature-hp-${idx}" name="creature-hp-${idx}" aria-label="Creature HP" data-focus-key="creature-hp-${idx}" class="hp-input" value="${c.hp}" data-max="${c.maxHp}" onchange="updateCreatureHpInline(${idx}, this.value)">
                 <span class="text-muted">/ ${c.maxHp} HP</span>
             </span>
             <span class="text-muted font-weight-normal mx-4">|</span>
             <span class="subdual-badge subdual-text-wrapper" draggable="false">
                 <label for="creature-sub-${idx}">Sub:</label> 
-                <input type="number" id="creature-sub-${idx}" name="creature-sub-${idx}" data-focus-key="creature-sub-${idx}" class="hp-input inline-sub-input" value="${c.subdual}" oninput="updateCreatureSubdualInline(${idx}, this.value)">
+                <input type="number" id="creature-sub-${idx}" name="creature-sub-${idx}" data-focus-key="creature-sub-${idx}" class="hp-input inline-sub-input" value="${c.subdual}" onchange="updateCreatureSubdualInline(${idx}, this.value)">
             </span>
         </div>
     `;
