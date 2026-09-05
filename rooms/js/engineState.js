@@ -1,4 +1,4 @@
-import { findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv } from './dataParsers.js';
+import { findPlayersFromCsv, findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv } from './dataParsers.js';
 
 const PATH_CONFIG = {
     multiplier: '../../csv/multiplier.csv',
