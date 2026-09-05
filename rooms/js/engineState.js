@@ -50,7 +50,7 @@ export async function syncEngineStateWithCsv(containerId, data) {
 
     const parsedCsvCreatures = findCreaturesFromCsv(creaturesCsvText, targetTitle);
     const baseCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
-    const parsedCsvPlayers = findCreaturesFromCsv(playersCsvText, "Player");
+    const parsedCsvPlayers = findPlayersFromCsv(playersCsvText);
     const basePlayers = parsedCsvPlayers.length > 0 ? parsedCsvPlayers : (data.creatures || []);
     const activeCreatures = [...baseCreatures, ...basePlayers];
 

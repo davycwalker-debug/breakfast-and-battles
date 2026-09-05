@@ -50,6 +50,41 @@ export function findPartyDefaultsFromCsv(csvText, targetTitle) {
     return matches;
 }
 
+export function findPlayersFromCsv(csvText) {
+    if (!csvText) return [];
+    const lines = csvText.split(/\r?\n/);
+    const matchedPlayers = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const columns = line.split(',');
+        if (columns.length < 7) continue;
+        
+        const name = columns[0].trim();
+        const maxHp = parseInt(columns[1].trim(), 10) || 0;
+        const ac = columns[2].trim();
+        const savesString = `Fort ${columns[3].trim()} / Ref ${columns[4].trim()} / Will ${columns[5].trim()}`;
+        const type = columns[6].trim();
+        const link = (columns.length > 7 && columns[7].trim() !== "") ? columns[7].trim() : null;
+
+        matchedPlayers.push({
+            name, 
+            initRoll: 0, 
+            hp: 0, 
+            maxHp, 
+            ac, 
+            saves: savesString, 
+            type, 
+            cr: 0,
+            link
+        });
+    }
+    return matchedPlayers;
+}
+
+
 export function findCreaturesFromCsv(csvText, targetTitle) {
     if (!csvText) return [];
     const lines = csvText.split(/\r?\n/);
