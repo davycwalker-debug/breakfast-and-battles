@@ -3,7 +3,8 @@ import { findCreaturesFromCsv, findMultiplierFromCsv, findPartyDefaultsFromCsv }
 const PATH_CONFIG = {
     multiplier: '../../csv/multiplier.csv',
     party: '../../csv/party.csv',
-    creatures: '../../csv/creatures.csv'
+    creatures: '../../csv/creatures.csv',
+    players: '../../csv/players.csv',
 };
 
 window.dndEngineState = window.dndEngineState || {
@@ -29,24 +30,29 @@ export async function syncEngineStateWithCsv(containerId, data) {
     window.dndEngineState.initialized = true;
 
     const targetTitle = data.title || '';
-    let multiplierCsvText = "", partyCsvText = "", creaturesCsvText = "";
+    let multiplierCsvText = "", partyCsvText = "", creaturesCsvText = "", playersCsvText = "";
 
     try {
         // Asynchronously extract files using path configurations
-        const [multResponse, partyResponse, creaturesResponse] = await Promise.all([
+        const [multResponse, partyResponse, creaturesResponse, playersResponse] = await Promise.all([
             fetch(PATH_CONFIG.multiplier).then(res => res.ok ? res.text() : ""),
             fetch(PATH_CONFIG.party).then(res => res.ok ? res.text() : ""),
-            fetch(PATH_CONFIG.creatures).then(res => res.ok ? res.text() : "")
+            fetch(PATH_CONFIG.creatures).then(res => res.ok ? res.text() : ""),
+            fetch(PATH_CONFIG.players).then(res => res.ok ? res.text() : "")
         ]);
         multiplierCsvText = multResponse;
         partyCsvText = partyResponse;
         creaturesCsvText = creaturesResponse;
+        playersCsvText = playersResponse;
     } catch (error) {
         console.error("DndEngine State Error: Unable to extract CSV database collections.", error);
     }
 
     const parsedCsvCreatures = findCreaturesFromCsv(creaturesCsvText, targetTitle);
-    const activeCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
+    const baseCreatures = parsedCsvCreatures.length > 0 ? parsedCsvCreatures : (data.creatures || []);
+    const parsedCsvPlayers = findCreaturesFromCsv(playersCsvText, "Player");
+    const basePlayers = parsedCsvPlayers.length > 0 ? parsedCsvPlayers : (data.creatures || []);
+    const activeCreatures = [...baseCreatures, ...basePlayers];
 
     window.dndEngineState.liveCreatures = activeCreatures.map(c => ({
         ...c,
