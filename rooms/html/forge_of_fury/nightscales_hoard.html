@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 53: Nightscale's Hoard</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 53: Nightscale's Hoard`,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `In the center of the lake sit a small islet, about 30 feet across. 
+          Stalagmites thrust needle-sharp points at the ceiling above, and the dark waters lap quietly at its shores. 
+          Gold and steel glimmer in the darkness--a great hoard of coins and arms have been carefully gathered together on the rocky island!`,
+          
+          
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `30 ft x 30 ft islet, 100 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `Lake`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/nightscale.html">Area 52 (Nightscale)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+          
+          /* [Object] (Optional) Physical assets, currency, and gear available to be looted from the scene. */
+          "treasure": {
+            
+            /* [Array of Objects] Stationary storage elements, hidden compartments, chests, or loose piles. */
+            "containers": [
+              {
+                "name": `Hoard`,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
+                "contents": `6,200 sp, 1,430 gp, two garnets worth 20 gp each, a black pearl worth 50 gp, a wand of magic missiles (3rd level, 32 charges), 
+                a +2 Dwarven Waraxe, a +1 Steel Shield, a potion of cure light wounds, and a potion of levitation.`  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
