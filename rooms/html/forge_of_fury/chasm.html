@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 38: The Chasm</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 38: The Chasm`,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `The stream running through the old dwarven blade-works meanders into a natural cavern and finally tumbles into a great chasm, 
+          easily 100 ft long and 50 ft wide. You can see nothing but darkness below, 
+          although you think you hear the roar of distant waters over the shrill sound of the waterfall beside you. 
+          Across the chasm, a second small ledge is partially hidden by a spur of rock.`,
+          
+          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
+             immediately upon entering the area or interacting with the initial description.
+             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
+          "initialReadAloudChecks": [
+            {
+              "type": `Search Check`, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
+              "dc": `8`,   // [String/Number] The target difficulty class baseline metric threshold
+              "prompt": `You look at the spur of rock`, // [Markdown String] (Optional) Contextual setup text establishing what the check represents.
+              "success": `You see an old chain ladder.`, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
+              "failure": `You don't see anything special.`  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
+            }
+          ],
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `100 ft x 50 ft chasm, 50 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": `Chain Ladder`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `Chain ladder on the northern edge that is easier to climb.`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `North Hallway (Secret)`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Opens into a secret stone door (DC 20 Search check) to Area 46 (Common Room).`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `West Passage`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Opens into <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/bladeworks.html">Area 37 (The Bladeworks)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Chasm`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Lands in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Chasm Ladder (Secret)`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `If found (DC 8 Search check), lands in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_bridges.html">Area 51 (Dwarf Bridges)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+
+          "specialEvents": [
+            {
+              "severity": `info`, 
+              "title": `Chasm Climb`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": `Decide to climb the chasm`,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": `You decide to climb down the chasm`, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
+                {
+                  "type": `Climb Check (no rope)`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `18`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `You make it down just fine, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `You fall, taking 12d6 damage, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                },
+                {
+                  "type": `Climb Check (rope)`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `5`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `You make it down just fine, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `You fall, taking 12d6 damage, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                },
+                {
+                  "type": `Climb Check (ladder)`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `0`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `You make it down just fine, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_bridges.html">Area 51 (Dwarf Bridges)</a>.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `You fall, taking 12d6 damage, landing in <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_bridges.html">Area 51 (Dwarf Bridges)</a>.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                }
+              ],
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
