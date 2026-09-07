@@ -20,7 +20,7 @@ const mapConfiguration = {
     
     temple:    { label: "Temples",    color: "#f4acb7", icon: "🏛️", size: 24, glow: "rgba(244,172,183,0.8)" },
     tavern:    { label: "Taverns",    color: "#d4a373", icon: "🍺", size: 22, glow: "rgba(212,163,115,0.8)" },
-    gate:      { label: "Gates",      color: "#6c757d", icon: "🔒", size: 22, glow: "rgba(108,117,125,0.8)" },
+    gate:      { label: "Gates",      color: "#6c757d", icon: "🗝️", size: 22, glow: "rgba(108,117,125,0.8)" },
     shop:      { label: "Shops",      color: "#c77dff", icon: "🛍️", size: 22, glow: "rgba(199,125,255,0.8)" },
     smithy:    { label: "Smithies",   color: "#e07a5f", icon: "⚒️", size: 22, glow: "rgba(224,122,95,0.8)" },
     belltower: { label: "Belltowers", color: "#8d99ae", icon: "🔔", size: 22, glow: "rgba(141,153,174,0.8)" },
