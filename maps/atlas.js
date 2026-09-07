@@ -30,7 +30,7 @@ const mapConfiguration = {
     camp:      { label: "Camps",      color: "#ddb892", icon: "⛺", size: 22, glow: "rgba(221,184,146,0.8)" },
     market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" },
     bookstore: { label: "Bookstores", color: "#8a5a44", icon: "📖", size: 22, glow: "rgba(138,90,68,0.8)" },
-    grove:     { label: "Groves",     color: "#52b788", icon: "🌿", size: 24, glow: "rgba(82,183,136,0.85)" },
+    grove:     { label: "Groves",     color: "#52b788", icon: "🌿", size: 24, glow: "rgba(82,183,136,0.85)" }
     
 };
 
