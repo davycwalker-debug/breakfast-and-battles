@@ -1,6 +1,5 @@
 // Global configuration matrix used to tint custom markers dynamically
 const mapConfiguration = {
-    // --- YOUR SPECIFIED MAP MATES ---
     mountain: { label: "Mountains", color: "#beada5", icon: "⛰️", size: 28, glow: "rgba(190,173,165,0.85)" },
     forest:   { label: "Forests",   color: "#bad39a", icon: "🌲", size: 24, glow: "rgba(186,211,154,0.85)" },
     swamp:    { label: "Swamps",    color: "#778653", icon: "🐸", size: 24, glow: "rgba(119,134,83,0.85)" },
@@ -29,7 +28,9 @@ const mapConfiguration = {
     warehouse: { label: "Warehouses", color: "#80ed99", icon: "📦", size: 22, glow: "rgba(128,237,153,0.8)" },
     barracks:  { label: "Barracks",   color: "#e63946", icon: "🛡️", size: 24, glow: "rgba(230,57,70,0.8)" },
     camp:      { label: "Camps",      color: "#ddb892", icon: "⛺", size: 22, glow: "rgba(221,184,146,0.8)" },
-    market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" }
+    market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" },
+    bookstore: { label: "Bookstores", color: "#8a5a44", icon: "📖", size: 22, glow: "rgba(138,90,68,0.8)" },
+    grove:     { label: "Groves",     color: "#52b788", icon: "🌿", size: 24, glow: "rgba(82,183,136,0.85)" },
     
 };
 
