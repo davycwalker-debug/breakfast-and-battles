@@ -3,22 +3,33 @@ const mapConfiguration = {
     // --- YOUR SPECIFIED MAP MATES ---
     mountain: { label: "Mountains", color: "#beada5", icon: "⛰️", size: 28, glow: "rgba(190,173,165,0.85)" },
     forest:   { label: "Forests",   color: "#bad39a", icon: "🌲", size: 24, glow: "rgba(186,211,154,0.85)" },
-    swamp:    { label: "Swamps",    color: "#778653", icon: "🦟", size: 24, glow: "rgba(119,134,83,0.85)" },
+    swamp:    { label: "Swamps",    color: "#778653", icon: "🐸", size: 24, glow: "rgba(119,134,83,0.85)" },
     desert:   { label: "Deserts",   color: "#ffedb7", icon: "🌵", size: 24, glow: "rgba(255,237,183,0.85)" },
     body:     { label: "Bodies",    color: "#e5f2fa", icon: "🌊", size: 26, glow: "rgba(229,242,250,0.85)" },
     river:    { label: "Rivers",    color: "#9bcbf5", icon: "💧", size: 20, glow: "rgba(155,203,245,0.75)" }, 
 
-    // --- NEW ADDITION ---
     room:     { label: "Rooms",     color: "#5e548e", icon: "🚪", size: 22, glow: "rgba(94,84,142,0.8)" },
 
-    // --- DISTINCT PALETTE FOR UNASSIGNED MARKERS ---
-    city:     { label: "Cities",    color: "#d81159", icon: "🏰", size: 26, glow: "rgba(216,17,89,0.8)" },    
-    town:     { label: "Towns",     color: "#f26419", icon: "🏠", size: 22, glow: "rgba(242,100,25,0.8)" },   
+    city:     { label: "Cities",    color: "#d81159", icon: "🏘️", size: 26, glow: "rgba(216,17,89,0.8)" },    
+    town:     { label: "Towns",     color: "#f26419", icon: "🏡", size: 22, glow: "rgba(242,100,25,0.8)" },   
     dungeon:  { label: "Dungeons",  color: "#000000", icon: "⚔️", size: 26, glow: "rgba(214,40,40,0.9)" },    
     ruin:     { label: "Ruins",     color: "#707d88", icon: "🪦", size: 24, glow: "rgba(112,125,136,0.7)" },  
-    road:     { label: "Roads",     color: "#6f4e37", icon: "🛤️", size: 18, glow: "rgba(111,78,55,0.6)" },    
+    road:     { label: "Roads",     color: "#6f4e37", icon: "🛣️", size: 18, glow: "rgba(111,78,55,0.6)" },    
     region:   { label: "Regions",   color: "#0077b6", icon: "🗺️", size: 30, glow: "rgba(0,119,182,0.8)" },   
-    feature:  { label: "Features",  color: "#4a5759", icon: "🪨", size: 24, glow: "rgba(74,87,89,0.7)" }     
+    feature:  { label: "Features",  color: "#4a5759", icon: "🪨", size: 24, glow: "rgba(74,87,89,0.7)" },
+    
+    temple:    { label: "Temples",    color: "#f4acb7", icon: "🏛️", size: 24, glow: "rgba(244,172,183,0.8)" },
+    tavern:    { label: "Taverns",    color: "#d4a373", icon: "🍺", size: 22, glow: "rgba(212,163,115,0.8)" },
+    gate:      { label: "Gates",      color: "#6c757d", icon: "🔒", size: 22, glow: "rgba(108,117,125,0.8)" },
+    shop:      { label: "Shops",      color: "#c77dff", icon: "🛍️", size: 22, glow: "rgba(199,125,255,0.8)" },
+    smithy:    { label: "Smithies",   color: "#e07a5f", icon: "⚒️", size: 22, glow: "rgba(224,122,95,0.8)" },
+    belltower: { label: "Belltowers", color: "#8d99ae", icon: "🔔", size: 22, glow: "rgba(141,153,174,0.8)" },
+    manor:     { label: "Manors",     color: "#a3c4f3", icon: "🏰", size: 26, glow: "rgba(163,196,243,0.8)" },
+    warehouse: { label: "Warehouses", color: "#80ed99", icon: "📦", size: 22, glow: "rgba(128,237,153,0.8)" },
+    barracks:  { label: "Barracks",   color: "#e63946", icon: "🛡️", size: 24, glow: "rgba(230,57,70,0.8)" },
+    camp:      { label: "Camps",      color: "#ddb892", icon: "⛺", size: 22, glow: "rgba(221,184,146,0.8)" },
+    market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" },
+    
 };
 
 // Global variables for layer management
