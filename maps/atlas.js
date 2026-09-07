@@ -28,7 +28,7 @@ const mapConfiguration = {
     warehouse: { label: "Warehouses", color: "#80ed99", icon: "📦", size: 22, glow: "rgba(128,237,153,0.8)" },
     barracks:  { label: "Barracks",   color: "#e63946", icon: "🛡️", size: 24, glow: "rgba(230,57,70,0.8)" },
     camp:      { label: "Camps",      color: "#ddb892", icon: "⛺", size: 22, glow: "rgba(221,184,146,0.8)" },
-    market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" },
+    market:    { label: "Markets",    color: "#ffb703", icon: "🪙", size: 24, glow: "rgba(255,183,3,0.8)" }
     
 };
 
