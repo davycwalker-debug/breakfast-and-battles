@@ -1,6 +1,6 @@
-Name  , MaxHp, Ac, Fort, Ref, Will, Type                                , Link
-Tchad ,    58, 15, +9  , -1 , +8  , Medium Humanoid (Orc)               , https://www.myth-weavers.com/sheets/?id=595a654a-8b6f-4140-8536-cf81c7a1ee9d
-Amy   ,    32, 25, +6  , +2 , +10 , Small Dragon (Reptilian)            , https://www.myth-weavers.com/sheets/?id=e2342632-3646-4159-990b-474a953b2648
-Eldrin,    31, 18, +4  , +4 , +5  , Medium Humanoid (Elf)               , https://www.myth-weavers.com/sheets/?id=403d5366-3b65-481c-9b5b-54a1e3afee0c
-Turan ,    41, 19, +9  , +6 , +13 , Small Humanoid (Gnome)              , https://www.myth-weavers.com/sheets/?id=a444a775-eb33-465d-a83d-e86e4f531ddf
-Hexan ,    40, 19, +5  , +0 , +10 , Medium Humanoid (Reptilian; Psionic), https://www.myth-weavers.com/sheets/?id=7cc657f4-b50e-4cc0-9889-06e7361ea80f
+Name  , MaxHp, Ac                                                                              , Fort, Ref, Will, Type                                , Link
+Tchad ,    58, 15 (+1 Dex; +4 armor); touch 11; flat-footed 15                                 , +9  , -1 , +8  , Medium Humanoid (Orc)               , https://www.myth-weavers.com/sheets/?id=595a654a-8b6f-4140-8536-cf81c7a1ee9d
+Amy   ,    32, 25 (+2 Dex; +7 armor; +1 size; +3 natural; +2 deflect); touch 15; flat-footed 23, +6  , +2 , +10 , Small Dragon (Reptilian)            , https://www.myth-weavers.com/sheets/?id=e2342632-3646-4159-990b-474a953b2648
+Eldrin,    31, 18 (+2 Dex; +4 armor; +2 shield); touch 12; flat-footed 16                      , +4  , +4 , +5  , Medium Humanoid (Elf)               , https://www.myth-weavers.com/sheets/?id=403d5366-3b65-481c-9b5b-54a1e3afee0c
+Turan ,    41, 19 (+4 Dex; +2 shield; +1 size; +2 natural); touch 15; flat-footed 15           , +9  , +6 , +13 , Small Humanoid (Gnome)              , https://www.myth-weavers.com/sheets/?id=a444a775-eb33-465d-a83d-e86e4f531ddf
+Hexan ,    40, 19 (-2 Dex; +9 armor; +2 shield); touch 8; flat-footed 19                       , +5  , +0 , +10 , Medium Humanoid (Reptilian; Psionic), https://www.myth-weavers.com/sheets/?id=7cc657f4-b50e-4cc0-9889-06e7361ea80f
