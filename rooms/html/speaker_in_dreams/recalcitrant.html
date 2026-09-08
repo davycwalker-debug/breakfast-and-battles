@@ -15,28 +15,8 @@
         import '../../js/interactions.js';
         
         const roomData = {
-          // ==================================================================
-          // CORE HEADER INFO
-          // ==================================================================
-          
-          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
-             CRITICAL: This string acts as the exact unique primary key identifier used by 
-             the JavaScript engine to match and pull monster data from CSV database files. */
           "title": `Area AE2: Recalcitrant`,
-          
-          /* [String] (Optional) Descriptive contextual subtitle or structural tag.
-             NOTE: The rendering engine automatically calculates and appends the final 
-             Combat Level (CL) and total calculated Encounter XP thresholds directly to 
-             the end of this string inside the UI view. */
-          "subtitle": ``,
 
-          // ==================================================================
-          // NARRATIVE & INITIAL ABILITY CHECKS
-          // ==================================================================
-          
-          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
-             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
-             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
           "readAloud": `The town of Brindinford occupies a low hill beside the Talar River. Crenellated stone walls, interrupted by tall watchtowers, 
           surround the buildings, but the life of the town spills beyond its walls today. Colorful carts and wagons line the road for 100 yards beyond the gate. 
           Dozens of halflings in brightcolored costumes are directing most activities. Near the gates, four town guards, wearing bright red tabards, 
@@ -45,180 +25,122 @@
           The metal steams faintly, dripping a sinister red liquid onto the road. The guards pause, 
           then with reluctance tell the figure that an Ultharid criminal who summoned a devil into the heart of Ilkkool Rrem has been spotted nearby, 
           so they need to detain him for questioning. The figure's purple skin takes on a redder hue as he angrily snaps back, 
-          "I'm no Ultharid! I am an Anthropomorphic Giant Squid. Frankly, it's quite rude of you to mix us up—we are entirely distinct species!"<br/>
+          "I'm no Ultharid! I am an Anthropomorphic Giant Squid. Frankly, it's quite rude of you to mix us up—we are entirely distinct species!"<br/><br/>
           The guards glance at each other, clearly taken aback. One cautiously steps forward: "Wait... weren't giant squids aquatic?" 
           The figure huffs. "Ugh! I am an Amphibious Anthropomorphic Giant Squid, if you must know, but really my pulmonary mechanics are none of your business anyways!" 
           Three of the guards look ready to concede, but the fourth scratches his neck, muttering under his breath that he never should have taken that elective on armoring. 
-          "Isn't that the maker's mark of Thub'al-Qayn, the mind-flayer armorer of Ilkkool Rrem, on your pauldrons?"<br/>
+          "Isn't that the maker's mark of Thub'al-Qayn, the mind-flayer armorer of Ilkkool Rrem, on your pauldrons?"<br/><br/>
           The squid-person stammers, caught completely off guard. "Well... it's quite hard to find off-the-rack armor tailored for ten limbs! 
           What, is shopping in Ilkkool Rrem suddenly a crime? Besides, if I were really some wanted criminal, 
           I wouldn't be strolling around in armor denoting exactly where I came from, now would I?" 
           Unconvinced, the guards subtly shift their weight and reach for their saps. 
           The potential criminal's skin turns a deep crimson as he swells to twice his already massive size, looming ominously over the gate.`,
           
-          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
-             immediately upon entering the area or interacting with the initial description.
-             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
           "initialReadAloudChecks": [
             {
-              "type": ``, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
-              "dc": ``,   // [String/Number] The target difficulty class baseline metric threshold
-              "prompt": ``, // [Markdown String] (Optional) Contextual setup text establishing what the check represents.
-              "success": ``, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
-              "failure": ``  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
+              "type": `Knowledge (Dungeoneering)`,
+              "dc": `15`,
+              "success": `That most certainly is not an Ultharid.`,
+              "failure": `That's a lot of tentacles, and really, what's the likelihood of an Aquatic Anthropomorphic Giant Squid, 
+              wearing armor from Ilkkool Rrem, trying to enter the city right when a mind-flayer criminal from Ilkkool Rrem is in the area?`
             },
             {
-              "type": ``,
-              "dc": ``,
-              /* Contextual prompt omitted intentionally here to show layout adaptability. 
-                 If left blank or omitted, the UI card cleanly collapses around the success/failure branches. */
-              "success": ``,
-              "failure": ``
+              "type": `Knowledge (Local)`,
+              "dc": `35`,
+              "success": `You know what, yeah, that's definitely an Anthropomorphic Giant Squid.`,
+              "failure": `Why in the world would you know what an Anthropomorphic Giant Squid looked like?`
+            },
+            {
+              "type": `Knowledge (Arcana)`,
+              "dc": `25`,
+              "success": `That looks like it's a Belt of Growth on his waist, which mimics the effect of Enlarge Person. 
+              Enlarge Person can only affect Humanoids, so this can't be an Ultharid.`,
+              "failure": `You're not sure why he was able to grow in size like that. 
+              You fought those psionic Duergar recently, maybe its a psionic thing? Which means--this probably is an Ulthraid!`
             }
           ],
 
-          // ==================================================================
-          // ENVIRONMENT & ARCHITECTURE
-          // ==================================================================
-          
-          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
           "environment": {
-            "dimensions": ``, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
-            "illumination": ``, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            "dimensions": `Open plain, no ceiling.`,
+            "illumination": `Daylight`,
             
-            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
-               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
             "features": [
               {
-                "name": ``, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
-                "desc": ``  // [Markdown String] Detailed description, physical attributes, or interaction limits
+                "name": `Wall`,
+                "desc": `Crenellated stone walls, interrupted by tall watchtowers.`
               }
             ],
             
-            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
             "doors": [
               {
-                "location": ``, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
-                "desc": ``      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+                "location": `Southspur Gate`,
+                "desc": `Entrance to <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/brindinford.html>Brindinford</a>.`
               }
             ]
           },
 
-          // ==================================================================
-          // DIALOGUE OPTIONS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
-             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
-          "dialogueTree": [
-            {
-              "prompt": ``,   // [String] The trigger question, approach, or topic initiated by the party.
-              "speaker": ``,  // [String] Name or role designation prefix for the responding entity.
-              "response": ``  // [Markdown String] Verbal reply or physical reaction from the speaking entity.
-            }
-          ],
+          "setupPositions": `Guards are outside the gate, while Qazibor begins the encounter enlarged and raging 10 feet away from them.`,
 
-          // ==================================================================
-          // COMBATANTS & COMBAT ENGINE DATA
-          // ==================================================================
-          
-          /* [Markdown String] (Optional) Setup rules, positioning guidelines, or map square assignments for creatures.
-             UI PRESENTATION: Appears directly beneath the interactive initiative tracker layout. */
-          "setupPositions": ``,
-
-          // ==================================================================
-          // STRATEGY & BEHAVIOR
-          // ==================================================================
-          
-          /* [Object] (Optional) Automated decision loops, tactical priorities, and movement mechanics for combatants. */
           "tactics": {
-            "initialRound": ``, // [Markdown String] Opening round priority, ambush triggers, or global battle field alterations.
-            
-            /* [Array of Objects] Specialized behavioral matrices mapped to specific creature types in the roster. */
-            "individual": [
-              {
-                "name": ``,     // [String] Matches the exact creature type identifier name.
-                "strategy": ``  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
-              }
-            ]
+            "initialRound": `The guards hesitate, not sure what to do, readying their action against a charge. 
+            Qazibor pounces on them, attacking all of the guards at once with his tentacles nonlethally. 
+            If a guard manages to stay conscious and free, they will try and blow their battlehorn to alert more guards.`,
+
           },
-          
-          /* [Markdown String] (Optional) Eventualities, long-term consequences, reinforcement arrivals, or aftermath.
-             UI PRESENTATION: Automatically wrapped inside a clean, distinctive dashed-border development layout block. */
-          "development": ``,
 
-          // ==================================================================
-          // HAZARDS, TRAPS & COMPLICATION CARDS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Automated defenses, localized environmental dangers, or hidden traps.
-             UI PRESENTATION: Renders high-visibility threat blocks themed with an aggressive red danger palette. */
-          "traps": [
-            {
-              "name": ``,      // [String] The identifying title of the hazard or architectural trap.
-              "cr": ``,        // [String/Number] Challenge Rating evaluation metric for threat scaling.
-              "trigger": ``,   // [Markdown String] The exact physical action or event that sets off the hazard.
-              "reset": ``,     // [String] Mechanical reset window rules (e.g., "Automatic after 1 round", "Manual", "None").
-              "searchDc": ``,  // [String/Number] The specific mechanical DC required to detect or find the hazard.
-              "disableDc": ``, // [String/Number] The specific mechanical tool/skill DC required to safely bypass or neutralize it.
-              "effect": ``     // [Markdown String] Mechanical results, damage calculation dice rolls, saves, and conditions applied.
-            }
-          ],
+          "development": `If the party talks down the conflict, refer to Law-Abiding Citizens, and Qazibor breaks a spike off his armor to gift the party, 
+          which is treated as a small +1 Fever Iron Dagger. If the party aids the guards and win, refer to Law-Abiding Citizens. If they aid the guards and lose, 
+          they wake up in the Brindinford Barracks peacebonded, then refer to Law-Abiding Citizens. If they stay out of it entirely, they can enter without peacebonding, 
+          but any guards who see them will stop them and question them, imposing a 10gp fine then peacebonding them. If they aid Qazibor and win, 
+          he breaks a spike off his armor to gift to the party, which is treated as a small +1 Fever Iron Dagger. They can enter without peacebonding, 
+          but any guard who sees them will stop them and question them, imposing a 100gp fine and informing them they will not be allowed to openly wear arms 
+          or armor in the city. If they aid Qazibor and somehow lose, they wake up in the Brindinford Barracks with their arms and armor confiscated, 
+          which they can only get back if they pay the 100gp fine and follow the stricter rule to not openly wear arms or armor in the city.`,
 
-          // ==================================================================
-          // REWARDS, LOOT & CONTAINER ARRAYS
-          // ==================================================================
-          
-          /* [Object] (Optional) Physical assets, currency, and gear available to be looted from the scene. */
           "treasure": {
-            "carried": ``, // [Markdown String] Items directly equipped or carried on the person of monsters/entities.
             
-            /* [Array of Objects] Stationary storage elements, hidden compartments, chests, or loose piles. */
             "containers": [
               {
-                "name": ``,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
-                "contents": ``  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
+                "name": `Qazibor's Gift`,
+                "contents": `small +1 Fever Iron Dagger`
               }
             ]
           },
 
-          // ==================================================================
-          // SPECIAL DYNAMIC TRIGGER CARDS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
-             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
-             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
           "specialEvents": [
             {
-              "severity": `danger`, 
-              "title": ``,     // [String] Headline title of the changing event or mechanical notification.
-              "trigger": ``,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
-              "readAloud": ``, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
-              
-              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
-              "mechanics": [
-                {
-                  "type": ``,    // [String] Check label name (e.g., "DC 14 Reflex Save")
-                  "dc": ``,      // [String/Number] Numerical value threshold required to bypass danger.
-                  "success": ``, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
-                  "failure": ``  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
-                }
-              ],
-              "outcome": `` // [Markdown String] Lasting structural environmental modifications or secondary phase effects.
+              "severity": `info`, 
+              "title": `Law-Abiding Citizens`,
+              "trigger": `The party talks down the conflict or aids the guards`,
+              "readAloud": `The guards are pleased with the party, expressing their gratitude profusely. One of the guards says, 
+              "My brother owns an inn right here in Eastgate. Go to the Shield & Shingle just up the way and tell him Joster sent you. 
+              He'll give you a room for the length of the fair, no charge."`
             }
           ],
 
-          // ==================================================================
-          // CUSTOM EXTENSION BLOCKS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Open-ended structural extensions for completely non-standard room elements.
-             UI PRESENTATION: Outputs independent structural blocks rendering entirely uninhibited custom content layout trees. */
           "additionalSections": [
             {
-              "heading": ``, // [String] Custom layout section title line.
-              "content": ``  // [Raw HTML/Markdown String] Customized text markup, custom tables, or unique rules text blocks.
+              "heading": `Peacebonding`,
+              "content": `All edged weapons must be peace-bonded (daggers excepted). The guards attach swords to scabbards with leather straps. 
+              For axes, spears, and similar weapons, the guards put a leather bag over the blade and tie it with a leather strap. 
+              Similarly, they tie bags over open quivers and bolt cases, or secure them closed. 
+              Readying a peace-bonded weapon for normal use requires a full-round action and makes the character vulnerable to attacks of opportunity. 
+              Attacks with bagged peace-bonded weapons suffer a -2 penalty to attack and damage rolls.<br/><br/>
+              Arcane casters, mystery users, and binders must wrap a thick leather strap around the middle and ring fingers of each hand, 
+              and "peace-bond" their spell component pouches by tying them securely shut. The guards cannot necessarily tell by looking at a character if he or she is a caster, 
+              and they rarely challenge bards. They ask any character they suspect might be a caster to be peacebonded 
+              (particularly characters who seem relatively unarmed compared to their companions), and they may search a character for components or foci if unsatisfied with the answer. 
+              If someone is caught lying to the guards, they angrily impose a 10 gp fine. 
+              Casting a spell or mystery with somatic components while a character's fingers are bound imposes a 30% chance of spell failure, 
+              and it is impossible to draw a seal while a character's fingers are bound. 
+              Removing the band or untying a spell component pouch requires a full-round action and makes the character vulnerable to attacks of opportunity.<br/><br/>
+              Divine casters of known neutral or evil deities must "peace-bond" their deities' symbols. 
+              This involves fastening each such symbol to the caster's belt, so it cannot easily be brought to bear for spellcasting. 
+              Freeing the symbol requires a full-round action and makes the character vulnerable to attacks of opportunity.<br/><br/>
+              Non-religious divine casters must place all divine focus items into pouches and tie them shut. 
+              Untying a pouch requires a full-round action and makes the character vulnerable to attacks of opportunity.<br/><br/>
+              If a character refuses to submit to peace-bonding, the guards deny the character's companions entry to the town as well. 
+              If the party attempts to force its way in, the guards attack to capture the group, summoning help by sounding one of their battlehorns.`
             }
           ]
         };
