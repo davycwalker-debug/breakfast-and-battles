@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Assardoth Interactive Map</title>
+    <title>Ol' Boar Inn Interactive Map</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
@@ -31,23 +31,13 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.js"></script>
-<script src="../atlas.js"></script> <script>
-    // --- ONLY DEFINE MAP SPECIFICS AND DATA HERE ---
+<script src="../../atlas.js"></script> <script>
     initializeAtlas({
-        imgUrl: 'https://github.com/davycwalker-debug/breakfast-and-battles/blob/main/maps/images/assardoth.webp?raw=true',
-        imgWidth: 1024,
-        imgHeight: 768,
+        imgUrl: 'https://github.com/davycwalker-debug/breakfast-and-battles/blob/main/maps/images/ol_boar_inn.jpg?raw=true',
+        imgWidth: 564,
+        imgHeight: 423,
         markers: [
-            { type: "road", encountered: true, y: 57, x: 471,  text: "The New Road", url: "https://notion.so/page" },
-            { type: "road", encountered: true, y: 239, x: 969,  text: "The New Road", url: "https://notion.so/page" },
-            { type: "road", encountered: true, y: 737, x: 379,  text: "The Old Road", url: "https://notion.so/page" },
-            { type: "manor", encountered: true, y: 191, x: 508,  text: "Mayor's House", url: "https://notion.so/page" },
-            { type: "manor", encountered: true, y: 99, x: 319,  text: "The Hucreles'", url: "https://notion.so/page" },
-            { type: "market", encountered: true, y: 730, x: 682,  text: "Hucrele Store", url: "https://notion.so/page" },
-            { type: "smithy", encountered: true, y: 642, x: 407,  text: "Blacksmith", url: "https://notion.so/page" },
-            { type: "tavern", encountered: true, y: 180, x: 882,  text: "Ol' Boar Inn", url: "https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/dungeons/ol_boar_inn.html" },
-            { type: "temple", encountered: true, y: 408, x: 374,  text: "Temple of Torm", url: "https://notion.so/page" },
-            { type: "barracks", encountered: true, y: 730, x: 252,  text: "Constable and Jail", url: "https://notion.so/page" }
+            { type: "room", encountered: true, y: 211, x: 282,  text: "Ol' Boar Inn", url: "https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/ol_boar_inn.html" }
         ]
     });
 </script>

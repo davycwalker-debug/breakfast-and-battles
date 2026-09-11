@@ -22,27 +22,6 @@
           Behind an expansive L-shaped wooden bar stand rows of barrels, stoneware jugs, and bottles, overseen by a middle-aged man. 
           A sturdy set of stairs along the east wall leads upstairs to the guest quarters,
           while double wooden doors to the south open back out to the road.`,
-          
-          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
-             immediately upon entering the area or interacting with the initial description.
-             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
-          "initialReadAloudChecks": [
-            {
-              "type": ``, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
-              "dc": ``,   // [String/Number] The target difficulty class baseline metric threshold
-              "prompt": ``, // [Markdown String] (Optional) Contextual setup text establishing what the check represents.
-              "success": ``, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
-              "failure": ``  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
-            },
-            {
-              "type": ``,
-              "dc": ``,
-              /* Contextual prompt omitted intentionally here to show layout adaptability. 
-                 If left blank or omitted, the UI card cleanly collapses around the success/failure branches. */
-              "success": ``,
-              "failure": ``
-            }
-          ],
 
           "environment": {
             "dimensions": `45 ft. x 30 ft. room, 10 ft. ceiling`,
@@ -80,12 +59,6 @@
             ]
           },
 
-          // ==================================================================
-          // DIALOGUE OPTIONS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
-             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
           "dialogueTree": [
             {
               "prompt": `Ask about missing persons or recent adventurers`,
@@ -122,13 +95,6 @@
             }
           ],
 
-          // ==================================================================
-          // SPECIAL DYNAMIC TRIGGER CARDS
-          // ==================================================================
-          
-          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
-             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
-             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
           "specialEvents": [
             {
               "severity": `info`,
