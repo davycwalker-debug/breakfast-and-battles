@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Assardoth Tavern: Ol' Boar Inn</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Assardoth Tavern: Ol' Boar Inn`,
+
+          "readAloud": `The warm, welcoming aroma of roasted meat and mulled ale fills the cozy interior of the inn. 
+          Heavy wooden timber walls enclose a well-trafficked common room centered around a crackling stone hearth along the western wall. 
+          Behind an expansive L-shaped wooden bar stand rows of barrels, stoneware jugs, and bottles, overseen by a middle-aged man. 
+          A sturdy set of stairs along the east wall leads upstairs to the guest quarters,
+          while double wooden doors to the south open back out to the road.`,
+          
+          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
+             immediately upon entering the area or interacting with the initial description.
+             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
+          "initialReadAloudChecks": [
+            {
+              "type": ``, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
+              "dc": ``,   // [String/Number] The target difficulty class baseline metric threshold
+              "prompt": ``, // [Markdown String] (Optional) Contextual setup text establishing what the check represents.
+              "success": ``, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
+              "failure": ``  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
+            },
+            {
+              "type": ``,
+              "dc": ``,
+              /* Contextual prompt omitted intentionally here to show layout adaptability. 
+                 If left blank or omitted, the UI card cleanly collapses around the success/failure branches. */
+              "success": ``,
+              "failure": ``
+            }
+          ],
+
+          "environment": {
+            "dimensions": `45 ft. x 30 ft. room, 10 ft. ceiling`,
+            "illumination": `Bright light provided by the stone fireplace on the west wall and oil lanterns stationed along the bar and tables.`,
+            
+            "features": [
+              {
+                "name": `Bar & Taproom Counter`,
+                "desc": `A heavy wooden L-shaped counter lined with stool seating. Behind the bar are rows of wooden ale casks, wine bottles, and shelves stocked with ceramic mugs.`
+              },
+              {
+                "name": `Stone Fireplace`,
+                "desc": `Located along the west wall, providing steady warmth and bright light to the entire common room.`
+              },
+              {
+                "name": `Pantry & Cold Storage`,
+                "desc": `A cordoned-off stone-floored nook behind the bar, packed with storage crates, grain sacks, and aging ale barrels.`
+              },
+              {
+                "name": `Staircase`,
+                "desc": `A sturdy wooden flight of stairs leading up along the eastern wall to the inn's private guest rooms.`
+              },
+              {
+                "name": `Seating & Dining Tables`,
+                "desc": `Four square wooden dining tables surrounded by chairs, scattered with plates, mugs, and half-eaten meals.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `South Double Doors`,
+                "desc": `Heavy wooden double doors leading out onto the wooden porch and the main street of 
+                <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/asardoth.html>Assardoth</a>. Unlocked during business hours.`
+              }
+            ]
+          },
+
+          // ==================================================================
+          // DIALOGUE OPTIONS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Structural conversation trees or interrogation guidelines.
+             UI PRESENTATION: Combines prompts and responses into an aligned conversational UI block. */
+          "dialogueTree": [
+            {
+              "prompt": `Ask about missing persons or recent adventurers`,
+              "speaker": `Garon`,
+              "response": `Do you mean the Hucrele party? Young Talgen and his sister Sharwyn went off with two out of towners named Sir Braford and Karakas. 
+              Kerowyn Hucrele is offering salvage rights and 500 gp per signet ring returned, or double if you bring them back alive! 
+              Oh, and Geradil and Courana were taken in an orc raid recently from the south hills... which is strange, since those orcs usually stick to the Bandit Wastes.`
+            },
+            {
+              "prompt": `Ask about the Sunless Citadel or local ruins`,
+              "speaker": `Garon`,
+              "response": `The Old Road runs right past it! Fell into disuse years ago from goblin bandits. 
+              Legend says it was once an ancient dragon cult retreat. Last time anyone asked around here about it—besides young Talgen and Sharwyn—was thirteen years back. 
+              A grim fella named Belak passed through, carrying a massive pet tree frog with him!`
+            },
+            {
+              "prompt": `Ask about local monsters or strange occurrences`,
+              "speaker": `Garon`,
+              "response": `The cattle herders are terrified! Something's marauding at night out in the fields. 
+              Leaves no tracks, but livestock and folk caught out past dark turn up dead the next morning, pierced with dozens of tiny needlelike claws.`
+            },
+            {
+              "prompt": `Ask about the goblins or the magical fruit`,
+              "speaker": `Garon`,
+              "response": `Every midsummer for twelve years, the goblins from the Citadel ransom off a single magical apple that heals any disease for about 50 gp. 
+              Folk try planting the seeds, but once the saplings hit two feet tall, they get stolen—goblins keeping their monopoly! 
+              In midwinter, they sometimes offer a corpse-white apple instead. Don't touch that one, it's deadly poison to the skin!`
+            },
+            {
+              "prompt": `Ask about work, bounties, or local dwarves`,
+              "speaker": `Garon`,
+              "response": `Go speak with Rurik! He's convinced Durgeddin the Black—a legendary dwarf smith and his ancestor—built a hidden stronghold nearby. 
+              He already bought a broken blade from a traveler, and he's offering a 500 gp bounty on top of market price for any weapon with Durgeddin's mark on it!`
+            }
+          ],
+
+          // ==================================================================
+          // SPECIAL DYNAMIC TRIGGER CARDS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
+             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
+             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
+          "specialEvents": [
+            {
+              "severity": `info`,
+              "title": `Garon's Endless Gossip`,
+              "trigger": `When the PCs spend more than 10 minutes talking at the bar`,
+              "readAloud": `Garon leans over the polished wood counter, lowers his voice to an enthusiastic whisper, and says, 
+              'You know, if you're heading out toward the Old Road, there's something else you ought to know...'`,
+              "mechanics": [],
+              "outcome": `Garon reveals a new quest hook from his dialogue options that the party has not yet asked about.`
+            },
+            {
+              "severity": `info`, 
+              "title": `Party!`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": ``,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": `The Ol' Boar Inn is packed to the rafters with cheering townsfolk, warm firelight, and the incredible aromas of roasted meats and strange, 
+              savory delicacies. The tables have been pushed against the walls, 
+              and Garon—wearing a grin as wide as his tavern—is busily handing out gifts from the town to each member of your group on behalf of Mayor Vurnor Leng, 
+              who remains characteristically absent and behind his desk.<br><br>
+              
+              "From the Mayor and every soul in Assardoth—thank you!" Garon announces warmly, slipping a heavy pouch of reward coin into each of your hands. 
+              "Drink up! Tonight, you don't pay for a single drop!" Throughout the evening, familiar faces approach your group to share short vignettes of gratitude:<br><br>
+              
+              * Kerowyn Hucrele: Standing straight and rigidly composed, Kerowyn offers a soft, genuine nod of appreciation. 
+              She thanks you for returning the bodies of her missing siblings, Sharwyn and Talgen, allowing her family to hold a proper burial and find closure amidst the tragedy.<br><br>
+              * Corkie: The devout cleric of Torm stands near the door, arms crossed. She avoids eye contact with Eldrin, 
+              yet she begrudgingly admits the town is safer thanks to your sword-arms.<br><br>
+              * Rurik: The dwarf smith clinks a heavy iron mug against yours, beaming with pride. 
+              Having received so many heirloom weapons bearing Durgeddin's maker mark that his coin reserves were wiped out, 
+              he eagerly toasts the party.<br><br>
+              * Ben & Targ: Ben, already loudly and sloppily drunk, slaps your shoulders while boasting about the town's safety. 
+              Standing beside him is Targ, a scarred, stoic orc warrior, who quietly nods his profound thanks for the peace you brought to his tribe.<br><br>
+              * Burdug: The wire-strong orc strategist arrives in clean leather armor alongside Mayor Leng's representatives. 
+              Having taken charge of the war-lodge, she commends your cold tactical efficiency in removing Ulfe and Yarrack, 
+              noting that her trade and peace negotiations with Assardoth are proceeding well.<br><br>
+              * Geradil & Courana: The two former captives drop by, looking remarkably toned and athletic. 
+              They laugh as they recount their time in Burdug's "forge of the flesh," admitting that while they're still cautious around most orcs, 
+              they still make the trek up the Stone Tooth regularly to hit Burdug's brass-gear gym setup.<br><br>
+              * Loss: Emerges briefly from the kitchen carrying a massive platter of catering, wearing a pristine chef's hat. 
+              The goblin leader winks at the party, 
+              forever grateful for your willingness to play along with his cover-up conspiracy that blamed the kobolds for Durnn and Grenl's deaths.<br><br>
+              * Garon: Garon gets free from his socializing to come up to you towards the end of the night and mentions a note he was recently asked to post in his tavern:<br>
+              'To Those of Strong Arm, Keen Mind, and Curiosity, Salutations! 
+              See the man in blue at the Stone Gaze Tavern in Brindinford before the 23rd if you wish to hear a peculiar riddle, 
+              and are willing to undertake a commission to discover its answer.'`,
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
