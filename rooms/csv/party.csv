@@ -1,19 +1,21 @@
-Room Title                   , Player Count, Player ECL
-Area 56: The Gulthias Tree   ,            6,          2
-Area 1: The End of the Trail ,            5,          3
-Area 3: The Rift Hall        ,            5,          3
-Area 4: The Archer's Gallery ,            5,          3
-Area 4a: The Archer's Gallery,            5,          3
-Area 9: Orc Shaman           ,            5,          3
-Area 10: The Grand Stair     ,            5,          3
-Area 11: Orc Quarters        ,            5,          3
-Area 12: Great Ulfe          ,            5,          3
-Area 14: Bunkroom            ,            5,          3
-Area 15: The Cold Stream     ,            5,          3
-Area 39: Council Chamber     ,            5,          4
-Area 41: The Kitchens        ,            5,          4
-Area 45: Skeleton Room       ,            5,          4
-Area 49: Idalla's Den        ,            5,          4
-Area 52: Nightscale          ,            5,          4
-Area AE2: Recalcitrant       ,            5,          4
-Area A1: Assassin Ambush     ,            5,          4
+Room Title                            , Player Count, Player ECL
+Area 56: The Gulthias Tree            ,            6,          2
+Area 1: The End of the Trail          ,            5,          3
+Area 3: The Rift Hall                 ,            5,          3
+Area 4: The Archer's Gallery          ,            5,          3
+Area 4a: The Archer's Gallery         ,            5,          3
+Area 9: Orc Shaman                    ,            5,          3
+Area 10: The Grand Stair              ,            5,          3
+Area 11: Orc Quarters                 ,            5,          3
+Area 12: Great Ulfe                   ,            5,          3
+Area 14: Bunkroom                     ,            5,          3
+Area 15: The Cold Stream              ,            5,          3
+Area 39: Council Chamber              ,            5,          4
+Area 41: The Kitchens                 ,            5,          4
+Area 45: Skeleton Room                ,            5,          4
+Area 49: Idalla's Den                 ,            5,          4
+Area 52: Nightscale                   ,            5,          4
+Area AE2: Recalcitrant                ,            5,          4
+Area A1: Assassin Ambush              ,            5,          4
+Brindindord Tavern: Shield and Shingle,            5,          4
+Area 15a: Storefront                  ,            5,          6
