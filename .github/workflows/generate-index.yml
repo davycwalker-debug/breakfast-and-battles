@@ -1,6 +1,7 @@
 name: Generate Monster Index
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'monsters/html/*.html'
@@ -12,19 +13,54 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build Index
+      - name: Build Index via Python
         run: |
-          cd monsters/html
-          echo '<!DOCTYPE html><html><head><title>Monsters Index</title><style>body{font-family:sans-serif;margin:2rem;}li{margin:.5rem 0;}</style></head><body><h1>Monsters Index</h1><ul>' > index.html
-          for f in *.html; do
-            if [ "$f" != "index.html" ]; then
-              # Extract title using sed/grep
-              TITLE=$(grep -i -o '<title>.*</title>' "$f" | sed -e 's/<[^>]*>//g' | xargs)
-              if [ -z "$TITLE" ]; then TITLE="$f"; fi
-              echo "  <li><a href=\"$f\">$TITLE</a></li>" >> index.html
-            fi
-          done
-          echo '</ul></body></html>' >> index.html
+          python3 -c "
+          import os, glob, re, html
+
+          folder = 'monsters/html'
+          files = sorted([f for f in os.listdir(folder) if f.endswith('.html') and f != 'index.html'])
+          
+          links = []
+          for filename in files:
+              filepath = os.path.join(folder, filename)
+              try:
+                  with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                      content = f.read()
+                      match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE | re.DOTALL)
+                      title = match.group(1).strip() if match else filename
+                      # Sanitize title for HTML rendering
+                      title = html.escape(html.unescape(title))
+              except Exception:
+                  title = filename
+              
+              links.append(f'    <li><a href=\"{filename}\">{title}</a></li>')
+
+          index_html = f'''<!DOCTYPE html>
+          <html lang=\"en\">
+          <head>
+              <meta charset=\"UTF-8\">
+              <title>Monsters Directory</title>
+              <style>
+                  body {{ font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #1f2937; }}
+                  h1 {{ border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }}
+                  ul {{ list-style-type: none; padding: 0; }}
+                  li {{ margin: 0.5rem 0; background: #f3f4f6; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid #e5e7eb; }}
+                  a {{ font-weight: bold; color: #2563eb; text-decoration: none; }}
+                  a:hover {{ text-decoration: underline; }}
+              </style>
+          </head>
+          <body>
+              <h1>Monsters Directory</h1>
+              <ul>
+          ''' + '\n'.join(links) + '''
+              </ul>
+          </body>
+          </html>'''
+
+          with open(os.path.join(folder, 'index.html'), 'w', encoding='utf-8') as f:
+              f.write(index_html)
+          "
 
       - name: Commit and Push Index
         run: |
