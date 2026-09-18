@@ -27,11 +27,23 @@ html, body {
 }
 
 /* --- MONSTER SHEET TITLE --- */
-.srd-header {
+/* .srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
     font-size: 9pt;
     line-height: 1.5;
+} */
+.srd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 4px solid #8b2323;
+    padding-bottom: 5px;
+    gap: 15px;
+}
+
+.srd-header-text {
+    flex: 1; /* Title and top stats expand to fill remaining space */
 }
 
 /* THE DEFINITIVE FIX: Replicates the official 20pt spaced-out title header rule 
@@ -97,29 +109,18 @@ html, body {
     display: block !important;
 }
 
-/* --- MONSTER AVATAR / PORTRAIT --- */
+/* --- MONSTER AVATAR --- */
 .monster-avatar {
-    float: right;
-    max-width: 140px;          /* Slightly larger ceiling for modern displays */
-    max-height: 140px;
+    flex-shrink: 0; /* Prevents image from shrinking out of proportion */
+    max-width: 130px;
+    max-height: 130px;
     width: auto;
     height: auto;
-    object-fit: contain;       /* Prevents squishing/distortion */
-    margin: 0 0 10px 15px;     /* Clean text flow margin around the image */
+    object-fit: contain;
     
-    /* Visual Frame Styles */
-    border: 2px solid #8b2323; /* Matching your theme's dark red border */
-    border-radius: 4px;        /* Softens harsh corners */
+    border: 2px solid #8b2323;
+    border-radius: 4px;
     padding: 3px;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Adds subtle depth */
-}
-
-/* Mobile Responsiveness: Scale down on smaller screens */
-@media screen and (max-width: 480px) {
-    .monster-avatar {
-        max-width: 90px;
-        max-height: 90px;
-        margin: 0 0 8px 10px;
-    }
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
