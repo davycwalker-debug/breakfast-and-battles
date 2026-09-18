@@ -99,12 +99,6 @@ html, body {
     display: block !important;
 }
 
-/* .monster-avatar {
-    float: right;
-    max-height: 120px;
-    margin-left: 15px;
-} */
-
 /* Floating Avatar Rules */
 .monster-avatar {
     max-width: 700px;
