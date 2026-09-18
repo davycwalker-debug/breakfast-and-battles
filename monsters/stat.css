@@ -97,8 +97,29 @@ html, body {
     display: block !important;
 }
 
+/* --- MONSTER AVATAR / PORTRAIT --- */
 .monster-avatar {
     float: right;
-    max-height: 120px;
-    margin-left: 15px;
+    max-width: 140px;          /* Slightly larger ceiling for modern displays */
+    max-height: 140px;
+    width: auto;
+    height: auto;
+    object-fit: contain;       /* Prevents squishing/distortion */
+    margin: 0 0 10px 15px;     /* Clean text flow margin around the image */
+    
+    /* Visual Frame Styles */
+    border: 2px solid #8b2323; /* Matching your theme's dark red border */
+    border-radius: 4px;        /* Softens harsh corners */
+    padding: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Adds subtle depth */
+}
+
+/* Mobile Responsiveness: Scale down on smaller screens */
+@media screen and (max-width: 480px) {
+    .monster-avatar {
+        max-width: 90px;
+        max-height: 90px;
+        margin: 0 0 8px 10px;
+    }
 }
