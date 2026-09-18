@@ -27,23 +27,11 @@ html, body {
 }
 
 /* --- MONSTER SHEET TITLE --- */
-/* .srd-header {
+.srd-header {
     border-bottom: 4px solid #8b2323;
     padding-bottom: 5px;
     font-size: 9pt;
     line-height: 1.5;
-} */
-.srd-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 4px solid #8b2323;
-    padding-bottom: 5px;
-    gap: 15px;
-}
-
-.srd-header-text {
-    flex: 1; /* Title and top stats expand to fill remaining space */
 }
 
 /* THE DEFINITIVE FIX: Replicates the official 20pt spaced-out title header rule 
@@ -109,18 +97,8 @@ html, body {
     display: block !important;
 }
 
-/* --- MONSTER AVATAR --- */
 .monster-avatar {
-    flex-shrink: 0; /* Prevents image from shrinking out of proportion */
-    max-width: 130px;
-    max-height: 130px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    
-    border: 2px solid #8b2323;
-    border-radius: 4px;
-    padding: 3px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    float: right;
+    max-height: 120px;
+    margin-left: 15px;
 }
