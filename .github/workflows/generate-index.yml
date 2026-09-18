@@ -1,0 +1,35 @@
+name: Generate Monster Index
+
+on:
+  push:
+    paths:
+      - 'monsters/html/*.html'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Index
+        run: |
+          cd monsters/html
+          echo '<!DOCTYPE html><html><head><title>Monsters Index</title><style>body{font-family:sans-serif;margin:2rem;}li{margin:.5rem 0;}</style></head><body><h1>Monsters Index</h1><ul>' > index.html
+          for f in *.html; do
+            if [ "$f" != "index.html" ]; then
+              # Extract title using sed/grep
+              TITLE=$(grep -i -o '<title>.*</title>' "$f" | sed -e 's/<[^>]*>//g' | xargs)
+              if [ -z "$TITLE" ]; then TITLE="$f"; fi
+              echo "  <li><a href=\"$f\">$TITLE</a></li>" >> index.html
+            fi
+          done
+          echo '</ul></body></html>' >> index.html
+
+      - name: Commit and Push Index
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add monsters/html/index.html
+          git commit -m "Auto-update monster index.html" || exit 0
+          git push
