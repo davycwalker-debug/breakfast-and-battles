@@ -97,8 +97,18 @@ html, body {
     display: block !important;
 }
 
-.monster-avatar {
+/* .monster-avatar {
     float: right;
     max-height: 120px;
     margin-left: 15px;
+} */
+
+/* Floating Avatar Rules */
+.monster-avatar {
+    float: right;
+    max-width: 40%;              /* Adjust width percentage to fit your image ratio */
+    height: auto;
+    margin: 0 0 10px 15px;       /* Adds breathing room between text and image */
+    border: none;
+    display: block;
 }
