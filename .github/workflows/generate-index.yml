@@ -34,27 +34,139 @@ jobs:
               except Exception:
                   title = filename
               
-              links.append(f'    <li><a href=\"{filename}\">{title}</a></li>')
+              links.append(f'        <li><a href=\"{filename}\">{title}</a></li>')
 
           index_html = f'''<!DOCTYPE html>
           <html lang=\"en\">
           <head>
               <meta charset=\"UTF-8\">
+              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
               <title>Monsters Directory</title>
               <style>
-                  body {{ font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #1f2937; }}
-                  h1 {{ border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }}
-                  ul {{ list-style-type: none; padding: 0; }}
-                  li {{ margin: 0.5rem 0; background: #f3f4f6; padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid #e5e7eb; }}
-                  a {{ font-weight: bold; color: #2563eb; text-decoration: none; }}
-                  a:hover {{ text-decoration: underline; }}
+                  /* Flat White Site Background Environment & Centering */
+                  html, body {{
+                      background-color: #ffffff !important;
+                      color: #000000 !important;
+                      font-family: \"Verdana\", Arial, sans-serif;
+                      margin: 0;
+                      padding: 20px; 
+                      display: flex;
+                      justify-content: center;
+                      flex-direction: column;
+                      align-items: center;
+                  }}
+
+                  /* Base Document Wrapper Container */
+                  .srd-container {{
+                      max-width: 700px;
+                      width: 100%;
+                      background-color: #ffffff;
+                      box-sizing: border-box;
+                  }}
+
+                  /* Section Header Rule */
+                  .srd-header {{
+                      border-bottom: 4px solid #8b2323;
+                      padding-bottom: 5px;
+                      margin-bottom: 15px;
+                  }}
+
+                  /* Spaced-out Title Header */
+                  .srd-title {{
+                      font-size: clamp(15pt, 4.5vw, 22pt); 
+                      font-weight: bold;
+                      color: #000000;
+                      letter-spacing: 0.22em;
+                      line-height: 1.4;
+                      display: inline-block;
+                      text-transform: uppercase;
+                  }}
+
+                  /* Search Input Field */
+                  .srd-search-box {{
+                      width: 100%;
+                      box-sizing: border-box;
+                      padding: 8px 12px;
+                      font-family: \"Verdana\", Arial, sans-serif;
+                      font-size: 9.5pt;
+                      border: 2px solid #8b2323;
+                      border-radius: 4px;
+                      margin-bottom: 15px;
+                      outline: none;
+                  }}
+
+                  .srd-search-box:focus {{
+                      border-color: rgb(87, 158, 182);
+                      box-shadow: 0 0 4px rgba(87, 158, 182, 0.5);
+                  }}
+
+                  /* Link List Formatting */
+                  .srd-index-list {{
+                      list-style-type: square;
+                      padding-left: 20px;
+                      margin: 0;
+                      font-size: 9.5pt;
+                      line-height: 1.8;
+                  }}
+
+                  .srd-index-list li {{
+                      margin-bottom: 4px;
+                  }}
+
+                  /* Standard SRD Link Styling */
+                  .srd-container a:link, 
+                  .srd-container a:visited {{ 
+                      text-decoration: none; 
+                      color: rgb(87, 158, 182); 
+                      font-weight: bold;
+                  }}
+                  .srd-container a:hover {{ 
+                      text-decoration: underline; 
+                  }}
+
+                  /* Footer */
+                  .srd-container p {{
+                      font-size: 7.5pt !important;
+                      line-height: 1.4 !important;
+                      color: #666666 !important;
+                      margin-top: 25px !important;
+                      padding-top: 10px !important;
+                      border-top: 1px dashed #cbd4c5 !important;
+                  }}
               </style>
           </head>
           <body>
-              <h1>Monsters Directory</h1>
-              <ul>
+              <div class=\"srd-container\">
+                  <div class=\"srd-header\">
+                      <span class=\"srd-title\">Monsters Directory</span>
+                  </div>
+
+                  <input type=\"text\" id=\"monsterSearch\" class=\"srd-search-box\" onkeyup=\"filterMonsters()\" placeholder=\"Search monsters...\">
+
+                  <ul id=\"monsterList\" class=\"srd-index-list\">
           ''' + '\n'.join(links) + '''
-              </ul>
+                  </ul>
+                  <p>Auto-generated index of available SRD monster entries.</p>
+              </div>
+
+              <script>
+                  function filterMonsters() {{
+                      const input = document.getElementById('monsterSearch');
+                      const filter = input.value.toLowerCase();
+                      const ul = document.getElementById('monsterList');
+                      const li = ul.getElementsByTagName('li');
+
+                      for (let i = 0; i < li.length; i++) {{
+                          const a = li[i].getElementsByTagName('a')[0];
+                          const txtValue = a.textContent || a.innerText;
+                          if (txtValue.toLowerCase().indexOf(filter) > -1) {{
+                              li[i].style.display = '';
+                          }} else {{
+                              li[i].style.display = 'none';
+                          }}
+                      }}
+                  }}
+              </script>
           </body>
           </html>'''
 
@@ -67,5 +179,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add monsters/html/index.html
-          git commit -m "Auto-update monster index.html" || exit 0
+          git commit -m "Auto-update monster index.html with live search" || exit 0
           git push
