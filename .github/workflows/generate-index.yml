@@ -21,7 +21,7 @@ jobs:
           folder = 'monsters/html'
           files = sorted([f for f in os.listdir(folder) if f.endswith('.html') and f != 'index.html'])
           
-          links = []
+          cards = []
           for filename in files:
               filepath = os.path.join(folder, filename)
               try:
@@ -34,7 +34,7 @@ jobs:
               except Exception:
                   title = filename
               
-              links.append(f'        <li><a href=\"{filename}\">{title}</a></li>')
+              cards.append(f'        <div class=\"monster-card\"><a href=\"{filename}\">{title}</a></div>')
 
           index_html = f'''<!DOCTYPE html>
           <html lang=\"en\">
@@ -68,7 +68,7 @@ jobs:
                   .srd-header {{
                       border-bottom: 4px solid #8b2323;
                       padding-bottom: 5px;
-                      margin-bottom: 15px;
+                      margin-bottom: 20px;
                   }}
 
                   /* Spaced-out Title Header */
@@ -86,31 +86,53 @@ jobs:
                   .srd-search-box {{
                       width: 100%;
                       box-sizing: border-box;
-                      padding: 8px 12px;
+                      padding: 10px 14px;
                       font-family: \"Verdana\", Arial, sans-serif;
-                      font-size: 9.5pt;
-                      border: 2px solid #8b2323;
+                      font-size: 9pt;
+                      border: 1.5px solid #cbd4c5;
+                      border-left: 4px solid #8b2323;
                       border-radius: 4px;
-                      margin-bottom: 15px;
+                      margin-bottom: 20px;
                       outline: none;
+                      background-color: #fcfcfc;
+                      transition: all 0.2s ease;
                   }}
 
                   .srd-search-box:focus {{
                       border-color: rgb(87, 158, 182);
-                      box-shadow: 0 0 4px rgba(87, 158, 182, 0.5);
+                      border-left-color: #8b2323;
+                      background-color: #ffffff;
+                      box-shadow: 0 2px 6px rgba(87, 158, 182, 0.2);
                   }}
 
-                  /* Link List Formatting */
-                  .srd-index-list {{
-                      list-style-type: square;
-                      padding-left: 20px;
-                      margin: 0;
-                      font-size: 9.5pt;
-                      line-height: 1.8;
+                  /* Responsive 2-Column Grid Layout */
+                  .srd-monster-grid {{
+                      display: grid;
+                      grid-template-columns: repeat(2, minmax(0, 1fr));
+                      gap: 10px;
                   }}
 
-                  .srd-index-list li {{
-                      margin-bottom: 4px;
+                  @media (max-width: 520px) {{
+                      .srd-monster-grid {{
+                          grid-template-columns: 1fr;
+                      }}
+                  }}
+
+                  /* Monster Card Item Styling */
+                  .monster-card {{
+                      background-color: #fdfdfd;
+                      border: 1px solid #e5e7eb;
+                      border-left: 3px solid #8b2323;
+                      border-radius: 3px;
+                      padding: 10px 12px;
+                      box-sizing: border-box;
+                      transition: background-color 0.15s ease, border-color 0.15s ease;
+                  }}
+
+                  .monster-card:hover {{
+                      background-color: #f4f8f9;
+                      border-color: #cbd4c5;
+                      border-left-color: rgb(87, 158, 182);
                   }}
 
                   /* Standard SRD Link Styling */
@@ -119,7 +141,13 @@ jobs:
                       text-decoration: none; 
                       color: rgb(87, 158, 182); 
                       font-weight: bold;
+                      font-size: 9pt;
+                      display: block;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
                   }}
+
                   .srd-container a:hover {{ 
                       text-decoration: underline; 
                   }}
@@ -143,9 +171,9 @@ jobs:
 
                   <input type=\"text\" id=\"monsterSearch\" class=\"srd-search-box\" onkeyup=\"filterMonsters()\" placeholder=\"Search monsters...\">
 
-                  <ul id=\"monsterList\" class=\"srd-index-list\">
-          ''' + '\n'.join(links) + '''
-                  </ul>
+                  <div id=\"monsterGrid\" class=\"srd-monster-grid\">
+          ''' + '\n'.join(cards) + '''
+                  </div>
                   <p>Auto-generated index of available SRD monster entries.</p>
               </div>
 
@@ -153,16 +181,16 @@ jobs:
                   function filterMonsters() {{
                       const input = document.getElementById('monsterSearch');
                       const filter = input.value.toLowerCase();
-                      const ul = document.getElementById('monsterList');
-                      const li = ul.getElementsByTagName('li');
+                      const grid = document.getElementById('monsterGrid');
+                      const cards = grid.getElementsByClassName('monster-card');
 
-                      for (let i = 0; i < li.length; i++) {{
-                          const a = li[i].getElementsByTagName('a')[0];
+                      for (let i = 0; i < cards.length; i++) {{
+                          const a = cards[i].getElementsByTagName('a')[0];
                           const txtValue = a.textContent || a.innerText;
                           if (txtValue.toLowerCase().indexOf(filter) > -1) {{
-                              li[i].style.display = '';
+                              cards[i].style.display = '';
                           }} else {{
-                              li[i].style.display = 'none';
+                              cards[i].style.display = 'none';
                           }}
                       }}
                   }}
@@ -179,5 +207,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add monsters/html/index.html
-          git commit -m "Auto-update monster index.html with live search" || exit 0
+          git commit -m "Auto-update monster index.html with grid and search" || exit 0
           git push
