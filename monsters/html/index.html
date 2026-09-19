@@ -30,7 +30,7 @@
         .srd-header {
             border-bottom: 4px solid #8b2323;
             padding-bottom: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         /* Spaced-out Title Header */
@@ -48,31 +48,53 @@
         .srd-search-box {
             width: 100%;
             box-sizing: border-box;
-            padding: 8px 12px;
+            padding: 10px 14px;
             font-family: "Verdana", Arial, sans-serif;
-            font-size: 9.5pt;
-            border: 2px solid #8b2323;
+            font-size: 9pt;
+            border: 1.5px solid #cbd4c5;
+            border-left: 4px solid #8b2323;
             border-radius: 4px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             outline: none;
+            background-color: #fcfcfc;
+            transition: all 0.2s ease;
         }
 
         .srd-search-box:focus {
             border-color: rgb(87, 158, 182);
-            box-shadow: 0 0 4px rgba(87, 158, 182, 0.5);
+            border-left-color: #8b2323;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(87, 158, 182, 0.2);
         }
 
-        /* Link List Formatting */
-        .srd-index-list {
-            list-style-type: square;
-            padding-left: 20px;
-            margin: 0;
-            font-size: 9.5pt;
-            line-height: 1.8;
+        /* Responsive 2-Column Grid Layout */
+        .srd-monster-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
         }
 
-        .srd-index-list li {
-            margin-bottom: 4px;
+        @media (max-width: 520px) {
+            .srd-monster-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Monster Card Item Styling */
+        .monster-card {
+            background-color: #fdfdfd;
+            border: 1px solid #e5e7eb;
+            border-left: 3px solid #8b2323;
+            border-radius: 3px;
+            padding: 10px 12px;
+            box-sizing: border-box;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .monster-card:hover {
+            background-color: #f4f8f9;
+            border-color: #cbd4c5;
+            border-left-color: rgb(87, 158, 182);
         }
 
         /* Standard SRD Link Styling */
@@ -81,7 +103,13 @@
             text-decoration: none; 
             color: rgb(87, 158, 182); 
             font-weight: bold;
+            font-size: 9pt;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+
         .srd-container a:hover { 
             text-decoration: underline; 
         }
@@ -105,43 +133,43 @@
 
         <input type="text" id="monsterSearch" class="srd-search-box" onkeyup="filterMonsters()" placeholder="Search monsters...">
 
-        <ul id="monsterList" class="srd-index-list">
-        <li><a href="blackscale_lizardfolk.html">Blackscale Lizardfolk</a></li>
-        <li><a href="brindinford_guard.html">Brindinford Guard</a></li>
-        <li><a href="burdug.html">Burdug</a></li>
-        <li><a href="dragonborn_duskblade.html">Jakdroubyrn Battlecoat</a></li>
-        <li><a href="duergar_warrior.html">Duergar Warrior</a></li>
-        <li><a href="dwarf_skeleton_warrior.html">Skeleton Dwarf Warrior</a></li>
-        <li><a href="elf_swordsage.html">Magcaryn Mosswhisper</a></li>
-        <li><a href="example.html"></a></li>
-        <li><a href="ghared.html">Ghared</a></li>
-        <li><a href="gnome_spirit_shaman.html">Neszu Bellowfern</a></li>
-        <li><a href="half_orc_scout.html">Half-Orc Scout</a></li>
-        <li><a href="halfling_warlock.html">Laamin Brushspirit</a></li>
-        <li><a href="human_favored_soul.html">Ceizusnil Rhodar</a></li>
-        <li><a href="jellik.html">Jellik</a></li>
-        <li><a href="kaarghaz.html">Kaarghaz</a></li>
-        <li><a href="kevrin.html">Kevrin the Devout Sorcerer</a></li>
-        <li><a href="kossaandar.html">Kossaandar, Shadowscale Warchief</a></li>
-        <li><a href="londal_fen.html">Londal Fen</a></li>
-        <li><a href="mela.html">Mela Basult</a></li>
-        <li><a href="mindy_kevrins_familiar.html">Mindy, Kevrin&#x27;s Familiar</a></li>
-        <li><a href="nightscale.html">Nightscale</a></li>
-        <li><a href="nimira.html">Nimira</a></li>
-        <li><a href="orc_scout.html">Orc Scout</a></li>
-        <li><a href="poison_dusk_lizardfolk.html">Poison Dusk Lizardfolk</a></li>
-        <li><a href="shadowscale_marauder.html">Shadowscale Marauder</a></li>
-        <li><a href="sharptooth_lizardfolk.html">Sharptooth Lizardfolk</a></li>
-        <li><a href="smile.html">Smile</a></li>
-        <li><a href="snurrevin.html">Snurrevin</a></li>
-        <li><a href="subterranean_lizard.html">Subterranean Lizard</a></li>
-        <li><a href="targ.html">Targ</a></li>
-        <li><a href="troglodyte_expert.html">Troglodyte Expert</a></li>
-        <li><a href="troglodyte_scout.html">Troglodyte Scout</a></li>
-        <li><a href="ulfe.html">Great Ulfe</a></li>
-        <li><a href="unruly_barbarian.html">Qazibor the Unruly Barbarian</a></li>
-        <li><a href="yarrack.html">Old Yarrack</a></li>
-        </ul>
+        <div id="monsterGrid" class="srd-monster-grid">
+        <div class="monster-card"><a href="blackscale_lizardfolk.html">Blackscale Lizardfolk</a></div>
+        <div class="monster-card"><a href="brindinford_guard.html">Brindinford Guard</a></div>
+        <div class="monster-card"><a href="burdug.html">Burdug</a></div>
+        <div class="monster-card"><a href="dragonborn_duskblade.html">Jakdroubyrn Battlecoat</a></div>
+        <div class="monster-card"><a href="duergar_warrior.html">Duergar Warrior</a></div>
+        <div class="monster-card"><a href="dwarf_skeleton_warrior.html">Skeleton Dwarf Warrior</a></div>
+        <div class="monster-card"><a href="elf_swordsage.html">Magcaryn Mosswhisper</a></div>
+        <div class="monster-card"><a href="example.html"></a></div>
+        <div class="monster-card"><a href="ghared.html">Ghared</a></div>
+        <div class="monster-card"><a href="gnome_spirit_shaman.html">Neszu Bellowfern</a></div>
+        <div class="monster-card"><a href="half_orc_scout.html">Half-Orc Scout</a></div>
+        <div class="monster-card"><a href="halfling_warlock.html">Laamin Brushspirit</a></div>
+        <div class="monster-card"><a href="human_favored_soul.html">Ceizusnil Rhodar</a></div>
+        <div class="monster-card"><a href="jellik.html">Jellik</a></div>
+        <div class="monster-card"><a href="kaarghaz.html">Kaarghaz</a></div>
+        <div class="monster-card"><a href="kevrin.html">Kevrin the Devout Sorcerer</a></div>
+        <div class="monster-card"><a href="kossaandar.html">Kossaandar, Shadowscale Warchief</a></div>
+        <div class="monster-card"><a href="londal_fen.html">Londal Fen</a></div>
+        <div class="monster-card"><a href="mela.html">Mela Basult</a></div>
+        <div class="monster-card"><a href="mindy_kevrins_familiar.html">Mindy, Kevrin&#x27;s Familiar</a></div>
+        <div class="monster-card"><a href="nightscale.html">Nightscale</a></div>
+        <div class="monster-card"><a href="nimira.html">Nimira</a></div>
+        <div class="monster-card"><a href="orc_scout.html">Orc Scout</a></div>
+        <div class="monster-card"><a href="poison_dusk_lizardfolk.html">Poison Dusk Lizardfolk</a></div>
+        <div class="monster-card"><a href="shadowscale_marauder.html">Shadowscale Marauder</a></div>
+        <div class="monster-card"><a href="sharptooth_lizardfolk.html">Sharptooth Lizardfolk</a></div>
+        <div class="monster-card"><a href="smile.html">Smile</a></div>
+        <div class="monster-card"><a href="snurrevin.html">Snurrevin</a></div>
+        <div class="monster-card"><a href="subterranean_lizard.html">Subterranean Lizard</a></div>
+        <div class="monster-card"><a href="targ.html">Targ the Scout</a></div>
+        <div class="monster-card"><a href="troglodyte_expert.html">Troglodyte Expert</a></div>
+        <div class="monster-card"><a href="troglodyte_scout.html">Troglodyte Scout</a></div>
+        <div class="monster-card"><a href="ulfe.html">Great Ulfe</a></div>
+        <div class="monster-card"><a href="unruly_barbarian.html">Qazibor the Unruly Barbarian</a></div>
+        <div class="monster-card"><a href="yarrack.html">Old Yarrack</a></div>
+        </div>
         <p>Auto-generated index of available SRD monster entries.</p>
     </div>
 
@@ -149,16 +177,16 @@
         function filterMonsters() {{
             const input = document.getElementById('monsterSearch');
             const filter = input.value.toLowerCase();
-            const ul = document.getElementById('monsterList');
-            const li = ul.getElementsByTagName('li');
+            const grid = document.getElementById('monsterGrid');
+            const cards = grid.getElementsByClassName('monster-card');
 
-            for (let i = 0; i < li.length; i++) {{
-                const a = li[i].getElementsByTagName('a')[0];
+            for (let i = 0; i < cards.length; i++) {{
+                const a = cards[i].getElementsByTagName('a')[0];
                 const txtValue = a.textContent || a.innerText;
                 if (txtValue.toLowerCase().indexOf(filter) > -1) {{
-                    li[i].style.display = '';
+                    cards[i].style.display = '';
                 }} else {{
-                    li[i].style.display = 'none';
+                    cards[i].style.display = 'none';
                 }}
             }}
         }}
