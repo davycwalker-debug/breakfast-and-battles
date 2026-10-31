@@ -22,62 +22,6 @@ body, html {
     flex-direction: row;
 }
 
-/* Container to hold and center the stack */
-.music-container {
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    
-    display: flex;
-    flex-direction: column; /* Stack children vertically */
-    align-items: center;    /* Center them horizontally */
-    gap: 12px;              /* Spacing between each stacked section */
-}
-
-/* Individual Floating Song/Music Section */
-.music-section {
-    position: relative; /* Changed from absolute to relative */
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 20px;
-    background: rgba(18, 18, 18, 0.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 30px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    
-    /* Optional: ensures they don't stretch to full width awkwardly */
-    width: max-content; 
-}
-
-.music-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d8b4fe; /* Subtle Mystra/Arcane violet tint */
-}
-
-.music-link:hover {
-    color: #d8b4fe;
-    text-decoration: underline;
-}
-
-.music-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: color 0.2s ease, opacity 0.2s ease;
-}
-
 /* Individual clickable card wrapper */
 .image-card {
     flex: 1;
