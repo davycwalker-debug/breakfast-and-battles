@@ -30,13 +30,23 @@
             flex-direction: row;
         }
 
-        /* Floating Song/Music Section */
-        .music-section {
+        /* Container to hold and center the stack */
+        .music-container {
             position: absolute;
             top: 24px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
+            
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            align-items: center;    /* Center them horizontally */
+            gap: 12px;              /* Spacing between each stacked section */
+        }
+
+        /* Individual Floating Song/Music Section */
+        .music-section {
+            position: relative; /* Changed from absolute to relative */
             display: flex;
             align-items: center;
             gap: 12px;
@@ -47,6 +57,9 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 30px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            
+            /* Optional: ensures they don't stretch to full width awkwardly */
+            width: max-content; 
         }
 
         .music-icon {
@@ -149,7 +162,7 @@
                 flex-direction: column;
                 height: 100vh; /* Keeps total height to one viewport on load */
             }
-            .music-section {
+            .music-container {
                 top: 16px;
                 width: 90%;
                 max-width: 340px;
@@ -169,8 +182,8 @@
 <body>
 
     <main class="showcase-container">
-
-        <div class="music-section">
+        <div class="music-container">
+            <div class="music-section">
             <span class="music-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 18V5l12-2v13"></path>
@@ -195,6 +208,8 @@
                 Sixteen Strikes
             </a>
         </div>
+        </div>
+        
         
         <a href="https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/dungeons/mystra_temple.html" class="image-card" target="_self" rel="noopener">
             <div class="bg-image" style="background-image: url('https://github.com/davycwalker-debug/breakfast-and-battles/blob/main/maps/images/mystra_temple.jpg?raw=true');"></div>
