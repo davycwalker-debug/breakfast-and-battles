@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 1: The End of the Trail</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 1: The End of the Trail`,
+          
+          "readAloud": `The mountain path climbs up one last, steep switchback toward a bare shoulder of grey rock. 
+          The hillside rises sharply on your right, pressing you hard against the stone, 
+          while a precipitous drop on your left offers a spectacular view of the jagged canyon floor far below.
+          Discarded waterskins, fragments of charred marrow bone, and splintered kegs litter the edge, tossed carelessly over the cliffside. 
+          Up ahead, the path opens onto a wide ledge before doubling back sharply into the darkness of the mountainside.
+          Two heavily muscled orcs in rusted armor stand watch on the exposed flat. 
+          Clutching longbows and constantly shifting their weight, they stare into the glaring heat rising from the Dun Hills below.`,
+
+          "initialReadAloudChecks": [
+            {
+              "type": `Listen Check`,
+              "dc": `9`,
+              "prompt": `The two speak in hushed, irritated guttural tones, entirely unaware that they have an audience.`,
+              "success": `Crouched low behind a outcrop of jagged scree, you manage to tune out the whistling mountain wind and catch their low, grumbling conversation.<br><br>
+              With a greasy forearm, the first orc wipes his face.<br><br>
+              'I hate the sun. I hate the sky. I hate whoever it was decided trees were a good idea,' he mutters. 
+              'My eyes feel like they've been rubbed with rock salt.'<br><br>
+              Leaning heavily against the rock wall, his companion lets his heavy bow drop into the dust and unleashes a jaw-cracking yawn.<br><br>
+              'Then close 'em. That's what I do. Just blink real slow. Like, ten minutes a blink.'<br><br>
+              The sweaty orc glares, yanking his filthy leather hood down until it practically rests on his tusks.<br><br>
+              'And get my throat slit by a wandering bandit? No thanks. 
+              If I die out here, Old Yarrack will find a way to drag my corpse back around the bend just to make me do extra chore rotations.'<br><br>
+              Sliding a few inches down the rock, his companion locks his newly freed hands behind his head, propping his helmet against the stone.<br><br>
+              'Yarrack's a fossil. Always shouting about discipline—it's exhausting. I'm tired just looking at him. But then, he's always had it out for you. 
+              Siding with Burdug? Really? She can't even pull back her bow string.'<br><br>
+              Scowling, the first orc aggressively jerks the heavy falchion on his belt to a sharper angle.<br><br>
+              'Drop it, Wark. It made sense at the time. You work the angles, you get more results for less sweat. It was smart.'<br><br>
+              Snapping out of his slouch with boots crunching loudly on the gravel, Wark steps forward, shoving his face directly into his companion's space.<br><br>
+              'Yeah, well, 'smart' got you a one-way ticket to standing in the dirt with me, Thark. Look at us. Absolute legends of the tribe. The vanguard. The elite.'<br><br>
+              Thark grimaces, using the back of a filthy glove to aggressively wipe his brow.<br><br>
+              'Don't remind me. We should be sitting on cushions inside right now. We're the ones who brought him out of the hills. 
+              We were supposed to be blood-brothers by now, living the good life.'<br><br>
+              Kicking a loose pebble off the ledge, Wark watches it plummet into the heat rise below.<br><br>
+              'Instead, the big bastard takes the throne, eats a whole mountain goat, and kicks us out into the sun. Useless.'<br><br>
+              Thark's eyes go wide. Freezing, he stiffens like a board. His gaze darts frantically toward the high crags overlooking the ledge.<br><br>
+              'Well... he is blessed by Gruumsh,' Thark says, his voice suddenly lifting, ringing out artificially loud over the canyon. 
+              'Obviously. Look at the size of him. A divine instrument. Clearly.'<br><br>
+              Slumping back into his patch of shade against the cliff, Wark lets out a lazy, mocking laugh.<br><br>
+              'Oh, absolutely. Divine. The way he fell asleep mid-sentence yesterday and spilled ale all over his chest? Pure holiness. Truly inspiring.'<br><br>
+              Thark keeps his eyes glued to the rocks above, listening intently for any shifting gravel. 
+              Hearing nothing but the wind, he steps closer to Wark, dropping his voice to a harsh, hurried whisper.<br><br>
+              'Shut up, Wark! Someone will hear you. You want your spine turned into a pretzel like poor Toof? Just say the line. He's the Chosen.'<br><br>
+              Wark doesn't even bother to lift his chin from his chest.<br><br>
+              'Fine, fine. All hail the big guy. May his nap be peaceful and his meat be fatty. 
+              I just wish the 'Chosen' would choose to let us inside. My boots are full of gravel.'<br><br>
+              Thark's shoulders drop as he turns back to face the vast emptiness of the canyon, squinting through the glare.<br><br>
+              'Next shift change is in two hours. If the Rift Hall boys are late again, I'm putting a blunt arrow through someone's ear.'<br><br>
+              Wark chuckles, letting his head loll to the side as he settles back into the shadows.<br><br>
+              'Don't bother. Just close your eyes, Thark. If we ignore the sun, maybe it'll go away.'`,
+              "failure": `The words are lost to the wind, sounding like general, low-intensity grumbling about work.`
+            }
+          ],
+          
+          "environment": {
+            "dimensions": `95 ft. x 10 ft. path opening up to a 35 ft. x 30 ft. ledge.`, 
+            "illumination": `Sunlight.`, 
+
+            "features": [
+              {
+                "name": `The Overlook Crossfire`, 
+                "desc": `The arrow slits connect directly to Area 4 and 4a. 
+                Creatures firing from behind them enjoy Improved Cover (+8 AC, +4 to Reflex saves, improved evasion, +10 bonus on Hide checks).<br><br>
+                If the party takes care of Wark and Thark quietly, the orcs in area 4 may not notice them at all. 
+                Characters in disguise may pass to area 2 without danger, provided the orcs did not raise the alarm. 
+                Characters who attempt to sneak past the row of arrow slits must attempt Move Silently checks with a +4 bonus (the orcs aren't paying attention). 
+                To detect the sneaking characters, the orcs in area 4 must equal or beat the worst Move Silently result achieved by the player characters.` 
+              }
+            ],
+            
+            "doors": [ 
+              {
+                "location": `South Ledge`,
+                "desc": `The southern section of the ledge descends steeply through a deep cleft or fissure in the rock to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_door.html">Area 2 (The Dwarf-Door)</a>.`
+              },
+              {
+                "location": `South Path`,
+                "desc": `The old dwarf-path leads down a bare shoulder of rock to The Stone Tooth.`
+              }
+            ]
+          },
+          
+          "setupPositions": `Wark and Thark are standing in the northwest corner of the ledge.
+          They are in position to see the pathway leading up, but are not paying attention and receive a -4 penalty to Spot and Listen checks.<br><br>
+          Wark and Thark are not the only enemies here; archers positioned in area 4 can freely take potshots at the characters.`,
+          
+          "development": `If attacked or confronted by more than one visible character without prior negotiation, 
+          Wark and Thark call out a warning to the orcs in area 4 as soon as they get a chance to act.
+          They stand their ground against one character, but flee to area 3 otherwise.
+          If the characters are disguised as orcs, the two don't call out a warning until their second action comes up.`,
+          
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp. Thark also carries a small pouch containing stringy, sun-dried mountain lizard meat.`
+          },
+          
+          "specialEvents": [
+            {
+              "title": `Arrow Sense`,
+              "trigger": `If a PC approaches moves around the corner:`,
+              "readAloud": `As you move around the corner onto the ledge...`,
+              "mechanics": [
+                {
+                  "type": `Spot Check`,
+                  "dc": `18`,
+                  "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
+                  "failure": `nothing stands out to you besides the scenic view.`
+                }
+              ]
+            },
+            {
+              "title": `Arrow Investigation`,
+              "trigger": `If a PC investigates the east wall:`,
+              "readAloud": `As you examine the east wall more closely...`,
+              "mechanics": [
+                {
+                  "type": `Spot Check`,
+                  "dc": `13`,
+                  "success": `you notice a row of cleverly hidden arrow slits in the rocky walls about 15 feet overhead. They are positioned nicely for a crossfire.`,
+                  "failure": `nothing stands out to you.`
+                }
+              ]
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

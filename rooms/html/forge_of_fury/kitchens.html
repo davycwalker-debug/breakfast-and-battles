@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 41: The Kitchens</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 41: The Kitchens`,
+          
+          /* [String] (Optional) Descriptive contextual subtitle or structural tag.
+             NOTE: The rendering engine automatically calculates and appends the final 
+             Combat Level (CL) and total calculated Encounter XP thresholds directly to 
+             the end of this string inside the UI view. */
+          "subtitle": ``,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `At the top of the stairs, you find a corridor heading south that opens up into a large room lined with hearths. 
+          Pots, pans, cauldrons, and kettles lie scattered around the room, and an archway to your right leads into a pantry filled with rotted foodstuffs. 
+          This room once served as the kitchen for the dwarven smiths. Suddenly, you hear a scraping sound, 
+          and a big wooden table shudders and begins to move, heading right for you!`,
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `40 ft x 30 ft room, 10 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+  
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `North Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Stone door leads to Area 36 (The Great Hall).`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 39: Council Chamber</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 39: Council Chamber`,
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `The door behind the throne leads into a small audience chamber or council room. 
+          A large table consisting of a single stone slab dominates the center of the room, 
+          and the remains of old tapestries still climg to the walls. 
+          A single door in the far wall is carved into the image of a fierce dwarf, 
+          the same as the one the statues depicted.`,
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `45 ft x 35 ft room, 30 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": `Table`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `25 ft by 15 ft table in the center of the room`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `West Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Stone double door that leads to Area 36 (The Great Hall).`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `East Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Stone door that leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/durgeddins_quarters.html">Area 40 (Durgeddin's Quarters)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+
+          // ==================================================================
+          // COMBATANTS & COMBAT ENGINE DATA
+          // ==================================================================
+          
+          /* [Markdown String] (Optional) Setup rules, positioning guidelines, or map square assignments for creatures.
+             UI PRESENTATION: Appears directly beneath the interactive initiative tracker layout. */
+          "setupPositions": `There are 6 Duergar warriors positioned around the table, with their leader Nimira directly behind the door. 
+          The psion Snurrevin levitates above the table. All of them are invisible to start the fight, giving them a single surprise round.`,
+
+          // ==================================================================
+          // STRATEGY & BEHAVIOR
+          // ==================================================================
+          
+          /* [Object] (Optional) Automated decision loops, tactical priorities, and movement mechanics for combatants. */
+          "tactics": {
+            
+            
+            /* [Array of Objects] Specialized behavioral matrices mapped to specific creature types in the roster. */
+            "individual": [
+              {
+                "name": `Warriors`,     // [String] Matches the exact creature type identifier name.
+                "strategy": `The warriors attack with their axes, attempting to stay out of sight of the doorway to maintain cover.`  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
+              },
+              {
+                "name": `Nimira`,     // [String] Matches the exact creature type identifier name.
+                "strategy": `Nimira is the same, but Hustles when she needs to charge and uses Energy Adaptation if targeted by the elements.`  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
+              },
+              {
+                "name": `Snurrevin`,     // [String] Matches the exact creature type identifier name.
+                "strategy": `Each round Snurrevin will summon a new 3rd level Astral Construct. 
+                He prefers to give them Trip and Improved Slam Attack, but if its too crowded he will swap Trip for Fly, 
+                and if targeted by elements he will swap Trip for Resistance.`  // [Markdown String] Custom targeting logic, priority spells, spell lists, or flight thresholds.
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

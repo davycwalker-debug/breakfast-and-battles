@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monsters Directory</title>
+    <style>
+        /* Flat White Site Background Environment & Centering */
+        html, body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            font-family: "Verdana", Arial, sans-serif;
+            margin: 0;
+            padding: 20px; 
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Base Document Wrapper Container */
+        .srd-container {
+            max-width: 700px;
+            width: 100%;
+            background-color: #ffffff;
+            box-sizing: border-box;
+        }
+
+        /* Section Header Rule */
+        .srd-header {
+            border-bottom: 4px solid #8b2323;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Spaced-out Title Header */
+        .srd-title {
+            font-size: clamp(15pt, 4.5vw, 22pt); 
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 0.22em;
+            line-height: 1.4;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        /* Search Input Field */
+        .srd-search-box {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 14px;
+            font-family: "Verdana", Arial, sans-serif;
+            font-size: 9pt;
+            border: 1.5px solid #cbd4c5;
+            border-left: 4px solid #8b2323;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            outline: none;
+            background-color: #fcfcfc;
+            transition: all 0.2s ease;
+        }
+
+        .srd-search-box:focus {
+            border-color: rgb(87, 158, 182);
+            border-left-color: #8b2323;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(87, 158, 182, 0.2);
+        }
+
+        /* Responsive 2-Column Grid Layout */
+        .srd-monster-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 520px) {
+            .srd-monster-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Monster Card Item Styling */
+        .monster-card {
+            background-color: #fdfdfd;
+            border: 1px solid #e5e7eb;
+            border-left: 3px solid #8b2323;
+            border-radius: 3px;
+            padding: 10px 12px;
+            box-sizing: border-box;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .monster-card:hover {
+            background-color: #f4f8f9;
+            border-color: #cbd4c5;
+            border-left-color: rgb(87, 158, 182);
+        }
+
+        /* Standard SRD Link Styling */
+        .srd-container a:link, 
+        .srd-container a:visited { 
+            text-decoration: none; 
+            color: rgb(87, 158, 182); 
+            font-weight: bold;
+            font-size: 9pt;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .srd-container a:hover { 
+            text-decoration: underline; 
+        }
+
+        /* Footer */
+        .srd-container p {
+            font-size: 7.5pt !important;
+            line-height: 1.4 !important;
+            color: #666666 !important;
+            margin-top: 25px !important;
+            padding-top: 10px !important;
+            border-top: 1px dashed #cbd4c5 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="srd-container">
+        <div class="srd-header">
+            <span class="srd-title">Monsters Directory</span>
+        </div>
+
+        <input type="text" id="monsterSearch" class="srd-search-box" onkeyup="filterMonsters()" placeholder="Search monsters...">
+
+        <div id="monsterGrid" class="srd-monster-grid">
+        <div class="monster-card"><a href="amphibious_otyugh.html">Amphibious Otyugh</a></div>
+        <div class="monster-card"><a href="blackscale_lizardfolk.html">Blackscale Lizardfolk</a></div>
+        <div class="monster-card"><a href="brindinford_guard.html">Brindinford Guard</a></div>
+        <div class="monster-card"><a href="burdug.html">Burdug</a></div>
+        <div class="monster-card"><a href="coobert_draftworth.html">Coobert Draftworth</a></div>
+        <div class="monster-card"><a href="dark_disciple.html">Dark Disciple</a></div>
+        <div class="monster-card"><a href="dark_earth_elemental.html">Dark Earth Elemental</a></div>
+        <div class="monster-card"><a href="dark_priestess.html">Dark Priestess</a></div>
+        <div class="monster-card"><a href="despayr.html">Despayr</a></div>
+        <div class="monster-card"><a href="dragonborn_duskblade.html">Jakdroubyrn Battlecoat</a></div>
+        <div class="monster-card"><a href="duergar_warrior.html">Duergar Warrior</a></div>
+        <div class="monster-card"><a href="ebon_spur_guard.html">Ebon Spur Guard</a></div>
+        <div class="monster-card"><a href="elf_swordsage.html">Magcaryn Mosswhisper</a></div>
+        <div class="monster-card"><a href="ensorcelled_warmage.html">Ensorcelled Warmage</a></div>
+        <div class="monster-card"><a href="gatehouse_guard.html">Gatehouse Guard</a></div>
+        <div class="monster-card"><a href="ghared.html">Ghared</a></div>
+        <div class="monster-card"><a href="gnome_spirit_shaman.html">Neszu Bellowfern</a></div>
+        <div class="monster-card"><a href="half_orc_scout.html">Half-Orc Scout</a></div>
+        <div class="monster-card"><a href="halfling_warlock.html">Laamin Brushspirit</a></div>
+        <div class="monster-card"><a href="halish.html">Halish</a></div>
+        <div class="monster-card"><a href="human_favored_soul.html">Ceizusnil Rhodar</a></div>
+        <div class="monster-card"><a href="jellik.html">Jellik</a></div>
+        <div class="monster-card"><a href="kaarghaz.html">Kaarghaz</a></div>
+        <div class="monster-card"><a href="ketsarra_shadowscale.html">Ketsarra Shadowscale</a></div>
+        <div class="monster-card"><a href="kevrin.html">Kevrin the Devout Sorcerer</a></div>
+        <div class="monster-card"><a href="kir_lanan_elite_guard.html">Kir-Lanan Elite Guard</a></div>
+        <div class="monster-card"><a href="kithguard_maurran.html">Kithguard Maurran</a></div>
+        <div class="monster-card"><a href="kithlord_thieraven.html">Kithlord Thieraven</a></div>
+        <div class="monster-card"><a href="kossaandar.html">Kossaandar, Shadowscale Warchief</a></div>
+        <div class="monster-card"><a href="lady_arthas.html">Lady of Mystery Naedaenya Arthas</a></div>
+        <div class="monster-card"><a href="londal_fen.html">Londal Fen</a></div>
+        <div class="monster-card"><a href="malkarion.html">Malkarion the Blackguard</a></div>
+        <div class="monster-card"><a href="mela.html">Mela Basult</a></div>
+        <div class="monster-card"><a href="mhair.html">Mhair</a></div>
+        <div class="monster-card"><a href="mindy_kevrins_familiar.html">Mindy, Kevrin&#x27;s Familiar</a></div>
+        <div class="monster-card"><a href="nightscale.html">Nightscale</a></div>
+        <div class="monster-card"><a href="nimira.html">Nimira</a></div>
+        <div class="monster-card"><a href="nooky_cooberts_familiar.html">Nooky, Coobert&#x27;s Familiar</a></div>
+        <div class="monster-card"><a href="norry_waywocket.html">Norry Waywocket</a></div>
+        <div class="monster-card"><a href="orc_scout.html">Orc Scout</a></div>
+        <div class="monster-card"><a href="poison_dusk_lizardfolk.html">Poison Dusk Lizardfolk</a></div>
+        <div class="monster-card"><a href="shadar_kai.html">Shadar-Kai</a></div>
+        <div class="monster-card"><a href="shadow_guard.html">Shadow Guard</a></div>
+        <div class="monster-card"><a href="shadowscale_marauder.html">Shadowscale Marauder</a></div>
+        <div class="monster-card"><a href="shadowslain_blackscale_lizardfolk.html">Shadowslain Blackscale Lizardfolk</a></div>
+        <div class="monster-card"><a href="shadowslain_lizardfolk.html">Shadowslain Lizardfolk</a></div>
+        <div class="monster-card"><a href="shadowslain_poison_dusk_lizardfolk.html">Shadowslain Poison Dusk Lizardfolk</a></div>
+        <div class="monster-card"><a href="shan_thar.html">Shan Thar</a></div>
+        <div class="monster-card"><a href="sharptooth_lizardfolk.html">Sharptooth Lizardfolk</a></div>
+        <div class="monster-card"><a href="sithierel.html">Sithierel</a></div>
+        <div class="monster-card"><a href="skeleton_dwarf_warrior.html">Skeleton Dwarf Warrior</a></div>
+        <div class="monster-card"><a href="skull_servant_ethar.html">Skull Servant Bineera Ethar</a></div>
+        <div class="monster-card"><a href="smile.html">Smile</a></div>
+        <div class="monster-card"><a href="snurrevin.html">Snurrevin</a></div>
+        <div class="monster-card"><a href="starweaver_fembrys.html">Starweaver Deinyn Fembrys</a></div>
+        <div class="monster-card"><a href="starweaver_mornscroll.html">Starweaver Bestra Mornscroll</a></div>
+        <div class="monster-card"><a href="subterranean_lizard.html">Subterranean Lizard</a></div>
+        <div class="monster-card"><a href="targ.html">Targ the Scout</a></div>
+        <div class="monster-card"><a href="temple_guard.html">Temple Guard</a></div>
+        <div class="monster-card"><a href="troglodyte_expert.html">Troglodyte Expert</a></div>
+        <div class="monster-card"><a href="troglodyte_scout.html">Troglodyte Scout</a></div>
+        <div class="monster-card"><a href="ulfe.html">Great Ulfe</a></div>
+        <div class="monster-card"><a href="unruly_barbarian.html">Qazibor the Unruly Barbarian</a></div>
+        <div class="monster-card"><a href="yarrack.html">Old Yarrack</a></div>
+        <div class="monster-card"><a href="zetharmas.html">Zetharmas</a></div>
+        <div class="monster-card"><a href="zombie_dragon_turtle.html">Zombie Dragon Turtle</a></div>
+        </div>
+        <p>Auto-generated index of available SRD monster entries.</p>
+    </div>
+
+    <script>
+        function filterMonsters() {{
+            const input = document.getElementById('monsterSearch');
+            const filter = input.value.toLowerCase();
+            const grid = document.getElementById('monsterGrid');
+            const cards = grid.getElementsByClassName('monster-card');
+
+            for (let i = 0; i < cards.length; i++) {{
+                const a = cards[i].getElementsByTagName('a')[0];
+                const txtValue = a.textContent || a.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {{
+                    cards[i].style.display = '';
+                }} else {{
+                    cards[i].style.display = 'none';
+                }}
+            }}
+        }}
+    </script>
+</body>
+</html>

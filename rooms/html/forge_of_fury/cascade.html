@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 50: The Cascade</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 50: The Cascade`,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `A thundering spray of water fills this small chamber, 
+          pooling and flowing out to join a larger river to the north. 
+          The air is damp and the roaring of the waterfall is deafening. 
+          A broad ledge heads north toward the river and then turns out of sight to the east. 
+          The muddy banks of the pool look like footprints or tracks of some kind may have disturbed them.`,
+          
+          /* [Array of Objects] (Optional) Instant skill checks or saving throws required 
+             immediately upon entering the area or interacting with the initial description.
+             UI PRESENTATION: Generates independent challenge cards containing clean success/failure branches. */
+          "initialReadAloudChecks": [
+            {
+              "type": `Survival Check`, // [String] The specific skill or save type (e.g., "DC 15 Perception", "Will Save")
+              "dc": `13`,   // [String/Number] The target difficulty class baseline metric threshold
+              "success": `The tracks are from a medium-sized reptilian creature with four feet and a long tail. 
+              They come from the hard stone of the ledge to the north (where they can't be seen anymore) and disappear at the water's edge.`, // [Markdown String] Narrative or mechanical resolution if the check meets or exceeds the DC.
+              "failure": `You have no idea what these tracks are from.`  // [Markdown String] Narrative or mechanical resolution if the check fails the DC.
+            }
+          ],
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `60 ft x 90 ft cavern, 100 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `Chasm`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Climbing up leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/chasm.html">Area 38 (The Chasm)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `North Passage`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_bridges.html">Area 51 (Dwarf Bridges)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

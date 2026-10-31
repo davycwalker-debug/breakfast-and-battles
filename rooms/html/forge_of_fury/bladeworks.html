@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 37: The Bladeworks</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 37: The Bladeworks`,
+
+          "readAloud": `The great doors lead into a barrel-vaulted foundry about 40 feet across and 70 feet long, 
+          although the eastern end of the chamber continues into a large, dark cave. 
+          A stream of water rushes through the center of the room, crossed by two stone bridges. 
+          A blast of cold wind moans through this room from the east. Throughout the room are cold forges with abandoned anvils.`,
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `40 ft. x 70 ft. room, 15 ft. ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": `Stream`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `5 ft. wide by 2 ft. deep stream`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              },
+              {
+                "name": `Two Bridges`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `5 ft. wide stone bridges with ornate carvings`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              },
+              {
+                "name": `Cold Forges`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `Old rusty anvils throughout the room`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `River Origin`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `River starts flow from a crevice, nothing exciting over here.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `North Doors`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `A set of stone double doors that open into Area 36 (The Great Hall).`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Southeast Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `A stone door that opens into a storage closet.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Southwest Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `A stone door that opens into a storage closet.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `East Passage`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Opens into <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/chasm.html">Area 38 (The Chasm)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+          "treasure": {
+            
+            "containers": [
+              {
+                "name": `Northwest Cold Forge`,     // [String] The type or title of the container (e.g., "Iron Safe", "Hidden Floorboard")
+                "contents": `320 gp, 1,100 sp, a gold necklace set with ruby stones worth 900 gp, and a potion of bull's strength`  // [Markdown String] Breakdown of items, gold, structural keys, or magic rewards held inside.
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 15: The Cold Stream</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 15: The Cold Stream`,
+          
+          "readAloud": `The narrow crevasse winds down quite a long ways, twisting and turning. 
+          The floor has been cut into hundreds of shallow steps, but the walls and ceiling are still natural rock. 
+          About 60 feet down a rushing stream spills down from a narrow crack to your left and crosses the stairway, 
+          disappearing into a narrow, winding tunnel to your right. The rill is only about 2 or 3 feet wide.`,
+
+          "environment": {
+            "dimensions": `60 ft. x 10 ft. tunnel, 8 ft. ceiling`,
+            "illumination": `Darkness`,
+
+            "features": [
+              {
+                "name": `The Stream`,
+                "desc": `About 60 feet down a rushing stream spills down from a narrow crack to your left and crosses the stairway, 
+                disappearing into a narrow, winding tunnel to your right.`
+              }
+            ],
+
+            "doors": [
+              {
+                "location": `The Grand Stair`,
+                "desc": `The narrow crevasse winds up quite a long ways, twisting and turning. 
+                <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/grand_stair.html">Area 10 (The Grand Stair)</a>.`
+              },
+              {
+                "location": `The East Descension`,
+                "desc": `The descending fissure opens up abruptly into 
+                <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/high_cavern.html">Area 16 (The High Cavern)</a>, a very high cavern, 
+                with a ceiling easily 40 feet or more overhead. The stairway continues to wind down, descending a ledge along the north wall of the chamber.`
+              }
+            ]
+          },
+
+          "setupPositions": `The stirges in the nest are sleeping, but any noise or light from a party descending the streambed wakes them. 
+          Each round 1d4 stirges wake and attack, until all the stirges have awoken.`,
+
+          "treasure": {
+            "containers": [
+              {
+                "name": `Dwarven Explorer`,
+                "contents": `On the floor of the stirge cave lies the desiccated corpse of a dwarven explorer who died here many years ago. 
+                A leather pouch on the corpse contains 35 gp and a wand of light with 20 charges remaining.`
+              }
+            ]
+          },
+
+          "specialEvents": [
+            {
+              "severity": `info`, 
+              "title": `Climb down the Stream`,
+              "trigger": `If the characters decide to explore the stream passage, they have to go single file. The stream drops sharply; the characters must Climb.`,
+
+              "mechanics": [
+                {
+                  "type": `Climb`,
+                  "dc": `10`,
+                  "success": `There are no problems during the climb.`,
+                  "failure": `You slip and fall, dropping 2d10 feet and taking normal falling damage.`
+                }
+              ],
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

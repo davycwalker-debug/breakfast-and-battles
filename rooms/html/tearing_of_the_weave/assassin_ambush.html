@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area A1: Assassin Ambush</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area A1: Assassin Ambush`,
+
+          "readAloud": `The heavy wooden doors of the shrine creak open into a queit, drafty sanctuary. 
+          Muted daylight filters in through tall stained-glass windows along the side walls, casting vibrant hues of crimson and blue across six rows of dark-wood pews.
+          Rows of tall wax candles flicker softly along the walls and the raised dais ahead, casting long shadows into the corners. 
+          At the front of the room, a simple stone altar stands draped in coarse, red-trimmed linen, 
+          flanked by carved imagery of crossed hands bound at the wrists with red cord.
+          Behind the altar, heavy canvas drapes conceal the doorways to the rear quarters. The air smells strongly of incense.`,
+
+          "initialReadAloudChecks": [
+            {
+              "type": `Spot Check`,
+              "dc": `29`,
+              "success": `You notice a small dwarf woman dressed like an acolyte kneeling behind one of the rear pews, seemingly engrossed in some task.`,
+              "failure": `You don't notice anything.`
+            },
+            {
+              "type": `Spot Check`,
+              "dc": `28`,
+              "success": `You notice faint red stains on the left curtain.`,
+              "failure": `You don't notice anything.`
+            },
+            {
+              "type": `Knowledge (religion)`,
+              "dc": `5`,
+              "success": `You recognize the crossed hands bound at the wrists with red cord as the symbol of Ilmater.`,
+              "failure": `You don't recognize the imagery of the shrine. It seems creepy.`
+            }
+          ],
+
+          "environment": {
+            "dimensions": `65 ft x 45 ft room, 35 ft ceiling`,
+            "illumination": `Daylight streaming through stained-glass windows, supplemented by dim candlelight along the walls and altar.`,
+            
+            "features": [
+              {
+                "name": `Shrine to Ilmater`,
+                "desc": `Raised 5ft from the rest of the room.`
+              },
+              {
+                "name": `Pews`,
+                "desc": `Count as Obstacles for any square they are partially in.`
+              },
+              {
+                "name": `The Belfry`,
+                "desc": `High above the rafters (30+ ft up) lies a belfry housing a Bat Swarm.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `Double Door (Locked)`,
+                "desc": `DC 18 Strength Check to break, DC 30 Open Lock Check to unlock, leads outside to <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/brindinford.html>Brindinford</a>.`
+              },
+              {
+                "location": `Stained Glass Windows`,
+                "desc": `DC 10 Strength Check to break, leads outside to <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/brindinford.html>Brindinford</a>.`
+              },
+              {
+                "location": `Back Rooms`,
+                "desc": `Small bedrooms for the clergy to rest in, blocked by canvas curtains. 
+                The left room has the corpse of the real priest of Ilmater tucked into bed, while the right is where Londal Fen is hiding.`
+              }
+            ]
+          },
+
+          "setupPositions": `Londal Fen is hidden in the right room waiting for the party to reach the 3rd pew, while Smile is hidden behind the second to last pew on the left side.`,
+
+          "tactics": {
+            "initialRound": `Londal Fen uses his surprise round to exit the back room and get as many PCs into his range as possible. 
+            Smile uses Entangling Exhalation to slow the PCS.`,
+            
+            "individual": [
+              {
+                "name": `Londal Fen`,
+                "strategy": `Londal Fen's goal is to prevent the party from leaving, so he will Pounce to Whirling Attack as many people as possible every round, 
+                tripping them when he hits them. If they stand up and try and move out of his range, he will just trip them again. 
+                He uses Improved Trip to get free attacks when he trips someone, which is where his damage comes from.`
+              },
+              {
+                "name": `Smile`,
+                "strategy": `Smile's goal is to prevent the party from leaving, so she will bar the door and body block it to prevent the party from using it as an exit. 
+                Otherwise, she will use her breath attack with Entangling Exhalation every round, 
+                ensuring as many people as possible stay entangled and thus have a harder time trying to escape.`
+              },
+              {
+                "name": `Bat Swarm`,
+                "strategy": `The bats are initially not part of the combat, but after 3 rounds join the initiative, attacking randomly.`
+              }
+            ]
+          },
+          
+          "development": `If they are not defeated, Londal Fen and Smile intend to display any fallen party members on the altar of Ilmater. 
+          They will then go to <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/stoneyard.html>Area T17: The Stoneyard</a> to lie in wait.`,
+
+          "specialEvents": [
+            {
+              "severity": `danger`, 
+              "title": `Smile Comes out of Hiding`,
+              "trigger": `The party hesitates, notices Smile, or doesn't go far enough into the Shrine`,
+              "readAloud": `A small dwarf woman dressed like an acolyte stands up from behind a rear pew. She seems surprised to see you, before something seems to click. 
+              "Oh dear, are you the people Finneas is supposed to be meeting? He's in the back room over there, you can't miss it." She then points to the curtain on the right.`,
+              
+              "mechanics": [
+                {
+                  "type": `Sense Motive Check`,
+                  "dc": `7`,
+                  "success": `Nothing seems amiss.`,
+                  "failure": `She was faking her surprise at seeing you, she knew the note said to meet at this time.`
+                }
+              ],
+              "outcome": `Smile attempts to walk the party up to the 3rd pew before giving the signal.`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

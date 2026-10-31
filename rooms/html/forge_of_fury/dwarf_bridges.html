@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 51: Dwarf Bridges</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 51: Dwarf Bridges`,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `A fast-moving underground river roars under an old dwarven bridge, 
+          moving from east to west. On the south bank a rusted old chain ladder leads up into darkness, 
+          while on the other side of the bridge, the ledge continues to the east. 
+          A second bridge seems to cross the river again about 40 to 50 feet to the east, 
+          but you'd have to cross the river here to reach it.`,
+          
+
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": `30 ft x 70 ft room, 100 ft ceiling`, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": `Darkness`, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": `First Bridge`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `Perfectly safe`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              },
+              {
+                "name": `Second Bridge`, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": `Precarious and ready to fall`  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `Southwest Passage`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/cascade.html">Area 50 (The Cascade)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Southeast Passage`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/nightscale.html">Area 52 (Nightscale)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          },
+
+          // ==================================================================
+          // SPECIAL DYNAMIC TRIGGER CARDS
+          // ==================================================================
+          
+          /* [Array of Objects] (Optional) Dynamic mid-encounter events or secondary room phases.
+             UI PRESENTATION: Renders standalone alert card banners styled via severity strings.
+             SEVERITY VARIATIONS: Accepts 'danger' (red theme), 'warning' (orange theme), or 'info' (purple theme). */
+          "specialEvents": [
+            {
+              "severity": `danger`, 
+              "title": `Precarious Bridge`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": `Look at the precarious second bridge.`,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": `The bridge is settled alarmingly, with a pitted appearance to it. It seems quite dangerous.`, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
+                {
+                  "type": `Search Check`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `20`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `The bridge will be safe for all but the heaviest of people, such as those wearing heavy armor.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `The bridge seems safe to cross.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                }
+              ]
+            },
+            {
+              "severity": `danger`, 
+              "title": `Heavy Armor Crossing the Bridge`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": `Character in heavy armor crosses the bridge.`,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": `The bridge gives out beneath you as the arch fails, cascading stonework, and you, into the water.`, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
+                {
+                  "type": `Reflex Save`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `16`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `You catch yourself on the ledge.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `You take 2d6 damage and fall into the river which begins to sweep you away.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                }
+              ]
+            },
+            {
+              "severity": `danger`, 
+              "title": `River`,     // [String] Headline title of the changing event or mechanical notification.
+              "trigger": `Character ends up in the river.`,   // [String] The criteria or round number that fires this card (e.g., "When reduced to 50% HP").
+              "readAloud": `The river tries to sweep you away.`, // [Markdown String] Instant narrative block text for the DM to read as the room state changes.
+              
+              /* [Array of Objects] (Optional) Reflexive active saves or skill checks demanded instantly by the event. */
+              "mechanics": [
+                {
+                  "type": `Swim Check`,    // [String] Check label name (e.g., "DC 14 Reflex Save")
+                  "dc": `15 / 20`,      // [String/Number] Numerical value threshold required to bypass danger.
+                  "success": `You manage to pull yourself out of the river.`, // [Markdown String] Immediate outcomes or reduced penalties on a pass.
+                  "failure": `You take 1d3 nonlethal damage and are swept 60 feet down the river / You are swept 60 feet down the river.`  // [Markdown String] Immediate penalties, damage calculations, or conditions on a fail.
+                }
+              ]
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

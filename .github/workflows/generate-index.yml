@@ -1,0 +1,211 @@
+name: Generate Monster Index
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'monsters/html/*.html'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Index via Python
+        run: |
+          python3 -c "
+          import os, glob, re, html
+
+          folder = 'monsters/html'
+          files = sorted([f for f in os.listdir(folder) if f.endswith('.html') and f != 'index.html'])
+          
+          cards = []
+          for filename in files:
+              filepath = os.path.join(folder, filename)
+              try:
+                  with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                      content = f.read()
+                      match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE | re.DOTALL)
+                      title = match.group(1).strip() if match else filename
+                      # Sanitize title for HTML rendering
+                      title = html.escape(html.unescape(title))
+              except Exception:
+                  title = filename
+              
+              cards.append(f'        <div class=\"monster-card\"><a href=\"{filename}\">{title}</a></div>')
+
+          index_html = f'''<!DOCTYPE html>
+          <html lang=\"en\">
+          <head>
+              <meta charset=\"UTF-8\">
+              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+              <title>Monsters Directory</title>
+              <style>
+                  /* Flat White Site Background Environment & Centering */
+                  html, body {{
+                      background-color: #ffffff !important;
+                      color: #000000 !important;
+                      font-family: \"Verdana\", Arial, sans-serif;
+                      margin: 0;
+                      padding: 20px; 
+                      display: flex;
+                      justify-content: center;
+                      flex-direction: column;
+                      align-items: center;
+                  }}
+
+                  /* Base Document Wrapper Container */
+                  .srd-container {{
+                      max-width: 700px;
+                      width: 100%;
+                      background-color: #ffffff;
+                      box-sizing: border-box;
+                  }}
+
+                  /* Section Header Rule */
+                  .srd-header {{
+                      border-bottom: 4px solid #8b2323;
+                      padding-bottom: 5px;
+                      margin-bottom: 20px;
+                  }}
+
+                  /* Spaced-out Title Header */
+                  .srd-title {{
+                      font-size: clamp(15pt, 4.5vw, 22pt); 
+                      font-weight: bold;
+                      color: #000000;
+                      letter-spacing: 0.22em;
+                      line-height: 1.4;
+                      display: inline-block;
+                      text-transform: uppercase;
+                  }}
+
+                  /* Search Input Field */
+                  .srd-search-box {{
+                      width: 100%;
+                      box-sizing: border-box;
+                      padding: 10px 14px;
+                      font-family: \"Verdana\", Arial, sans-serif;
+                      font-size: 9pt;
+                      border: 1.5px solid #cbd4c5;
+                      border-left: 4px solid #8b2323;
+                      border-radius: 4px;
+                      margin-bottom: 20px;
+                      outline: none;
+                      background-color: #fcfcfc;
+                      transition: all 0.2s ease;
+                  }}
+
+                  .srd-search-box:focus {{
+                      border-color: rgb(87, 158, 182);
+                      border-left-color: #8b2323;
+                      background-color: #ffffff;
+                      box-shadow: 0 2px 6px rgba(87, 158, 182, 0.2);
+                  }}
+
+                  /* Responsive 2-Column Grid Layout */
+                  .srd-monster-grid {{
+                      display: grid;
+                      grid-template-columns: repeat(2, minmax(0, 1fr));
+                      gap: 10px;
+                  }}
+
+                  @media (max-width: 520px) {{
+                      .srd-monster-grid {{
+                          grid-template-columns: 1fr;
+                      }}
+                  }}
+
+                  /* Monster Card Item Styling */
+                  .monster-card {{
+                      background-color: #fdfdfd;
+                      border: 1px solid #e5e7eb;
+                      border-left: 3px solid #8b2323;
+                      border-radius: 3px;
+                      padding: 10px 12px;
+                      box-sizing: border-box;
+                      transition: background-color 0.15s ease, border-color 0.15s ease;
+                  }}
+
+                  .monster-card:hover {{
+                      background-color: #f4f8f9;
+                      border-color: #cbd4c5;
+                      border-left-color: rgb(87, 158, 182);
+                  }}
+
+                  /* Standard SRD Link Styling */
+                  .srd-container a:link, 
+                  .srd-container a:visited {{ 
+                      text-decoration: none; 
+                      color: rgb(87, 158, 182); 
+                      font-weight: bold;
+                      font-size: 9pt;
+                      display: block;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                  }}
+
+                  .srd-container a:hover {{ 
+                      text-decoration: underline; 
+                  }}
+
+                  /* Footer */
+                  .srd-container p {{
+                      font-size: 7.5pt !important;
+                      line-height: 1.4 !important;
+                      color: #666666 !important;
+                      margin-top: 25px !important;
+                      padding-top: 10px !important;
+                      border-top: 1px dashed #cbd4c5 !important;
+                  }}
+              </style>
+          </head>
+          <body>
+              <div class=\"srd-container\">
+                  <div class=\"srd-header\">
+                      <span class=\"srd-title\">Monsters Directory</span>
+                  </div>
+
+                  <input type=\"text\" id=\"monsterSearch\" class=\"srd-search-box\" onkeyup=\"filterMonsters()\" placeholder=\"Search monsters...\">
+
+                  <div id=\"monsterGrid\" class=\"srd-monster-grid\">
+          ''' + '\n'.join(cards) + '''
+                  </div>
+                  <p>Auto-generated index of available SRD monster entries.</p>
+              </div>
+
+              <script>
+                  function filterMonsters() {{
+                      const input = document.getElementById('monsterSearch');
+                      const filter = input.value.toLowerCase();
+                      const grid = document.getElementById('monsterGrid');
+                      const cards = grid.getElementsByClassName('monster-card');
+
+                      for (let i = 0; i < cards.length; i++) {{
+                          const a = cards[i].getElementsByTagName('a')[0];
+                          const txtValue = a.textContent || a.innerText;
+                          if (txtValue.toLowerCase().indexOf(filter) > -1) {{
+                              cards[i].style.display = '';
+                          }} else {{
+                              cards[i].style.display = 'none';
+                          }}
+                      }}
+                  }}
+              </script>
+          </body>
+          </html>'''
+
+          with open(os.path.join(folder, 'index.html'), 'w', encoding='utf-8') as f:
+              f.write(index_html)
+          "
+
+      - name: Commit and Push Index
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add monsters/html/index.html
+          git commit -m "Auto-update monster index.html with grid and search" || exit 0
+          git push

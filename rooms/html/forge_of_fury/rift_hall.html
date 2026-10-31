@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 3: The Rift Hall</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 3: The Rift Hall`,
+
+          "readAloud": `The great door open into a vast hall. 
+          You press yourself against the cold stone of the inner doorframe, keeping to the shadows. 
+          Just a few paces ahead, a narrow ledge overlooks a deep, vertical crevasse that cuts the room in two, shearing away any path to the opposite side.<br><br>
+          A frayed, dangerously thin rope bridge spans the gulf. Somewhere far below, water gurgles and rushes, its muffled roar echoing up the stone walls.
+          Twin copper braziers burn brightly on either side of the doorway, casting a warm glow over your half of the ledge. 
+          Beyond their firelight, the far side of the chasm swallows all color. 
+          `,
+          
+          "initialReadAloudChecks": [
+            {
+              "type": `Spot Check`,
+              "dc": `0`,
+              "prompt": `You look beyond the rope bridge...`,
+              "success": `Through the monochrome lens of your darkvision, the opposite platform appears only in stark, flat shades of ash and charcoal. 
+              In the deep gloom of the far wall, two porcine humanoids stand watch before a wooden door.`,
+              "failure": `You're distracted by the rope bridge and don't see anything else.`
+            },
+            {
+              "type": `Listen Check`,
+              "dc": `20`,
+              "prompt": `The two sentries stand near the far pillars, arguing in hushed but intense guttural tones over the roar of the water below.`,
+              "success": `They are oblivious to your presence, their guttural arguments cutting sharply across the void, amplified by the cavern's acoustics.<br><br>
+              The older of the two wears a dented breastplate. 
+              Even in the colorless dark, you can make out the scratched, defaced outline of a holy symbol on his chest. He spits into the abyss.<br><br>
+              'Look at this bridge, Lok,' he grunts, his voice carrying over the rushing water as he yanks a guide rope with a calloused hand. 
+              'One bad winter and the whole thing rots through. And who do they send to fix it? Us. Every time.'<br><br>
+              The younger orc, Lok, stands perfectly rigid behind a boulder, holding a longbow at a textbook parade rest. 
+              His head is held high, his jaw thrust forward so his tusks gleam in the dimness.<br><br>
+              'It is a sacred duty, Vren,' Lok snaps, the zealotry sharp in his tone. 'We guard the throat of the Mountain Door. 
+              If the Great Ulfe trusts us with the chasm, it means we are the shield of the Chosen.'<br><br>
+              Vren lets out a dry, hacking laugh that dissolves into a cough. 
+              He leans his weight heavily against a nearby stone pillar, shifting the heavy falchion at his hip.<br><br>
+              'The shield? Kid, you've got rocks in your skull. Ulfe doesn't know your name. 
+              He doesn't even know my name, and I'm the one who opened the armory doors for his boys during the scramble.'<br><br>
+              Lok turns his head just enough to glare across the camp, his shoulders bunching with obvious disgust.<br><br>
+              'You did that to save your own skin because you saw Old Yarrack losing his grip. 
+              You thought you'd get a seat at the high table next to the giant. Instead, you're out here on the ropes with the rest of the dregs.'<br><br>
+              Vren's posture stiffens. He steps away from the pillar, his hand dropping flat against the hilt of his blade.<br><br>
+              'Watch your tongue, boy. I was breaking skulls under Yarrack while you were still weeping over your first training scar. 
+              I didn't save my skin, I chose the winning side. How was I supposed to know the old man would just... walk away and keep his room? 
+              How was I supposed to know Ulfe would just sit in the dark and wrestle dogs all day?'<br><br>
+              'Because he is a divine instrument!' Lok declares, his voice rising, echoing off the high ceiling. <br><br>
+              'Gruumsh speaks through his mass! He doesn't need to hand out favors like a weak human chieftain. He tests us. He is watching.'<br><br>
+              Vren scoffs, waving a dismissive, heavy hand.<br><br>
+              'The only thing Ulfe watches is the grease dripping off a roasted boar leg. 
+              If he's a divine instrument, then I'm an elf's uncle.'<br><br>
+              'Do not blaspheme!' Lok steps out from behind his rock, his chest puffed out aggressively toward his companion. <br><br>
+              'I am not like the others in this rotation. Thark is a coward who whimpered under Burdug's skirt, and Wark is so lazy he'd sleep through a dwarven raid. 
+              They deserve to freeze outside. But me? I put the hours in. I keep my form tight. 
+              When the Great Ulfe sees my discipline, he's going to move me up. Next month, I'll be in the Archers Gallery, just you wait. 
+              I'll be looking down on you from the slits.'<br><br>
+              Vren stares at the young warrior for a long, silent moment. 
+              Slowly, the tension leaves the veteran's shoulders, his posture slumping into something heavy and weary. 
+              He walks back to his pillar and slides down against the stone, pulling his thick cloak tightly around himself.<br><br>
+              'Yeah. The Gallery,' Vren murmurs, his head tilting aimlessly toward the swaying ropes of the bridge. 
+              'That's what they told me, too. 'Keep your edge sharp, Vren. Do your reps, Vren.' 
+              Then a six-hundred-pound monster walks into your cave, snaps a guy's back for talking too loud, and suddenly the rules don't matter anymore.'<br><br>
+              Lok turns his gaze down into the dark chasm, his hands gripping his bow so fiercely the weapon trembles.<br><br>
+              'They matter to me. I'm better than the dregs of this tribe. I'll prove it to him.'<br><br>
+              Vren closes his eyes, letting his head rest back against the cold stone.<br><br>
+              'Sure you will, kid. Just make sure you don't trip on the rope. Nobody's coming down there to fish you out.'`,
+              "failure": `The roaring water drowns out the words, sounding like general, low-intensity grumbling.`
+            }
+          ],
+
+          "environment": {
+            "dimensions": `65 ft. by 30 ft. chamber, 30 ft. ceiling.`, 
+            "illumination": `Two copper braziers (20 ft. bright, 20 ft. dim) on the west wall.`, 
+            
+            "features": [
+              {
+                "name": `Rope Bridge`,
+                "desc": `Crossing the bridge is difficult enough to warrant a Balance check at DC 8. 
+                Each success allows a character to traverse a distance equal to half her or his Speed as a full action, 
+                or one-quarter her or his Speed as a move action.<br><br>
+                Climbers who fail their checks make no progress. If they fail by 5 or more, they may fall from the bridge. 
+                Allow characters a second Balance check (DC 18) to catch themselves; 
+                otherwise, they plummet almost 200 feet to the underground river below, striking the rocky walls along the way.
+                The damage of the fall is 20d6, and the river sweeps away anyone who somehow survives into a lightless, airless torrent of churning water. 
+                The characters can prevent fatal falls by roping themselves together before crossing. 
+                Of course, this may be difficult with the orcs firing arrows at them every round.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `A monumental double-door of solid carved stone leading into <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/dwarf_door.html">Area 2 (The Dwarf-Door)</a>.`
+              },
+              {
+                "location": `North Wall (Secret)`,
+                "desc": `A well-made stone door (DC 20 Search check) leading to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/archers_gallery.html">Area 4 (The Archer's Gallery)</a>. 
+                The door operates by simultaneously pushing in two concealed stone plates about a foot above the floor.`
+              },
+              {
+                "location": `South Wall (Secret)`,
+                "desc": `A well-made stone door (DC 20 Search check) leading to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/archers_gallery_a.html">Area 4a (The Archer's Gallery)</a>. 
+                The door operates by simultaneously pushing in two concealed stone plates about a foot above the floor.`
+              },
+              {
+                "location": `East Wall`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_cave.html">Area 5 (Orc Cave)</a>.`
+              }
+            ]
+          },
+
+          "setupPositions": `The orcs use the rock pillars in the room for shelter, providing Cover (+4 AC, +2 to Reflex saves).`,
+
+          "tactics": {
+            "initialRound": `The orcs use their bows to attack characters trying to cross the bridge, then those casting spells, 
+            then characters shooting back at them with missile weapons. 
+            The archers gain a +2 attack bonus when firing at characters on the bridge, and the targets lose any Dexterity bonus to AC. 
+            Each hit forces the balancing character to make a Balance check (DC 8) or risk a fall, just as if he'd missed his climbing check by a margin of 5 or more.`
+          },
+          
+          "development": `If a PC gets two-thirds of the way across the bridge, 
+          one orc breaks cover to run up and destroy the rope bridge, using a falchion to sever the support ropes. 
+          The orc must cut two ropes, each with 8 hit points. If one is cut, the checks to cross the bridge increases to DC 13. 
+          If both are cut, the end of the bridge plummets into the crevasse. Characters on the bridge sustain 2d6 points of subdual damage from the impact, 
+          and must make Reflex saves (DC 13) or lose their grips and fall into the crevasse.<br><br>
+          If one orc is killed, the survivor loses his nerve, abandons his post, and flees through the eastern wooden door into Area 5 to shout for help.<br><br>
+          If the bridge is destroyed, the Great Ulfe's followers rebuild it in three days. 
+          If the characters raid the rooms beyond, kill the Great Ulfe or 50% of his followers, then retreat, 
+          the survivors cut the bridge and do not rebuild it in order to protect themselves against future raids. 
+          Any orcs killed here are replaced by orcs from area 11.`,
+
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

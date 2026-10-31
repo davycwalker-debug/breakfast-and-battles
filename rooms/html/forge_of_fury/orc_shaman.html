@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 9: Orc Shaman</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 9: Orc Shaman`,
+
+          "readAloud": `The wooden door opens into a large stone hall. 
+          The air carries the sharp scent of hot grease, sweat, and shaved iron. 
+          Unlike the chaotic filth of the previous caves, this room is orderly. 
+          Heavy iron frames, polished brass tracks, and counterweighted chains are bolted directly into the stone walls, completely dominating the space.<br><br>
+          Near a low wooden bench decorated with bone carvings, a smaller, wire-strong orc woman stands inspecting a complex series of brass gears. 
+          She wears clean leather armor and a iron medallion depicting a downward-pointing sword. 
+          A massive iron staff is strapped to her back. Two broad-shouldered half-orcs stand nearby, watching your entrance with disciplined focus.<br><br>
+          She turns, her dark eyes sizing up each of your frames with immediate, cold calculation. She does not reach for her blade. 
+          'Look at them, Xalug,' she says, her voice smooth but carrying an undeniable edge of authority. 
+          'Poor alignment. Imbalanced loads. Yet, they made it through the outer guard. Stand down, boys. If they came to bleed, they would have charged by now. 
+          Speak your peace, travelers, or step up to the iron.'`,
+
+          "environment": {
+            "dimensions": `35 ft. x 15 ft. room, 15 ft. ceiling`,
+            "illumination": `No light`,
+            
+            "features": [
+              {
+                "name": `Hack Squat`,
+                "desc": `Two heavy iron rails are fixed to the stone at a 45-degree angle. 
+                Mounted directly on top of the dark iron are highly intricate, polished brass tracks. 
+                A heavy iron carriage sits motionless near the bottom, fitted with a backrest and shoulder pads made of coarse, black boar-hide. 
+                Massive tusks are driven into the frame near the top. 
+                Pinned to the sides of the carriage are precision-machined brass rollers resting flush against the polished tracks.`
+              },
+              {
+                "name": `Seated Leg Curl`,
+                "desc": `A tall chair made of iron plates is lined with scarred leather panels tied down with dried sinew. 
+                A thick, horizontal iron bar sits on a heavy hinge over the seat, connected to a vertical iron arm that hangs motionless. 
+                Heavy iron support struts are welded securely to the sides of the frame alongside the arm's path. 
+                Bolted beneath the iron seat is a heavy, fully enclosed iron box.`
+              },
+              {
+                "name": `Hip Thrust`,
+                "desc": `A low-set rectangular iron frame holds a flat, hide-covered bench and an angled, pitted iron footplate. 
+                A long, heavy iron lever arm curves over the bench. 
+                The main pivot joint is tightly clamped by a bright brass collar that stands out against the dark iron. 
+                The rear axle cap is decorated with the bleached skull of a giant boar.`
+              },
+              {
+                "name": `Donkey Calf Raise`,
+                "desc": `This waist-high structure features a chest support platform made of split logs wrapped in dark, spotted cat pelt. 
+                A thick iron cross-beam runs directly beneath the logs for support. 
+                A thick iron beam extends from a rear brass hinge housing, ending in a wide crossbar. 
+                The corners of the frame are reinforced with thick, L-shaped iron plates riveted into the metal, 
+                with flat reptile shoulder blades pinned over them with heavy spikes.`
+              },
+              {
+                "name": `Ab Crunch`,
+                "desc": `A tall frame is crowned by a polished human skull. 
+                It features twin vertical iron rods that are buffed bare, clean, and dry. 
+                A sliding carriage fitted with internal brass sleeve collars holds a flat chest pad and two long spikes carrying heavy iron wheels. 
+                The carriage sits completely still at the bottom of the rods.`
+              },
+              {
+                "name": `Hanging Leg Raise`,
+                "desc": `A tall tower welded together from thick, square iron bars, featuring a row of sharp teeth embedded into the leather trim of the armrests.`
+              },
+              {
+                "name": `Landmine`,
+                "desc": `A heavy, octagonal cast-iron plate sits flat on the floor. 
+                At its center is a ball-and-socket joint holding a hollow iron sleeve. 
+                A long, solid iron rod sits inside the sleeve, locked tight with a screw that has a carved bone handle. 
+                The far end of the rod holds a crossbar handle wrapped tightly in strips of raw leather.`
+              },
+              {
+                "name": `Lat Pulldown`,
+                "desc": `A tall iron beam curves up and over a low leather stool, a string of clacking finger bones hanging from the center of an overhead handlebar. 
+                A heavy, wide-grooved brass pulley is integrated into the thick iron frame, secured by a solid iron cotter pin. 
+                Threaded through the pulley is a thick, braided iron chain that runs straight down into a stack of rectangular iron plates.`
+              },
+              {
+                "name": `Lateral Raise`,
+                "desc": `An iron frame holds a padded hide seat. 
+                Large split bones are bound to the outer edges of two independent iron levers that curve outward from the rear. 
+                Where the levers meet the main frame, two bright brass flywheels sit completely motionless.`
+              },
+              {
+                "name": `Fly`,
+                "desc": `A tall, black iron structure features two exposed, heavy brass interlocking gears at the top. 
+                The gears are partially housed within a protective cage made of interlocking bone plates. 
+                Two long iron arms hang down from these gears, positioned on either side of a central leather backrest. 
+                Braided brass lines disappear into the hollow column of the frame.`
+              },
+              {
+                "name": `Incline Chest Press`,
+                "desc": `A leather-wrapped bench is set at an upward tilt inside a rugged, multi-sided iron cage, decorated at the top with a pattern of carved bone shards. 
+                Two independent arms extend forward past the bench, ending in multi-angled handles. 
+                Where the arms connect to the rear axle, custom iron collar sleeves fit tightly over the gnomish brass hubs, 
+                locked in place by solid steel pins driven through pre-drilled holes.`
+              },
+              {
+                "name": `Overhead Triceps Extension`,
+                "desc": `This iron frame features an upright post flanked by two skeletal human forearms bolted directly into the metal. 
+                Overhead, a wavy iron handlebar connects to a braided brass wire cord. 
+                The cord snakes through a small pulley down to a curved, teardrop-shaped brass cam, 
+                which connects directly to a weighted iron lever arm anchored to a heavy pivot axle near the floor.`
+              },
+              {
+                "name": `Preacher Curl`,
+                "desc": `A low stool faces a wide, slanted wooden desk wrapped in thick leather. 
+                The sides of the wood are decorated with scrimshaw patterns on inlaid ivory plates. 
+                At the base of the desk sits a wavy iron bar. The axle of the bar is attached to a heavy, notched brass wheel carrying a weight-loading peg.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `West Wall`,
+                "desc": `This stone door leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/orc_commons.html">Area 8 (Orc Commons)</a>.`
+              },
+              {
+                "location": `North Wall (Locked)`,
+                "desc": `A wooden door (1 in. thick; hardness 5; hp 10; AC 5; break DC 18) leading to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/grand_stair.html">Area 10 (The Grand Stair)</a>. 
+                The door is locked, but the key is resting in the door.`
+              }
+            ]
+          },
+
+          "dialogueTree": [
+            {
+              "prompt": `If the party asks about a peaceful solution:`,
+              "speaker": `Burdug`,
+              "response": `She raises an eyebrow, a slight, mocking smile playing on her tusks.<br><br>
+              'Peace? You walk into a war-lodge of Ilneval looking for a truce? The Crafty Warrior teaches that all life is an endless battle. 
+              But battle requires preparation. I have no interest in fighting you if it wastes my strength or ruins my tools. 
+              There is a way we both leave this valley richer, but it will require sharp wits, not soft words.'`
+            },
+            {
+              "prompt": `If the party asks what this room is:`,
+              "speaker": `Burdug`,
+              "response": `She gestures broadly to the heavy iron structures around her.<br><br>
+              'The forge of the flesh. Old Yarrack thinks strength comes from screaming at the sky and lifting heavy logs until your spine cracks. 
+              I look at the world through the eyes of the strategist. These tracks, these pulleys, these brass wheels—they remove the friction. 
+              They allow us to isolate the muscle, to build a perfect weapon without breaking the frame. My warriors are smaller, yes, but we are built without flaws.'`
+            },
+            {
+              "prompt": `If the players point out that Ulfe is stronger/bigger than her:`,
+              "speaker": `Burdug`,
+              "response": `She scoffs, tapping her staff.<br><br>
+              'A mountain of fat and bone is still just a target. Great Ulfe is large because he is an ogre, not because he is chosen. 
+              He has no discipline. He sits on his bench, eating cold grease, while his limbs rot from neglect. Mass without mind is easily toppled. 
+              A well-placed lever can lift a boulder that ten orcs cannot budge. We will be that lever.'`
+            },
+            {
+              "prompt": `If the party asks about Ulfe:`,
+              "speaker": `Burdug`,
+              "response": `Her expression sours, and she spits onto the stone floor.<br><br>
+              'A brute. A mistake. I thought I could use his size to unite the tribe under my counsel. 
+              I put him on that throne, and the moment the crown touched his brow, the idiot stopped listening. 
+              He spends his days sleeping with his worgs and breaking the backs of any warrior who questions him. He is a parasite draining our rations. 
+              He must be removed, but we must be clever about it.'`
+            },
+            {
+              "prompt": `If the party asks about Yarrack:`,
+              "speaker": `Burdug`,
+              "response": `She rolls her eyes, a look of tired annoyance crossing her face.<br><br>
+              'Yarrack is a relic. He trains his men like animals—mindless grinding, endless running, until their knees swell and their shoulders fail. 
+              He refuses to see that war has changed. He thinks my brass tracks are 'gnomish toys' because he cannot comprehend the math behind them. 
+              He lost his crown because he is old and stubborn, and now he sits in his bunkroom, plotting a revenge he doesn't have the wits to execute.'`
+            },
+            {
+              "prompt": `If the party asks about what she's proposing:`,
+              "speaker": `Burdug`,
+              "response": `She steps closer, her eyes glittering with dark intelligence.<br><br>
+              'The ogre stays in his high hall, surrounded by his beasts. 
+              If my three blades march in there, the unaligned fools in the barracks will see it as treason and turn on us. 
+              But you? You are outsiders. You bypass the main guard, slip into the high halls, and eliminate both Great Ulfe and Old Yarrack. 
+              Once the giant and the fossil are dealt with, the crown falls to me by default. 
+              I will guide the tribe with iron logic, and you will leave with your pockets heavy.'`
+            },
+            {
+              "prompt": `If the party asks about previous orc casualties caused by the party:`,
+              "speaker": `Burdug`,
+              "response": `She shrugs indifferently, looking over your weapons.<br><br>
+              'If they died in the outer halls, they were sloppy. They lacked vigilance. 
+              Ilneval weeds out the careless to preserve the horde. So long as you do not butcher my two personal guards, the rest of the tribe can be replaced. 
+              Strength is a resource; if a tool breaks, we forge a better one.'`
+            },
+            {
+              "prompt": `If the party asks about the layout:`,
+              "speaker": `Burdug`,
+              "response": `She points a calloused finger towards the door you came in from.<br><br>
+              'Head straight north from this hall into the orc commons. From there, you turn west down the long hallway. 
+              Avoid going east; the unaligned warriors are there, gambling and eating. 
+              Once you are in that western hallway, the door on the south wall leads straight to the ogre's chamber. 
+              If you keep moving to the far western wall, that door leads to Yarrack's bunkroom.'`
+            },
+            {
+              "prompt": `If the party asks about Ulfe's worgs:`,
+              "speaker": `Burdug`,
+              "response": `She nods toward one of the half-orcs, who holds up a small, sealed clay vial.<br><br>
+              'Vak and Thrag. They are vicious, and they smell blood before you even cross the threshold. 
+              My boys have brewed a potent sleeping draught. Coat a piece of fresh meat with it and toss it into their pit before you strike. 
+              If the beasts are greedy enough to swallow it, the potion will put them straight to sleep before they can sound the alarm. 
+              If they resist the draft, they will at least be sluggish when you draw your steel.'`
+            },
+            {
+              "prompt": `If the party asks what happens to Yarrack after the coup:`,
+              "speaker": `Burdug`,
+              "response": `A cold look settles over her features.<br><br>
+              'There is too much bad blood between us. He sabotaged my first coup, called my methods heresy, and reduced my influence to nothing. 
+              I will not keep him as a lieutenant, and I certainly will not take his counsel. 
+              When the ogre falls, Yarrack goes into exile, empty-handed and broken—or he goes into the ditch with the ogre. 
+              Those are his only options.'`
+            },
+            {
+              "prompt": `If the party demands payment upfront:`,
+              "speaker": `Burdug`,
+              "response": `She signals to one of the half-orcs, who brings forward a heavy, oiled leather wrap.<br><br>
+              'I do not waste gold on promises. But I can give you an edge. Train on my iron for one hour. 
+              I will personally adjust the tracks and show you how to drive the weight through the proper angle. 
+              Your blood will engorge your muscles, your posture will align, and you will strike with the strength of giants for a full day. 
+              Take the pump, kill the beast, and his hoard is yours.'`
+            },
+            {
+              "prompt": `If the party threatens her:`,
+              "speaker": `Burdug`,
+              "response": `The two half-orcs immediately step forward, their knuckles whitening on their falchions. 
+              Burdug simply smiles, a subtle arc of sparks dancing across her fingers as she grips the staff across her back.<br><br>
+              'You are welcome to try. But I am no common brute. 
+              Before your steel can clear its leather, your eyes will deceive you, the air will turn to ash, and my boys will split you from chin to navel.
+               We can waste our blood here, or we can use it to paint the ogre's hall. Choose wisely.'`
+            },
+            {
+              "prompt": `If the party asks about the two half-orcs with her:`,
+              "speaker": `Burdug`,
+              "response": `She looks at the half-orcs with genuine pride.<br><br>
+              'My finest students. Yarrack called them weak because their blood is mixed, because they weren't born with the broad backs of pure-bloods. 
+              I took them in. I taught them how to use leverage, how to balance their weight, and how to train with purpose. 
+              Now, either one of them can out-lift any pure-blood in the barracks save Targ. They stay with me because my mind gave them their might.'`
+            },
+            {
+              "prompt": `If the party accepts her terms:`,
+              "speaker": `Burdug`,
+              "response": `She nods once, a sharp, decisive gesture, and gestures toward the heavy iron frames.
+              'Excellent. Strip your heavy packs and step up to the iron. Let us prime your muscles for the slaughter. 
+              When the giant's spine is broken, bring me his crown, and the Mountain Door will find its true mind.'`
+            }
+          ],
+
+          "setupPositions": `Two half-orcs guard the door, while Burdug is at a bench.`,
+
+          "treasure": {
+            "carried": `Each orc carries coinage totaling 4d6 sp and 1d10 gp.`
+          },
+
+          "additionalSections": [
+            {
+              "heading": `Get That Pump`,
+              "content": `Working out at this gym with proper supervision gives 2 Constitution damage that will heal naturally in 1 hour, 
+              and a +1d4+1 enhancement bonus to Strength that lasts for 1 day.`
+            },
+            {
+              "heading": `Machines in the Way`,
+              "content": `This gym is so cramped that the entire space counts as difficult terrain.`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 16: Closure</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area 16: Closure`,
+
+          "readAloud": `Standing as one of Eastgate's most popular establishments, 
+          the Stony Gaze Tavern features a striking stone relief sculpture of a medusa's head glowering over the main entrance. 
+          Inside, the air smells of roasted meats, stale ale, and woodsmoke. The tavern is divided into a bustling main taproom centered around an open hearth pit, 
+          a secondary bar lounge with polished wood counters, and a massive stone kitchen in the rear.`,
+
+          
+          "environment": {
+          "dimensions": `80 ft. x 100 ft. multi-room wooden structure with stone-paved kitchen floor; 15 ft. timber-beamed ceilings`,
+          "illumination": `Bright light provided by wall sconces, oil lamps at each table, and central hearth fires.`,
+          
+          "features": [
+            {
+              "name": `Staff`,
+              "desc": `The owner and bartender, Gell (N male halfling Exp5), is a flamboyant character prone to malapropism, 
+              but he has attracted an impressive staff. Nankiy (CG male human Brd8) is a regular entertainer in the taproom, 
+              and has used his position to acquire a phenomenal assortment of gossip and trivia, as well as occasional tidbits of useful information. 
+              The bouncer, Hargg (CN male human Bbn5), is an exotic foreigner who rarely speaks, though he hears more than he lets on.`
+            },
+            {
+              "name": `Medusa Relief`,
+              "desc": `A detailed stone carving above the double-door entrance featuring a glowing, stylized medusa gaze.`
+            },
+            {
+              "name": `Central Pit Hearth`,
+              "desc": `An open stone fire pit in the north taproom providing ambient heat and roasting spits.`
+            },
+            {
+              "name": `Dual Bars`,
+              "desc": `Two long, polished oak service bars—one running along the north wall and a secondary bar in the eastern wing.`
+            },
+            {
+              "name": `Stone Kitchen`,
+              "desc": `A dedicated prep area in the northeast quadrant featuring prep tables, storage barrels, and heavy stone cooking hearths.`
+            }
+          ],
+          
+          "doors": [
+            {
+              "location": `South Entrance`,
+              "desc": `Heavy reinforced oak double doors leading out toward <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/brindinford.html>Brindinford</a>.`
+            }
+          ]
+        },
+
+          "specialEvents": [
+            {
+              "severity": `info`,
+              "title": `Tunaster Dranik`,
+              "trigger": `Triggers when the party enters the Stony Gaze before the 23rd following the invitation.`,
+              "readAloud": `Near the side bar sits a white-bearded man wearing a simple blue robe trimmed with white, a matching deep blue cloak, and a blue skullcap. 
+              He fidgets with his mug, glancing nervously toward the doorway at every sudden sound.`,
+              "mechanics": [
+                {
+                  "type": `Diplomacy Check`,
+                  "dc": `15`,
+                  "success": `The man calms down and indicates he is indeed 'T.D.,' Tunaster Dranik, cleric of Mystra.`,
+                  "failure": `The man bolts as quickly as he can.`
+                }
+              ],
+              "outcome": `PCs interested in hearing his riddle and taking the commission offered can speak with Tunaster at length and learn the details of his predicament and offer. 
+              The following bits of information are imparted to the PCs naturally, as part of conversation: 'I wander, as many Mystran clergy do, 
+              seeking sources of old magic. I've been in tombs, dangerous ruins—I've even skirted the lair of a foul lich. 
+              But none of these holds a candle to the sight I saw a tenday past—a newly built temple of Mystra, here in Brindinford.'<br><br>
+              
+              'Seems normal enough, eh? But there are no other temples of Mystra in all the Shaar. This is big news! I'm a long-time cleric of the church. 
+              I'm in yearly contact with the organization. How is it I didn't know I'd find a temple of Mystra here? Why don't I, a cleric in good standing, 
+              know more of this 'Lady Arthas' who supposedly ordered the temple's construction, and in the heart of the temple district?'<br><br>
+              
+              'Astonished, I immediately entered the temple, looking for answers. I made it to the outer courtyard, 
+              but was rebuffed from entering the inner areas; I was told to wait for Lady Arthas. After an hour's wait, a man appeared, someone named Fembrys,
+              and asked me to accompany him back to the middle courtyard. He wore the garb of a Mystran cleric, as I do, but something about him wasn't right. 
+              I can't explain it to you, but something made me... run.'<br><br>
+              
+              'And they chased me! Why would they do that? Someone on the temple walls fired arrows at me! But I escaped. What in the Nine Hells is going on in there? 
+              I need to find out, or failing that, go to the nearest legitimate temple of Mystra and ask for aid. But now you're here. Can you help me?'<br><br>
+              
+              'I've already spoken to the authorities about the subject. Merdick Forren assures me that the Watch have investigated the temple and found nothing amiss. 
+              I asked him what they discovered, and it seemed they made only a cursory check of the place after hearing about strange lights and noises. 
+              I sensed his reluctance to look deeper into it has more to do with Baron Euphemes's pleasure at the business and taxes the temple brings 
+              than with a firm understanding of what is happening within.'<br><br>
+              
+              Tunaster offers the PCs a sum of 2,000 gp if they penetrate the temple; find out if a profanity to Mystra is being committed, and the purpose behind it; 
+              and eliminate the blasphemers. He'll pay the PCs 500 gp now, with the rest coming upon the completion of the quest. 
+              For his part, he's going to travel to Halruaa to meet with Greila Sontoin at the High Temple of Mystra, 
+              and he will not accompany the PCs. Tunaster hopes to find faithful there who can tell him what might be going on or who will return with him. 
+              Tunaster is fairly certain that someone there or nearby will be able to teleport him back, but if he can't, it will take him nearly a tenday to return. 
+              If the PCs seem hesitant, Tunaster offers to write them a promissory note that has his personal arcane mark, 
+              which the PCs can redeem at any temple of Mystra (except the one in Brindinford, of course) for payment after they submit to discern lies spells.`
+            }
+          ],
+
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

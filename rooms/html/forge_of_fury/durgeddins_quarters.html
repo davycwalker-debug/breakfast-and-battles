@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area 40: Durgeddin's Quarters</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          // ==================================================================
+          // CORE HEADER INFO
+          // ==================================================================
+          
+          /* [Strict String] The main header text of the encounter area (e.g., Room Name).
+             CRITICAL: This string acts as the exact unique primary key identifier used by 
+             the JavaScript engine to match and pull monster data from CSV database files. */
+          "title": `Area 40: Durgeddin's Quarters`,
+
+          // ==================================================================
+          // NARRATIVE & INITIAL ABILITY CHECKS
+          // ==================================================================
+          
+          /* [Markdown/HTML String] Descriptive narrative flavor text meant to be read aloud by the DM.
+             UI PRESENTATION: Renders inside a stylized boxed callout block with a green accent border.
+             FORMATTING: Fully supports HTML inline text tags like <strong>, <em>, or links. */
+          "readAloud": `This room appears to be a bedchamber. 
+          In the far right corner stands the remains of a large wooden sleeping compartment, badly gouged by axe blows and partially burned. 
+          A tabl, bench, and writing desk have been treated similarly. In the middle of the far wall, 
+          a space has been cleared for a simple sleeping pallet and a pair of large satchels. Two doors exit the room to the north.`,
+          
+          // ==================================================================
+          // ENVIRONMENT & ARCHITECTURE
+          // ==================================================================
+          
+          /* [Object] Spatial parameters, illumination rules, and structural exits defining the physical layout. */
+          "environment": {
+            "dimensions": ``, // [String] Total physical layout metrics (e.g., "40 ft. x 40 ft. room, 15 ft. ceiling")
+            "illumination": ``, // [String] Light state rules (e.g., "Darkness", "Bright light from wall torches")
+            
+            /* [Array of Objects] Points of interest, distinct architectural details, hazards, or furnishings.
+               UI PRESENTATION: Formatted into a structured, clean-scannable bulleted layout. */
+            "features": [
+              {
+                "name": ``, // [String] The title of the feature or object (e.g., "Altar", "Rubbish Pile")
+                "desc": ``  // [Markdown String] Detailed description, physical attributes, or interaction limits
+              }
+            ],
+            
+            /* [Array of Objects] Portals, doorways, secret paths, or passages leading out of this environment. */
+            "doors": [
+              {
+                "location": `West Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Stone door that leads to <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/council_chamber.html">Area 39 (Council Chamber)</a>.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Northeast Closet Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Closet with mildewed remains of several cloaks.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `Northwest Bathroom Door`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Bathroom fitted with two small clay tanks for wash water.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              },
+              {
+                "location": `East Door in Closet (Secret)`, // [String] Cardinal direction or spatial point (e.g., "North Door", "Secret Floor Trapdoor")
+                "desc": `Secret door (DC 13 Search check) leads into hallway with Area 46 (Coom Room) to the north and <a href="https://davycwalker-debug.github.io/breakfast-and-battles/rooms/html/forge_of_fury/chasm.html">Area 38 (The Chasm)</a>. to the south.`      // [Markdown String] Structural materials, locking mechanisms, lockpick/strength DCs, or destination
+              }
+            ]
+          }
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>

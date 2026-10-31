@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/breakfast-and-battles/favicon.ico">
+    <title>Area AE2: Recalcitrant</title>
+</head>
+<body>
+    <div class="container">
+        <div id="encounter-output"></div>
+    </div>
+    <script type="module">
+        import { renderRoomTemplate } from '../../js/renderer.js';
+        import '../../js/interactions.js';
+        
+        const roomData = {
+          "title": `Area AE2: Recalcitrant`,
+
+          "readAloud": `The town of Brindinford occupies a low hill beside the Talar River. Crenellated stone walls, interrupted by tall watchtowers, 
+          surround the buildings, but the life of the town spills beyond its walls today. Colorful carts and wagons line the road for 100 yards beyond the gate. 
+          Dozens of halflings in brightcolored costumes are directing most activities. Near the gates, four town guards, wearing bright red tabards, 
+          give each visitor a careful look, though they seem relaxed and friendly. The guards can be seen peacebonding weapons.<br/><br/>
+          The next visitor to reach the gate is a massive, squid-like figure clad in dusty trail gear and silver-spiked shoulderpads. 
+          The metal steams faintly, dripping a sinister red liquid onto the road. The guards pause, 
+          then with reluctance tell the figure that an Ultharid criminal who summoned a devil into the heart of Ilkkool Rrem has been spotted nearby, 
+          so they need to detain him for questioning. The figure's purple skin takes on a redder hue as he angrily snaps back, 
+          'I'm no Ultharid! I am an Anthropomorphic Giant Squid. Frankly, it's quite rude of you to mix us up—we are entirely distinct species!'<br/><br/>
+          The guards glance at each other, clearly taken aback. One cautiously steps forward: 'Wait... weren't giant squids aquatic?' 
+          The figure huffs. 'Ugh! I am an Amphibious Anthropomorphic Giant Squid, if you must know, but really my pulmonary mechanics are none of your business anyways!' 
+          Three of the guards look ready to concede, but the fourth scratches his neck, muttering under his breath that he never should have taken that elective on armoring. 
+          'Isn't that the maker's mark of Thub'al-Qayn, the mind-flayer armorer of Ilkkool Rrem, on your pauldrons?'<br/><br/>
+          The squid-person stammers, caught completely off guard. 'Well... it's quite hard to find off-the-rack armor tailored for ten limbs! 
+          What, is shopping in Ilkkool Rrem suddenly a crime? Besides, if I were really some wanted criminal, 
+          I wouldn't be strolling around in armor denoting exactly where I came from, now would I?' 
+          Unconvinced, the guards subtly shift their weight and reach for their saps. 
+          The potential criminal's skin turns a deep crimson as he swells to twice his already massive size, looming ominously over the gate.`,
+          
+          "initialReadAloudChecks": [
+            {
+              "type": `Knowledge (Dungeoneering)`,
+              "dc": `15`,
+              "success": `That most certainly is not an Ultharid.`,
+              "failure": `That's a lot of tentacles, and really, what's the likelihood of an Aquatic Anthropomorphic Giant Squid, 
+              wearing armor from Ilkkool Rrem, trying to enter the city right when a mind-flayer criminal from Ilkkool Rrem is in the area?`
+            },
+            {
+              "type": `Knowledge (Local)`,
+              "dc": `35`,
+              "success": `You know what, yeah, that's definitely an Anthropomorphic Giant Squid.`,
+              "failure": `Why in the world would you know what an Anthropomorphic Giant Squid looked like?`
+            },
+            {
+              "type": `Knowledge (Arcana)`,
+              "dc": `25`,
+              "success": `That looks like it's a Belt of Growth on his waist, which mimics the effect of Enlarge Person. 
+              Enlarge Person can only affect Humanoids, so this can't be an Ultharid.`,
+              "failure": `You're not sure why he was able to grow in size like that. 
+              You fought those psionic Duergar recently, maybe its a psionic thing? Which means--this probably is an Ulthraid!`
+            }
+          ],
+
+          "environment": {
+            "dimensions": `Open plain, no ceiling.`,
+            "illumination": `Daylight`,
+            
+            "features": [
+              {
+                "name": `Wall`,
+                "desc": `Crenellated stone walls, interrupted by tall watchtowers.`
+              }
+            ],
+            
+            "doors": [
+              {
+                "location": `Southspur Gate`,
+                "desc": `Entrance to <a href=https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/brindinford.html>Brindinford</a>.`
+              }
+            ]
+          },
+
+          "setupPositions": `Guards are outside the gate, while Qazibor begins the encounter enlarged and raging 10 feet away from them.`,
+
+          "tactics": {
+            "initialRound": `The guards hesitate, not sure what to do, readying their action against a charge. 
+            Qazibor pounces on them, attacking all of the guards at once with his tentacles nonlethally. 
+            If a guard manages to stay conscious and free, they will try and blow their battlehorn to alert more guards.`,
+
+          },
+
+          "development": `If the party talks down the conflict, refer to Law-Abiding Citizens, and Qazibor breaks a spike off his armor to gift the party, 
+          which is treated as a small +1 Fever Iron Dagger. If the party aids the guards and win, refer to Law-Abiding Citizens. If they aid the guards and lose, 
+          they wake up in the Brindinford Barracks peacebonded, then refer to Law-Abiding Citizens. If they stay out of it entirely, they can enter without peacebonding, 
+          but any guards who see them will stop them and question them, imposing a 10gp fine then peacebonding them. If they aid Qazibor and win, 
+          he breaks a spike off his armor to gift to the party, which is treated as a small +1 Fever Iron Dagger. They can enter without peacebonding, 
+          but any guard who sees them will stop them and question them, imposing a 100gp fine and informing them they will not be allowed to openly wear arms 
+          or armor in the city. If they aid Qazibor and somehow lose, they wake up in the Brindinford Barracks with their arms and armor confiscated, 
+          which they can only get back if they pay the 100gp fine and follow the stricter rule to not openly wear arms or armor in the city.`,
+
+          "treasure": {
+            
+            "containers": [
+              {
+                "name": `Qazibor's Gift`,
+                "contents": `small +1 Fever Iron Dagger`
+              }
+            ]
+          },
+
+          "specialEvents": [
+            {
+              "severity": `info`, 
+              "title": `Law-Abiding Citizens`,
+              "trigger": `The party talks down the conflict or aids the guards`,
+              "readAloud": `The guards are pleased with the party, expressing their gratitude profusely. One of the guards says, 
+              'My brother owns an inn right here in Eastgate. Go to the Shield & Shingle just up the way and tell him Joster sent you. 
+              He'll give you a room for the length of the fair, no charge.'`
+            }
+          ],
+
+          "additionalSections": [
+            {
+              "heading": `Peacebonding`,
+              "content": `All edged weapons must be peace-bonded (daggers excepted). The guards attach swords to scabbards with leather straps. 
+              For axes, spears, and similar weapons, the guards put a leather bag over the blade and tie it with a leather strap. 
+              Similarly, they tie bags over open quivers and bolt cases, or secure them closed. 
+              Readying a peace-bonded weapon for normal use requires a full-round action and makes the character vulnerable to attacks of opportunity. 
+              Attacks with bagged peace-bonded weapons suffer a -2 penalty to attack and damage rolls.<br/><br/>
+              Arcane casters, mystery users, and binders must wrap a thick leather strap around the middle and ring fingers of each hand, 
+              and "peace-bond" their spell component pouches by tying them securely shut. The guards cannot necessarily tell by looking at a character if he or she is a caster, 
+              and they rarely challenge bards. They ask any character they suspect might be a caster to be peacebonded 
+              (particularly characters who seem relatively unarmed compared to their companions), and they may search a character for components or foci if unsatisfied with the answer. 
+              If someone is caught lying to the guards, they angrily impose a 10 gp fine. 
+              Casting a spell or mystery with somatic components while a character's fingers are bound imposes a 30% chance of spell failure, 
+              and it is impossible to draw a seal while a character's fingers are bound. 
+              Removing the band or untying a spell component pouch requires a full-round action and makes the character vulnerable to attacks of opportunity.<br/><br/>
+              Divine casters of known neutral or evil deities must "peace-bond" their deities' symbols. 
+              This involves fastening each such symbol to the caster's belt, so it cannot easily be brought to bear for spellcasting. 
+              Freeing the symbol requires a full-round action and makes the character vulnerable to attacks of opportunity.
+              Non-religious divine casters must place all divine focus items into pouches and tie them shut. 
+              Untying a pouch requires a full-round action and makes the character vulnerable to attacks of opportunity.
+              If a character refuses to submit to peace-bonding, the guards deny the character's companions entry to the town as well. 
+              If the party attempts to force its way in, the guards attack to capture the group, summoning help by sounding one of their battlehorns.`
+            }
+          ]
+        };
+
+        renderRoomTemplate('encounter-output', roomData);
+    </script>
+</body>
+</html>
