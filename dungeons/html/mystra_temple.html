@@ -69,15 +69,6 @@
             color: #d8b4fe; /* Subtle Mystra/Arcane violet tint */
         }
 
-        .music-link {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: color 0.2s ease, opacity 0.2s ease;
-        }
-
         .music-link:hover {
             color: #d8b4fe;
             text-decoration: underline;
@@ -87,6 +78,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease, opacity 0.2s ease;
         }
 
         /* Individual clickable card wrapper */
@@ -236,9 +233,9 @@
                     </svg>
                 </span>
                 <div class="music-content">
-                    <span class="music-link">${name}: </span>
+                    ${name}: 
                     <a href="${liveUrl}" target="_blank" rel="noopener" class="music-link">DNS</a>
-                    <span class="music-link"> | </span>
+                     | 
                     <a href="${localUrl}" target="_blank" rel="noopener" class="music-link">Local</a>
                 </div>
             </div>
