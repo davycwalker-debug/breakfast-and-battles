@@ -30,6 +30,46 @@
             flex-direction: row;
         }
 
+        /* Floating Song/Music Section */
+        .music-section {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: rgba(18, 18, 18, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .music-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d8b4fe; /* Subtle Mystra/Arcane violet tint */
+        }
+
+        .music-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .music-link:hover {
+            color: #d8b4fe;
+            text-decoration: underline;
+        }
+
         /* Individual clickable card wrapper */
         .image-card {
             flex: 1;
@@ -109,6 +149,12 @@
                 flex-direction: column;
                 height: 100vh; /* Keeps total height to one viewport on load */
             }
+            .music-section {
+                top: 16px;
+                width: 90%;
+                max-width: 340px;
+                justify-content: center;
+            }
             .image-card {
                 flex: 1;
                 min-height: 50vh; 
@@ -123,6 +169,32 @@
 <body>
 
     <main class="showcase-container">
+
+        <div class="music-section">
+            <span class="music-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+            </span>
+            <a href="http://albanywc.duckdns.org:4533/share/rgin3xMNLD#/" target="_blank" rel="noopener" class="music-link">
+                Nightsong
+            </a>
+        </div>
+
+        <div class="music-section">
+            <span class="music-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+            </span>
+            <a href="http://albanywc.duckdns.org:4533/share/l6T40FZRS7#/" target="_blank" rel="noopener" class="music-link">
+                Sixteen Strikes
+            </a>
+        </div>
         
         <a href="https://davycwalker-debug.github.io/breakfast-and-battles/maps/html/dungeons/mystra_temple.html" class="image-card" target="_self" rel="noopener">
             <div class="bg-image" style="background-image: url('https://github.com/davycwalker-debug/breakfast-and-battles/blob/main/maps/images/mystra_temple.jpg?raw=true');"></div>
