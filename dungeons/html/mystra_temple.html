@@ -89,21 +89,6 @@
             gap: 8px;
         }
 
-        .env-sep {
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.85rem;
-        }
-
-        .local-badge {
-            font-size: 0.8rem;
-            color: #a78bfa; /* lighter violet to distinguish local */
-            opacity: 0.8;
-        }
-
-        .local-badge:hover {
-            opacity: 1;
-        }
-
         /* Individual clickable card wrapper */
         .image-card {
             flex: 1;
@@ -251,9 +236,10 @@
                     </svg>
                 </span>
                 <div class="music-content">
-                    <a href="${liveUrl}" target="_blank" rel="noopener" class="music-link">${name} (DNS)</a>
-                    <span class="env-sep">|</span>
-                    <a href="${localUrl}" class="music-link local-badge">${name} (Local)</a>
+                    <span class="music-link">${name}: </span>
+                    <a href="${liveUrl}" target="_blank" rel="noopener" class="music-link">DNS</a>
+                    <span class="music-link"> | </span>
+                    <a href="${localUrl}" target="_blank" rel="noopener" class="music-link">Local</a>
                 </div>
             </div>
         `;
