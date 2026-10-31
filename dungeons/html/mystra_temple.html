@@ -83,6 +83,27 @@
             text-decoration: underline;
         }
 
+        .music-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .env-sep {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+        }
+
+        .local-badge {
+            font-size: 0.8rem;
+            color: #a78bfa; /* lighter violet to distinguish local */
+            opacity: 0.8;
+        }
+
+        .local-badge:hover {
+            opacity: 1;
+        }
+
         /* Individual clickable card wrapper */
         .image-card {
             flex: 1;
@@ -166,7 +187,15 @@
                 top: 16px;
                 width: 90%;
                 max-width: 340px;
-                justify-content: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center; 
+                gap: 8px; 
+            }
+            .music-section {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 8px 14px;
             }
             .image-card {
                 flex: 1;
@@ -191,9 +220,11 @@
                     <circle cx="18" cy="16" r="3"></circle>
                 </svg>
             </span>
-            <a href="http://albanywc.duckdns.org:4533/share/rgin3xMNLD#/" target="_blank" rel="noopener" class="music-link">
-                Nightsong
-            </a>
+            <div class="music-content">
+                <a href="http://albanywc.duckdns.org:4533/share/rgin3xMNLD#/" target="_blank" rel="noopener" class="music-link">Nightsong (DNS)</a>
+                <span class="env-sep">|</span>
+                <a href="http://localhost:4533/share/rgin3xMNLD#/" class="music-link local-badge">Nightsong (Local)</a>
+            </div>
         </div>
 
         <div class="music-section">
@@ -204,9 +235,11 @@
                     <circle cx="18" cy="16" r="3"></circle>
                 </svg>
             </span>
-            <a href="http://albanywc.duckdns.org:4533/share/l6T40FZRS7#/" target="_blank" rel="noopener" class="music-link">
-                Sixteen Strikes
-            </a>
+            <div class="music-content">
+                <a href="http://albanywc.duckdns.org:4533/share/l6T40FZRS7#/" target="_blank" rel="noopener" class="music-link">Sixteen Strikes (DNS)</a>
+                <span class="env-sep">|</span>
+                <a href="http://localhost:4533/share/l6T40FZRS7#/" class="music-link local-badge">Nightsong (Local)</a>
+            </div>
         </div>
         </div>
         
